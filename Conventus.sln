@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conventus.Server", "Conventus.Server\Conventus.Server.csproj", "{0017C5E3-ACD9-4A24-8D1D-F4360B7952D3}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "conventus.client", "conventus.client\conventus.client.esproj", "{56806388-A11A-4FAF-A338-E3F0E3820E93}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0017C5E3-ACD9-4A24-8D1D-F4360B7952D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0017C5E3-ACD9-4A24-8D1D-F4360B7952D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0017C5E3-ACD9-4A24-8D1D-F4360B7952D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0017C5E3-ACD9-4A24-8D1D-F4360B7952D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56806388-A11A-4FAF-A338-E3F0E3820E93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56806388-A11A-4FAF-A338-E3F0E3820E93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56806388-A11A-4FAF-A338-E3F0E3820E93}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{56806388-A11A-4FAF-A338-E3F0E3820E93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56806388-A11A-4FAF-A338-E3F0E3820E93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56806388-A11A-4FAF-A338-E3F0E3820E93}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AE9DB5C1-F021-4F64-A14B-F27FD544EDF8}
+	EndGlobalSection
+EndGlobal
