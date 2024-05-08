@@ -2,7 +2,6 @@ import './assets/main.css'
 import 'primevue/resources/themes/lara-light-teal/theme.css'
 
 import { createApp } from 'vue'
-import { createI18n } from 'vue-i18n'
 import App from './App.vue'
 
 import PrimeVue from 'primevue/config'

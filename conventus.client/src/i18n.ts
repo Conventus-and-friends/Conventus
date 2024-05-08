@@ -6,6 +6,7 @@ export const SUPPORT_LOCALES = ['en', 'de']
 export function setupI18n(options = {legacy: false, locale: 'en', fallbackLocale: 'en'}): I18n {
     const i18n = createI18n(options)
     setI18nLanguage(i18n, options.locale)
+    loadLocaleMessages(i18n, options.locale)
     return i18n
 }
 
@@ -15,13 +16,6 @@ export function setI18nLanguage(i18n: I18n, locale: string) {
     } else {
         i18n.global.locale.value = locale;
     }
-    /**
-    * NOTE:
-    * If you need to specify the language setting for headers, such as the `fetch` API, set it here.
-    * The following is an example for axios.
-    *
-    * axios.defaults.headers.common['Accept-Language'] = locale
-    */
     const htmlElement = document.querySelector('html');
     if (htmlElement) {
         htmlElement.setAttribute('lang', locale);
