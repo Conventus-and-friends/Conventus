@@ -512,6 +512,9 @@ dist
 # vuepress v2.x temp and cache directory
 .temp
 
+# macos caching
+.DS_Store
+
 # Docusaurus cache and generated files
 .docusaurus
 
