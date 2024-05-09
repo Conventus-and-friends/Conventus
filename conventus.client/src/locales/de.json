@@ -3,6 +3,7 @@
         "start": "Startseite"
     },
     "navbar": {
-        "search": "Suchen"
+        "search": "Suchen",
+        "home": "Start"
     }
 }

@@ -3,6 +3,7 @@
         "start": "Overview"
     },
     "navbar": {
-        "search": "Search"
+        "search": "Search",
+        "home": "Home"
     }
 }

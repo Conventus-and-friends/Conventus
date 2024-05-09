@@ -4,23 +4,23 @@ import Menubar from 'primevue/menubar';
 import Avatar from "primevue/avatar";
 import Badge from "primevue/badge";
 import InputText from "primevue/inputtext";
+import { useI18n } from "vue-i18n";
 
 import { useWindowSize } from '@vueuse/core'
 import { useRouteParams } from "@vueuse/router";
 
 const { width, height } = useWindowSize()
+const i18n = useI18n()
 
 function isMobile(): boolean {
     return width.value <= 760
 }
 
 const items = ref([
-    /*
     {
-        label: 'About',
+        label: i18n.t('navbar.home'),
         icon: 'pi pi-star'
     }
-    */
 ]);
 </script>
 
