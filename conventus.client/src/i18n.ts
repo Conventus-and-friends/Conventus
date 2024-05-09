@@ -39,7 +39,11 @@ export function setupI18n(options: I18nOptions | null = null): I18n {
   if (!options) {
     const browserLanguage = window.navigator.language;
     const userLanguage = browserLanguage.includes('-') ? browserLanguage.split('-')[0] : browserLanguage;
-    if (SUPPORT_LOCALES.includes(userLanguage)) {
+    if (SUPPORT_LOCALES.includes(browserLanguage)) {
+      options = {
+        locale: browserLanguage
+      }
+    } else if (SUPPORT_LOCALES.includes(userLanguage)) {
       options = {
         locale: userLanguage
       }
