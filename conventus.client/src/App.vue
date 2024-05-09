@@ -1,17 +1,13 @@
 <script setup lang="ts">
-import Home from './components/Home.vue'
 import Navbar from './components/Navbar.vue';
 </script>
 
 <template>
     <Navbar/>
 
-    <header>
-        <img alt="Logo" class="logo" src="./assets/Conventus.svg" width="125" height="125" />
-        <div class="wrapper">
-            <Home/>
-        </div>
-    </header>
+    <main>
+        <RouterView/>
+    </main>
 </template>
 
 <style scoped>
