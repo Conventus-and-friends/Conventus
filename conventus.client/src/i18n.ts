@@ -41,17 +41,25 @@ export function setupI18n(options: I18nOptions | null = null): I18n {
     const userLanguage = browserLanguage.includes('-') ? browserLanguage.split('-')[0] : browserLanguage;
     if (SUPPORT_LOCALES.includes(browserLanguage)) {
       options = {
-        locale: browserLanguage
+        locale: browserLanguage,
+        legacy: false
       }
     } else if (SUPPORT_LOCALES.includes(userLanguage)) {
       options = {
-        locale: userLanguage
+        locale: userLanguage,
+        legacy: false
       }
     } else {
       options = {
-        locale: 'en'
+        locale: 'en',
+        legacy: false
       }
     }
+  }
+
+  if (options.legacy !== false) {
+    console.warn("i18n legacy mode not supported")
+    options.legacy = false
   }
 
   const i18n = createI18n(options)

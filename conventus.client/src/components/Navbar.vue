@@ -1,24 +1,26 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Menubar from 'primevue/menubar';
-import Avatar from "primevue/avatar";
 import Badge from "primevue/badge";
 import InputText from "primevue/inputtext";
 import { useI18n } from "vue-i18n";
+import { computed } from "vue";
 
 import { useWindowSize } from '@vueuse/core'
 import { useRouteParams } from "@vueuse/router";
 
 const { width, height } = useWindowSize()
-const i18n = useI18n()
+const { t } = useI18n()
 
 function isMobile(): boolean {
     return width.value <= 760
 }
 
+const homeText = computed(() =>  t('navbar.home'))
+
 const items = ref([
     {
-        label: i18n.t('navbar.home'),
+        label: homeText,
         icon: 'pi pi-star'
     }
 ]);
@@ -45,7 +47,7 @@ const items = ref([
             </template>
             <template #end>
                 <div class="flex align-items-center gap-2">
-                    <InputText :placeholder="$t('navbar.search')" type="text" class="w-8rem sm:w-auto" />
+                    <InputText :placeholder="t('navbar.search')" type="text" class="w-8rem sm:w-auto" />
                 </div>
             </template>
         </Menubar>
