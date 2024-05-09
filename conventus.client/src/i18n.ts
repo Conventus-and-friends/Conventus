@@ -35,7 +35,21 @@ export function setLocale(i18n: I18n, locale: Locale): void {
   }
 }
 
-export function setupI18n(options: I18nOptions = { locale: 'en' }): I18n {
+export function setupI18n(options: I18nOptions | null = null): I18n {
+  if (!options) {
+    const browserLanguage = window.navigator.language;
+    const userLanguage = browserLanguage.includes('-') ? browserLanguage.split('-')[0] : browserLanguage;
+    if (SUPPORT_LOCALES.includes(userLanguage)) {
+      options = {
+        locale: userLanguage
+      }
+    } else {
+      options = {
+        locale: 'en'
+      }
+    }
+  }
+
   const i18n = createI18n(options)
   setI18nLanguage(i18n, options.locale!)
   loadLocaleMessages(i18n, options.locale!)
