@@ -5,12 +5,11 @@ import 'primevue/resources/themes/lara-light-teal/theme.css'
 // vue imports
 import { createApp } from 'vue'
 import App from './App.vue'
-import { createRouter, createMemoryHistory, createWebHistory } from 'vue-router'
 
 // primevue and i18n imports
 import PrimeVue from 'primevue/config'
 import Ripple from 'primevue/ripple'
-import { loadLocaleMessages, setI18nLanguage, setupI18n, SUPPORT_LOCALES } from './i18n'
+import { setupI18n } from './i18n'
 import { setupRouter } from './router'
 
 // create vue application
