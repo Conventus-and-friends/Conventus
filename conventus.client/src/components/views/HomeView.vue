@@ -3,6 +3,6 @@
 
 <template>
     <div>
-        <h3>{{ $t('conventus') }}</h3>
+        <h2>{{ $t('startpage.start') }}</h2>
     </div>
 </template>

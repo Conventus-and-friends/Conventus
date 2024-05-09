@@ -45,7 +45,7 @@ const items = ref([
             </template>
             <template #end>
                 <div class="flex align-items-center gap-2">
-                    <InputText placeholder="Search" type="text" class="w-8rem sm:w-auto" />
+                    <InputText :placeholder="$t('navbar.search')" type="text" class="w-8rem sm:w-auto" />
                 </div>
             </template>
         </Menubar>
