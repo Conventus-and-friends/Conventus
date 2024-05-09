@@ -5,6 +5,15 @@ import Avatar from "primevue/avatar";
 import Badge from "primevue/badge";
 import InputText from "primevue/inputtext";
 
+import { useWindowSize } from '@vueuse/core'
+import { useRouteParams } from "@vueuse/router";
+
+const { width, height } = useWindowSize()
+
+function isMobile(): boolean {
+    return width.value <= 760
+}
+
 const items = ref([
     /*
     {
@@ -20,7 +29,7 @@ const items = ref([
     <div class="card">
         <Menubar :model="items">
             <template #start>
-                <RouterLink :to="{ name: 'home', params: { locale: $i18n.locale }}">
+                <RouterLink :to="{ name: 'home', params: { locale: useRouteParams('locale')?.value ?? $i18n.locale }}">
                     <img v-if="!isMobile()" height="40" src="/src/assets/Conventus-Text.svg" class="h-2rem">
                     <img v-else height="40" src="/src/assets/Conventus.svg" class="h-2rem">
                 </RouterLink>
