@@ -4,6 +4,7 @@
     },
     "navbar": {
         "search": "Search",
-        "home": "Home"
+        "home": "Home",
+        "about": "About"
     }
 }

@@ -4,6 +4,7 @@
     },
     "navbar": {
         "search": "Suchen",
-        "home": "Start"
+        "home": "Start",
+        "about": "Über"
     }
 }

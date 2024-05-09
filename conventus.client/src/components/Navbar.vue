@@ -10,18 +10,22 @@ import { useWindowSize } from '@vueuse/core'
 import { useRouteParams } from "@vueuse/router";
 
 const { width, height } = useWindowSize()
-const { t } = useI18n()
+const i18n = useI18n()
+const { t } = i18n
 
 function isMobile(): boolean {
     return width.value <= 760
 }
 
 const homeText = computed(() =>  t('navbar.home'))
+const aboutText = computed(() =>  t('navbar.about'))
 
 const items = ref([
     {
-        label: homeText,
-        icon: 'pi pi-star'
+        label: homeText
+    },
+    {
+        label: aboutText
     }
 ]);
 </script>
@@ -31,7 +35,7 @@ const items = ref([
     <div class="card">
         <Menubar :model="items">
             <template #start>
-                <RouterLink :to="{ name: 'home', params: { locale: useRouteParams('locale')?.value ?? $i18n.locale }}">
+                <RouterLink :to="{ name: 'home', params: { locale: useRouteParams('locale')?.value ?? i18n.locale.value }}">
                     <img v-if="!isMobile()" height="40" src="/src/assets/Conventus-Text.svg" class="h-2rem">
                     <img v-else height="40" src="/src/assets/Conventus.svg" class="h-2rem">
                 </RouterLink>
