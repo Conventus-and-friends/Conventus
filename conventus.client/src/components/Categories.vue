@@ -4,6 +4,7 @@ import DataView from "primevue/dataview";
 import Divider from 'primevue/divider';
 import type { Category } from "@/models/category";
 import { getCategories } from "@/services/categoryService";
+import { truncateText } from "@/helpers";
 
 
 const categories = ref<Category[]>();
@@ -25,7 +26,7 @@ onMounted(async () => {
                             <Divider v-if="index > 0" />
                             <div>
                               <h4>{{ item.name }}</h4>
-                              <p>{{ item.description }}</p>
+                              <p>{{ truncateText(item.description, 90) }}</p>
                             </div>
                         </div>
                     </div>
