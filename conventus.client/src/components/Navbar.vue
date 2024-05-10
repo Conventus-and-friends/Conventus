@@ -6,16 +6,12 @@ import InputText from "primevue/inputtext";
 import { useI18n } from "vue-i18n";
 import { computed } from "vue";
 
-import { useWindowSize } from '@vueuse/core'
+import { isMobile } from "@/helpers";
+
 import { useRouteParams } from "@vueuse/router";
 
-const { width, height } = useWindowSize()
 const i18n = useI18n()
 const { t } = i18n
-
-function isMobile(): boolean {
-    return width.value <= 760
-}
 
 const homeText = computed(() =>  t('navbar.home'))
 const aboutText = computed(() =>  t('navbar.about'))

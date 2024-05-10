@@ -4,8 +4,7 @@ import DataView from "primevue/dataview";
 import Divider from 'primevue/divider';
 import type { Category } from "@/models/category";
 import { getCategories } from "@/services/categoryService";
-import { truncateText } from "@/helpers";
-
+import { isMobile, truncateText } from "@/helpers";
 
 const categories = ref<Category[]>();
 
@@ -13,6 +12,12 @@ onMounted(async () => {
     categories.value = await getCategories();
 });
 
+function truncateDescription(text: string): string {
+    if (isMobile()) {
+      return truncateText(text, 70);
+    }
+    return truncateText(text, 150);
+}
 
 </script>
 
@@ -26,7 +31,7 @@ onMounted(async () => {
                             <Divider v-if="index > 0" />
                             <div>
                               <h4>{{ item.name }}</h4>
-                              <p>{{ truncateText(item.description, 90) }}</p>
+                              <p>{{ truncateDescription(item.description) }}</p>
                             </div>
                         </div>
                     </div>
