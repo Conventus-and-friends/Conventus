@@ -5,3 +5,9 @@ export function getCategories(): Promise<Category[]> {
         .then(response => response.json())
         .then(json => json as Category[])
 }
+
+export function getCategory(id: number): Promise<Category> {
+    return fetch(`/api/categories/${id}`)
+        .then(response => response.json())
+        .then(json => json as Category)
+}

@@ -1,4 +1,5 @@
 import HomeView from '@/components/views/HomeView.vue'
+import CategoryView from '@/components/views/CategoryView.vue'
 import { createRouter, createMemoryHistory, createWebHistory } from 'vue-router'
 import { getLocale, loadLocaleMessages, setI18nLanguage, SUPPORT_LOCALES } from './i18n'
 import type { I18n } from 'vue-i18n'
@@ -8,6 +9,7 @@ export function setupRouter(i18n: I18n) {
     const locale = getLocale(i18n)
     const views = [
         { path: '/:locale/', component: HomeView, name: 'home' },
+        { path: '/:locale/:category/', component: CategoryView, name: 'category' },
         { path: '/:pathMatch(.*)*', redirect: () => `/${locale}` }
     ]
     const router = createRouter({
