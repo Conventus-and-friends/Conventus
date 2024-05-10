@@ -1,26 +1,50 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import DataView from "primevue/dataview";
+import Divider from 'primevue/divider';
 
-const categories = ref([]);
+
+const categories = ref([
+  {
+    id: 1,
+    name: "syidusuiad"
+  },
+  {
+    id: 2,
+    name: "syiduasdasssuiad"
+  },
+  {
+    id: 2,
+    name: "syiduasdasssuiad"
+  },
+  {
+    id: 2,
+    name: "syiduasdasssuiad"
+  }
+]);
 
 onMounted(async () => {
-  try {
-    const response = await fetch('http://localhost:5020/api/Categories');
-    const data = await response.json();
-    categories.value = data.sort((a, b) => a.name.localeCompare(b.name));
-  } catch (error) {
-    console.error('Error fetching categories:', error);
-  }
+  
 });
+
+
 </script>
 
 <template>
   <div class="card">
-    <ul>
-      <li v-for="category in categories" :key="category.id">
-        <h3>{{ category.name }}</h3>
-        <p>{{ category.description }}</p>
-      </li>
-    </ul>
+    <DataView :value="categories" data-key="id">
+            <template #list="slotProps">
+                <div class="grid grid-nogutter">
+                    <div v-for="(item, index) in slotProps.items" :key="index" class="col-12">
+                        <div class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3">
+                            <Divider v-if="index > 0" />
+                            <div>
+                              <h1>{{ item.name }}{{ index }}</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+      </DataView>
   </div>
 </template>
