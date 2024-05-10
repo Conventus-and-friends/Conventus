@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Contracts;
 
 namespace Conventus.Server.Models;
 
@@ -15,6 +16,7 @@ public sealed class Category : IModelValidating
     [MaxLength(DESCRIPTION_MAX_LENGTH)]
     public string? Description { get; set; }
 
+    [Pure]
     public bool IsValid()
     {
         return Name.Length <= NAME_MAX_LENGTH && Description?.Length <= DESCRIPTION_MAX_LENGTH;
