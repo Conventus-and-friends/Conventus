@@ -1,4 +1,4 @@
-import HomeView from './components/views/HomeView.vue'
+import HomeView from '@/components/views/HomeView.vue'
 import { createRouter, createMemoryHistory, createWebHistory } from 'vue-router'
 import { getLocale, loadLocaleMessages, setI18nLanguage, SUPPORT_LOCALES } from './i18n'
 import type { I18n } from 'vue-i18n'
