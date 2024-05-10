@@ -3,12 +3,13 @@ import { ref, onMounted } from "vue";
 import DataView from "primevue/dataview";
 import Divider from 'primevue/divider';
 import type { Category } from "@/models/category";
+import { getCategories } from "@/services/categoryService";
 
 
 const categories = ref<Category[]>();
 
 onMounted(async () => {
-  
+    categories.value = await getCategories();
 });
 
 
@@ -23,7 +24,8 @@ onMounted(async () => {
                         <div class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3">
                             <Divider v-if="index > 0" />
                             <div>
-                              <h1>{{ item.name }}{{ index }}</h1>
+                              <h4>{{ item.name }}</h4>
+                              <p>{{ item.description }}</p>
                             </div>
                         </div>
                     </div>
