@@ -6,7 +6,7 @@ import { useI18n } from "vue-i18n";
 import Panel from 'primevue/panel';
 
 // local imports
-import Categories from "/src/components/Categories.vue";
+import Categories from "@/components/Categories.vue";
 
 // set constants
 const { t } = useI18n()

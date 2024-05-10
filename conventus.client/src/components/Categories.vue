@@ -2,26 +2,10 @@
 import { ref, onMounted } from "vue";
 import DataView from "primevue/dataview";
 import Divider from 'primevue/divider';
+import type { Category } from "@/models/category";
 
 
-const categories = ref([
-  {
-    id: 1,
-    name: "syidusuiad"
-  },
-  {
-    id: 2,
-    name: "syiduasdasssuiad"
-  },
-  {
-    id: 2,
-    name: "syiduasdasssuiad"
-  },
-  {
-    id: 2,
-    name: "syiduasdasssuiad"
-  }
-]);
+const categories = ref<Category[]>();
 
 onMounted(async () => {
   
