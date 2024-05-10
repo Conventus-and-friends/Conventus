@@ -1,7 +1,7 @@
 import '@/assets/main.css'
 import { useDark } from '@vueuse/core'
 
-if (useDark()) {
+if (!useDark().value) {
     import('primevue/resources/themes/lara-light-teal/theme.css')
 } else {
     import('primevue/resources/themes/lara-dark-teal/theme.css')
