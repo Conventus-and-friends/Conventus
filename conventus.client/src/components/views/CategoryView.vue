@@ -5,6 +5,7 @@ import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useRouteParams } from "@vueuse/router";
 import { useI18n } from "vue-i18n";
+import Panel from 'primevue/panel';
 
 const i18n = useI18n();
 const locale = useRouteParams('locale')?.value as string ??  i18n.locale.value
@@ -28,6 +29,11 @@ onMounted(async () => {
     }
 })
 </script>
+
 <template>
-    <h1>{{ category?.name }}</h1>
+    <Panel :header="category?.name" toggleable class="top-margin">
+        <p class="m-0">
+            {{ category?.description }}
+        </p>
+    </Panel>
 </template>
