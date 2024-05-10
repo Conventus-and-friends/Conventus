@@ -1,6 +1,6 @@
 import HomeView from '@/components/views/HomeView.vue'
 import CategoryView from '@/components/views/CategoryView.vue'
-import E404View from '@/components/views/E404View.vue'
+import E404View from '@/components/views/errors/E404View.vue'
 import { createRouter, createMemoryHistory, createWebHistory } from 'vue-router'
 import { getLocale, loadLocaleMessages, setI18nLanguage, SUPPORT_LOCALES } from './i18n'
 import type { I18n } from 'vue-i18n'
