@@ -1,4 +1,5 @@
 using Conventus.Server;
+using Conventus.Server.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,9 +15,11 @@ builder.Services.AddDbContext<ApplicationDbContext>();
 
 var app = builder.Build();
 
+// ensure database is created and running
+app.MigrateDatabase();
+
 app.UseDefaultFiles();
 app.UseStaticFiles();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
