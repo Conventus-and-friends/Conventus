@@ -8,5 +8,8 @@
         "search": "Search",
         "home": "Home",
         "about": "About"
+    },
+    "errors": {
+        "404": "The requested page could not be found."
     }
 }

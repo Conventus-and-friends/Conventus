@@ -8,8 +8,8 @@ const categoryId = useRouteParams("category");
 const category = ref<Category>()
 
 onMounted(async () => {
-    if (typeof(categoryId) === "string") {
-        category.value = await getCategory(parseInt(categoryId));
+    if (typeof(categoryId.value) === "string") {
+        category.value = await getCategory(parseInt(categoryId.value));
     } else {
         console.warn("invalid category id")
     }
