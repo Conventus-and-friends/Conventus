@@ -1,6 +1,11 @@
 import '@/assets/main.css'
-import 'primevue/resources/themes/lara-light-teal/theme.css'
-// import 'primevue/resources/themes/lara-dark-teal/theme.css'
+import { useDark } from '@vueuse/core'
+
+if (useDark()) {
+    import('primevue/resources/themes/lara-light-teal/theme.css')
+} else {
+    import('primevue/resources/themes/lara-dark-teal/theme.css')
+}
 
 // vue imports
 import { createApp } from 'vue'
