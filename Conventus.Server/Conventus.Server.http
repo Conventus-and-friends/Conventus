@@ -1,1 +1,5 @@
 @ServerAddress = http://localhost:5020
+@ApiAddress = {{ServerAddress}}/api
+
+GET {{ApiAddress}}/categories
+###
