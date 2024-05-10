@@ -5,6 +5,11 @@ import Divider from 'primevue/divider';
 import type { Category } from "@/models/category";
 import { getCategories } from "@/services/categoryService";
 import { isMobile, truncateText } from "@/helpers";
+import { RouterLink } from "vue-router";
+import { useRouteParams } from "@vueuse/router";
+import { useI18n } from "vue-i18n";
+
+const i18n = useI18n();
 
 const categories = ref<Category[]>();
 
@@ -30,7 +35,9 @@ function truncateDescription(text: string): string {
                         <div class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3">
                             <Divider v-if="index > 0" />
                             <div>
-                              <h4>{{ item.name }}</h4>
+                              <RouterLink style="text-decoration: none; color: inherit;" :to="{ name: 'category', params: { locale: useRouteParams('locale')?.value ??  i18n.locale.value, category: item.id } }" >
+                                <h4>{{ item.name }}</h4>
+                              </RouterLink>
                               <p>{{ truncateDescription(item.description) }}</p>
                             </div>
                         </div>
