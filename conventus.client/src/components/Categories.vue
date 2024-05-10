@@ -14,7 +14,8 @@ const i18n = useI18n();
 const categories = ref<Category[]>();
 
 onMounted(async () => {
-    categories.value = await getCategories();
+    const values = await getCategories();
+    categories.value = values.sort((a, b) => a.name.localeCompare(b.name));
 });
 
 function truncateDescription(text: string): string {
