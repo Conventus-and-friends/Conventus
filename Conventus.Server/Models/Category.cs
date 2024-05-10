@@ -1,19 +1,24 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Contracts;
 
 namespace Conventus.Server.Models;
 
 public sealed class Category : IModelValidating
 {
+    private const int NAME_MAX_LENGTH = 30;
+    private const int DESCRIPTION_MAX_LENGTH = 200;
+
     public long Id { get; set; }
 
     [Required]
-    [MaxLength(30)]
+    [MaxLength(NAME_MAX_LENGTH)]
     public string Name { get; set; } = string.Empty;
-    [MaxLength(200)]
+    [MaxLength(DESCRIPTION_MAX_LENGTH)]
     public string? Description { get; set; }
 
+    [Pure]
     public bool IsValid()
     {
-        return Name.Length <= 30 && Description?.Length <= 200;
+        return Name.Length <= NAME_MAX_LENGTH && Description?.Length <= DESCRIPTION_MAX_LENGTH;
     }
 }
