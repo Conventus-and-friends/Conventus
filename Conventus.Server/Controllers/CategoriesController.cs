@@ -28,10 +28,15 @@ public class CategoriesController(ApplicationDbContext context)
     }
 
     [HttpPost]
-    public async Task<Category> Post([FromBody] Category category)
+    public async Task<ActionResult<Category>> Post([FromBody] Category category)
     {
+        if (!category.IsValid())
+        {
+            return BadRequest();
+        }
+
         var result = await _dbContext.Categories.AddAsync(category);
         await _dbContext.SaveChangesAsync();
-        return result.Entity;
+        return Ok(result.Entity);
     }
 }
