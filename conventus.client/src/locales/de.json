@@ -1,6 +1,8 @@
 {
     "startpage": {
-        "start": "Startseite"
+        "start": "Startseite",
+        "categorys": "Kategorien",
+        "relevant": "Relevante Posts"
     },
     "navbar": {
         "search": "Suchen",

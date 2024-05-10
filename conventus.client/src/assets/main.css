@@ -4,3 +4,30 @@
   font-weight: normal;
 }
 
+.navbar-first-item {
+    margin-right: 1.3rem;
+}
+
+.last-item {
+    margin-right: 1rem;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.flex-item {
+    flex: 1;
+}
+
+@media (max-width: 600px) {
+    .flex-container {
+        flex-direction: column;
+    }
+
+    .last-item {
+        margin-right: 0rem;
+        margin-bottom: 1rem;
+    }
+}
