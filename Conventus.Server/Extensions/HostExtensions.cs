@@ -4,7 +4,7 @@ namespace Conventus.Server.Extensions;
 
 public static class HostExtensions
 {
-    public static IHost MigrateDatabase(this IHost host)
+    public static async Task MigrateDatabaseAsync(this IHost host)
     {
         using var scope = host.Services.CreateScope();
         var services = scope.ServiceProvider;
@@ -13,14 +13,12 @@ public static class HostExtensions
         {
             var context = services.GetRequiredService<ApplicationDbContext>();
 
-            context.Database.Migrate();
+            await context.Database.MigrateAsync();
         }
         catch (Exception ex)
         {
             var logger = services.GetRequiredService<ILogger<Program>>();
             logger.LogError(ex, "An error occurred creating the DB.");
         }
-
-        return host;
     }
 }

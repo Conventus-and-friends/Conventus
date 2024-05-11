@@ -16,7 +16,7 @@ builder.Services.AddDbContext<ApplicationDbContext>();
 var app = builder.Build();
 
 // ensure database is created and running
-app.MigrateDatabase();
+await app.MigrateDatabaseAsync();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
@@ -35,4 +35,4 @@ app.MapControllers();
 
 app.MapFallbackToFile("/index.html");
 
-app.Run();
+await app.RunAsync();
