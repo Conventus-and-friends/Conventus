@@ -16,7 +16,7 @@ public sealed class CategoriesController(ApplicationDbContext context)
         return _dbContext.Categories;
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("by-id/{id}")]
     public async Task<ActionResult<Category>> Get(long id)
     {
         var category = await _dbContext.Categories.FindAsync(id);

@@ -18,7 +18,7 @@ export function getCategories(): Promise<Category[]> {
  * @return {Promise<Category | null>} A promise that resolves to the category object if found, or null if not found.
  */
 export function getCategory(id: number): Promise<Category | null> {
-    return fetch(`/api/categories/${id}`)
+    return fetch(`/api/categories/by-id/${id}`)
         .then(response => response.ok ? response.json() : null)
         .then(data =>  data as Category ?? null)
 }

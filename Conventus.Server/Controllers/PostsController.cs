@@ -16,7 +16,7 @@ public sealed class PostsController(ApplicationDbContext context)
         return _dbContext.Posts;
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("by-id/{id}")]
     public async Task<ActionResult<Post>> Get(Guid id)
     {
         var post = await _dbContext.Posts.FindAsync(id);
