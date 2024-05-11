@@ -17,12 +17,13 @@ public sealed class Post : IModelValidating
     [MaxLength(CONTENT_MAX_LENGTH)]
     public string? Content { get; set; }
 
+    [Required]
     public long CategoryId { get; set; }
     public Category Category { get; set; } = null!;
 
     [Pure]
     public bool IsValid()
     {
-        return Title.Length <= TITLE_MAX_LENGTH && Content?.Length <= CONTENT_MAX_LENGTH;
+        return Title.Length <= TITLE_MAX_LENGTH && Content?.Length <= CONTENT_MAX_LENGTH && CategoryId != 0;
     }
 }

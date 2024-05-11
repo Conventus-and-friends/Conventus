@@ -7,6 +7,7 @@ namespace Conventus.Server;
 public sealed class ApplicationDbContext : DbContext
 {
     public DbSet<Category> Categories { get; set; }
+    public DbSet<Post> Posts { get; set; }
 
     public string DbPath { get; }
 

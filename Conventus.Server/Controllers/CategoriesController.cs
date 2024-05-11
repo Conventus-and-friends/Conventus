@@ -5,7 +5,7 @@ namespace Conventus.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CategoriesController(ApplicationDbContext context)
+public sealed class CategoriesController(ApplicationDbContext context)
     : ControllerBase
 {
     private readonly ApplicationDbContext _dbContext = context;
