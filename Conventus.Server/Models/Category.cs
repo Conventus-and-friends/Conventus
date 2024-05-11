@@ -16,6 +16,8 @@ public sealed class Category : IModelValidating
     [MaxLength(DESCRIPTION_MAX_LENGTH)]
     public string? Description { get; set; }
 
+    public ICollection<Post> Posts { get; set; } = [];
+
     [Pure]
     public bool IsValid()
     {

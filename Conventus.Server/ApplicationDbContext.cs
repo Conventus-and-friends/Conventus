@@ -1,3 +1,4 @@
+using Conventus.Server.Extensions;
 using Conventus.Server.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,5 +28,11 @@ public sealed class ApplicationDbContext : DbContext
         // TODO: more db options
         optionsBuilder.UseSqlite($"Data Source={DbPath}");
         base.OnConfiguring(optionsBuilder);
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.MapPostCategoryRelations();
+        base.OnModelCreating(modelBuilder);
     }
 }
