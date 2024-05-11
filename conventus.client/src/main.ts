@@ -9,7 +9,7 @@ if (!useDark().value) {
 
 // vue imports
 import { createApp } from 'vue'
-import App from './App.vue'
+import App from '@/App.vue'
 
 // primevue and i18n imports
 import PrimeVue from 'primevue/config'
