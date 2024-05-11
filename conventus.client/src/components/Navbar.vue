@@ -11,13 +11,15 @@ import { isMobile } from "@/helpers";
 
 const i18n = useI18n()
 const { t } = i18n
+const locale = useRouteParams('locale')?.value ??  i18n.locale.value
 
 const homeText = computed(() =>  t('navbar.home'))
 const aboutText = computed(() =>  t('navbar.about'))
 
 const items = ref([
     {
-        label: homeText
+        label: homeText,
+        route: { name: 'home', params: { locale: locale} }
     },
     {
         label: aboutText
@@ -29,13 +31,22 @@ const items = ref([
     <div class="card">
         <Menubar :model="items">
             <template #start>
-                <RouterLink :to="{ name: 'home', params: { locale: useRouteParams('locale')?.value ??  i18n.locale.value} }">
+                <RouterLink :to="{ name: 'home', params: { locale: locale} }">
                     <img v-if="!isMobile()" height="40" src="/src/assets/Conventus-Text.svg" class="h-2rem navbar-first-item">
                     <img v-else height="40" src="/src/assets/Conventus.svg" class="h-2rem navbar-first-item">
                 </RouterLink>
             </template>
             <template #item="{ item, props, hasSubmenu, root }">
-                <a v-ripple class="flex align-items-center" v-bind="props.action">
+                <RouterLink v-if="item.route":to="item.route" style="text-decoration: none; color: inherit;">
+                    <a v-ripple class="flex align-items-center" v-bind="props.action">
+                        <span :class="item.icon" />
+                        <span class="ml-2">{{ item.label }}</span>
+                        <Badge v-if="item.badge" :class="{ 'ml-auto': !root, 'ml-2': root }" :value="item.badge" />
+                        <span v-if="item.shortcut" class="ml-auto border-1 surface-border border-round surface-100 text-xs p-1">{{ item.shortcut }}</span>
+                        <i v-if="hasSubmenu" :class="['pi pi-angle-down', { 'pi-angle-down ml-2': root, 'pi-angle-right ml-auto': !root }]"></i>
+                    </a>
+                </RouterLink>
+                <a v-else v-ripple class="flex align-items-center" v-bind="props.action">
                     <span :class="item.icon" />
                     <span class="ml-2">{{ item.label }}</span>
                     <Badge v-if="item.badge" :class="{ 'ml-auto': !root, 'ml-2': root }" :value="item.badge" />
