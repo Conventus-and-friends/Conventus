@@ -11,5 +11,9 @@
     },
     "errors": {
         "404": "The requested page could not be found."
+    },
+    "category": {
+        "posts": "Posts",
+        "actions": "Actions"
     }
 }
