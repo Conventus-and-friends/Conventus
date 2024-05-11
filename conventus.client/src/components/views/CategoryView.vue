@@ -28,12 +28,38 @@ onMounted(async () => {
         console.warn("invalid category id")
     }
 })
+
+// set constants
+const { t } = useI18n()
 </script>
 
 <template>
-    <Panel :header="category?.name" toggleable class="top-margin">
+    <!-- Information (toggable) panel -->
+    <Panel :header="category?.name" toggleable class="top-margin-2">
         <p class="m-0">
             {{ category?.description }}
         </p>
     </Panel>
+
+    <!-- Post panel -->
+    <div class="flex-container-overflow">
+        <Panel :header="t('category.posts')" class="top-margin flex-item last-item">
+            <p class="m-0">
+                Here are all posts
+            </p>
+        </Panel>
+
+        <Panel :header="t('category.actions')" class="top-margin flex-item">
+            <p class="m-0">
+                - action 1
+            </p>
+            <p>
+                - action 2
+            </p>
+            <p>
+                - action 3
+            </p>
+        </Panel>
+    </div>
+
 </template>
