@@ -9,7 +9,10 @@ import Panel from 'primevue/panel';
 import Dialog from 'primevue/dialog';
 import Paginator from 'primevue/paginator';
 import Button from 'primevue/button';
+import DataView from "primevue/dataview";
 import { getPostsCount, getPosts } from "@/services/postService";
+import { asyncComputed } from "@vueuse/core";
+import { isMobile, truncateText } from "@/helpers";
 
 const i18n = useI18n();
 const locale = useRouteParams('locale')?.value as string ??  i18n.locale.value
@@ -17,7 +20,8 @@ const locale = useRouteParams('locale')?.value as string ??  i18n.locale.value
 // router stuff
 const router = useRouter();
 
-const categoryId = useRouteParams("category");
+const categoryIdRaw = useRouteParams("category");
+const categoryId = ref<number | null>(null);
 
 const category = ref<Category>();
 const visible = ref(false);
@@ -28,12 +32,13 @@ const currentPage = ref(0);
 const itemsPerPage = ref(10);
 
 onMounted(async () => {
-    if (typeof(categoryId.value) === "string") {
-        const id = parseInt(categoryId.value)
+    if (typeof(categoryIdRaw.value) === "string") {
+        const id = parseInt(categoryIdRaw.value)
         const value = await getCategory(id);
         if (value) {
             category.value = value
             postCount.value = await getPostsCount(id)
+            categoryId.value = id
         } else {
             router.push({ name: "404", params: { locale:  locale} })
         }
@@ -42,8 +47,26 @@ onMounted(async () => {
     }
 })
 
+const posts = asyncComputed(
+    async () => {
+        if (categoryId.value) {
+            return await getPosts(categoryId.value, currentPage.value, itemsPerPage.value)
+        }
+        return null;
+    },
+    null
+)
+
 // set constants
 const { t } = useI18n()
+
+// functions
+function truncateContent(text: string): string {
+    if (isMobile()) {
+      return truncateText(text, 100);
+    }
+    return truncateText(text, 250);
+}
 </script>
 
 <template>
@@ -62,9 +85,24 @@ const { t } = useI18n()
     <!-- Post panel -->
     <div class="flex-container-overflow">
         <Panel :header="t('category.posts')" class="flex-item last-item">
-            <p class="m-0">
-                Here are all posts
-            </p>
+            <DataView v-if="posts" :value="posts" dataKey="id">
+                <template #list="slotProps">
+                    <div class="grid grid-nogutter">
+                        <div v-for="(item, index) in slotProps.items" :key="index" class="col-12">
+                            <div class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3">
+                                <Divider v-if="index > 0" />
+                                <div>
+                                    <Panel :header="item.title">
+                                        <p v-if="item.content" class="m-0">
+                                            {{ truncateContent(item.content) }}
+                                        </p>
+                                    </Panel>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </DataView>
             <Paginator v-model:first="currentPage" v-model:rows="itemsPerPage" :totalRecords="postCount" :rowsPerPageOptions="[10, 20, 30, 40, 50]"></Paginator>
         </Panel>
 
