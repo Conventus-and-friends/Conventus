@@ -18,9 +18,6 @@
         "topic": "Thema",
         "start-discuss": "Neue Diskussion"
     },
-    "post": {
-        "empty": "Dieser Post enthält keine weitere Beschreibung."
-    },
     "util": {
         "loading": "Laden...",
         "error": "Fehler",
@@ -28,6 +25,6 @@
         "post": "Posten",
         "cancel": "Abbrechen",
         "enter-content": "Inhalt eingeben...",
-        "title": "Titel: "
+        "title": "Titel"
     }
 }

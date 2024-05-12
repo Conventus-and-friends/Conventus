@@ -102,10 +102,7 @@ const sortingOptions = ref([
 
     <!-- Create new post dialog -->
     <Dialog v-model:visible="visibleCreator" modal :header="t('category.start-discuss')" :style="{ width: '55rem' }">
-        <div>
-            <b for="title">{{ t('util.title') }}</b>
-            <InputText v-model="title" :placeholder="t('util.enter-content')" />
-        </div>
+        <InputText v-model="title" :placeholder="t('util.title')" />
         <Editor v-model="value" editorStyle="height: 400px" class="top-margin">
             <template v-slot:toolbar>
                 <span class="ql-formats">
@@ -135,9 +132,6 @@ const sortingOptions = ref([
                                         <h3>{{ item.title }}</h3>
                                         <p v-if="item.content" class="m-0">
                                             {{ truncateContent(item.content) }}
-                                        </p>
-                                        <p v-else>
-                                            {{ t('post.empty') }}
                                         </p>
                                     </div>
                                 </RouterLink>

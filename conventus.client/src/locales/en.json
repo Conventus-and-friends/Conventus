@@ -18,9 +18,6 @@
         "topic": "Topic",
         "start-discuss": "Start discussion"
     },
-    "post": {
-        "empty": "This post contains no further description."
-    },
     "util": {
         "loading": "Loading...",
         "error": "Error",
@@ -28,6 +25,6 @@
         "post": "Post",
         "cancel": "Cancel",
         "enter-content": "Enter content...",
-        "title": "Title: "
+        "title": "Title"
     }
 }
