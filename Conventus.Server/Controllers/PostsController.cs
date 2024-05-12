@@ -1,6 +1,7 @@
 using Conventus.Server.Models.DTO;
 using Conventus.Server.Models.Mappers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Conventus.Server.Controllers;
 
@@ -51,7 +52,15 @@ public sealed class PostsController(ApplicationDbContext context)
         }
 
         var result = await _dbContext.Posts.AddAsync(post.ToEntity());
-        await _dbContext.SaveChangesAsync();
+
+        try
+        {
+            await _dbContext.SaveChangesAsync();
+        }
+        catch (DbUpdateException)
+        {
+            return BadRequest();
+        }
 
         post.Id = result.Entity.Id;
 
