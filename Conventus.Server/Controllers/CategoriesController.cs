@@ -1,4 +1,5 @@
-using Conventus.Server.Models.Entities;
+using Conventus.Server.Models.DTO;
+using Conventus.Server.Models.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Conventus.Server.Controllers;
@@ -11,32 +12,38 @@ public sealed class CategoriesController(ApplicationDbContext context)
     private readonly ApplicationDbContext _dbContext = context;
 
     [HttpGet]
-    public IEnumerable<Category> Get()
+    public IEnumerable<CategoryDto> Get()
     {
-        return _dbContext.Categories;
+        foreach (var category in _dbContext.Categories)
+        {
+            yield return category.ToDto();
+        }
     }
 
     [HttpGet("by-id/{id}")]
-    public async Task<ActionResult<Category>> Get(long id)
+    public async Task<ActionResult<CategoryDto>> Get(long id)
     {
         var category = await _dbContext.Categories.FindAsync(id);
         if (category is null)
         {
             return NotFound();
         }
-        return Ok(category);
+        return Ok(category.ToDto());
     }
 
     [HttpPost]
-    public async Task<ActionResult<Category>> Post([FromBody] Category category)
+    public async Task<ActionResult<CategoryDto>> Post([FromBody] CategoryDto category)
     {
         if (!category.IsValid())
         {
             return BadRequest();
         }
 
-        var result = await _dbContext.Categories.AddAsync(category);
+        var result = await _dbContext.Categories.AddAsync(category.ToEntity());
         await _dbContext.SaveChangesAsync();
-        return Ok(result.Entity);
+
+        category.Id = result.Entity.Id;
+
+        return Ok(category);
     }
 }

@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Contracts;
 using static Conventus.Server.Models.Entities.Category;
 
-
 namespace Conventus.Server.Models.DTO;
 
 public sealed class CategoryDto : IModelValidating
