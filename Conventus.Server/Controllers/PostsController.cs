@@ -71,8 +71,7 @@ public sealed class PostsController(ApplicationDbContext context)
         }
 
         var posts = _dbContext.Posts
-            .Where(x => x.CategoryId == categoryId)
-            .Skip((pager.Page - 1) * pager.PageLength).Take(pager.PageLength);
+            .Where(x => x.CategoryId == categoryId);
 
         return Ok((int)Math.Ceiling(await posts.CountAsync() / (double)pager.PageLength));
     }
