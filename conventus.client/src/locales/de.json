@@ -25,6 +25,9 @@
         "post": "Posten",
         "cancel": "Abbrechen",
         "enter-content": "Inhalt eingeben...",
-        "title": "Titel"
+        "title": "Titel",
+        "underline": "Unterstrichen",
+        "bold": "Fett",
+        "italic": "Kursiv"
     }
 }

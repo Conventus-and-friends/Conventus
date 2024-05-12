@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { ref, defineProps } from 'vue';
+import { ref, defineProps, computed } from 'vue';
 
 import Button from 'primevue/button';
 import Editor from 'primevue/editor';
@@ -16,6 +16,10 @@ const props = defineProps({
 
 const content = ref('');
 const title = ref('');
+
+const underlineText = computed(() =>  t('util.underline'))
+const boldText = computed(() =>  t('util.bold'))
+const italicText = computed(() =>  t('util.italic'))
 </script>
 <template>
     <div>
@@ -23,9 +27,9 @@ const title = ref('');
         <Editor v-model="content" editorStyle="height: 400px" class="top-margin">
             <template v-slot:toolbar>
                 <span class="ql-formats">
-                    <button v-tooltip.bottom="'Bold'" class="ql-bold"></button>
-                    <button v-tooltip.bottom="'Italic'" class="ql-italic"></button>
-                    <button v-tooltip.bottom="'Underline'" class="ql-underline"></button>
+                    <Button v-tooltip.top="boldText" class="ql-bold"></Button>
+                    <Button v-tooltip.top="italicText" class="ql-italic"></Button>
+                    <Button v-tooltip.top="underlineText" class="ql-underline"></Button>
                 </span>
             </template>
         </Editor>
@@ -34,4 +38,4 @@ const title = ref('');
             <Button type="button" :label="t('util.post')" @click="$emit('posted')" class="top-margin"></Button>
         </div>
     </div>
-</template>
+</template>, computed

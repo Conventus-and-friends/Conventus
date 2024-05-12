@@ -25,6 +25,9 @@
         "post": "Post",
         "cancel": "Cancel",
         "enter-content": "Enter content...",
-        "title": "Title"
+        "title": "Title",
+        "underline": "Underline",
+        "bold": "Bold",
+        "italic": "Italic"
     }
 }
