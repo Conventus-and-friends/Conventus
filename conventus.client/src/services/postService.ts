@@ -18,16 +18,14 @@ export function getPosts(category: number, page: number, length: number): Promis
 }
 
 /**
- * Retrieves the total number of pages for posts based on the specified category and length.
+ * Retrieves the total number of posts based on the specified category.
  *
  * @param {number} category - The category ID to filter posts.
  * @param {number} length - The length of posts per page.
  * @return {Promise<number>} A promise that resolves to the total number of pages.
  */
-export function getPostsPageCount(category: number, length: number): Promise<number> {
-    return fetch(`/api/posts/by-category/${category}?` + new URLSearchParams({
-        length: length.toString()
-    }))
+export function getPostsCount(category: number): Promise<number> {
+    return fetch(`/api/posts/by-category/${category}/count`)
         .then(response => response.json())
         .then(json => json as number)
 }
