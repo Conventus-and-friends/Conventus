@@ -1,5 +1,6 @@
 using Conventus.Server;
 using Conventus.Server.Extensions;
+using Ganss.Xss;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,9 @@ builder.Services.AddSwaggerGen();
 
 // set up database
 builder.Services.AddDbContext<ApplicationDbContext>();
+
+// add html sanitizer
+builder.Services.AddScoped<HtmlSanitizer>();
 
 var app = builder.Build();
 

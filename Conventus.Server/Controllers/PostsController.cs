@@ -1,6 +1,7 @@
 using Conventus.Server.Models;
 using Conventus.Server.Models.DTO;
 using Conventus.Server.Models.Mappers;
+using Ganss.Xss;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,10 +9,11 @@ namespace Conventus.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public sealed class PostsController(ApplicationDbContext context)
+public sealed class PostsController(ApplicationDbContext context, HtmlSanitizer sanitizer)
     : ControllerBase
 {
     private readonly ApplicationDbContext _dbContext = context;
+    private readonly HtmlSanitizer _htmlSanitizer = sanitizer;
 
     [HttpGet]
     public ActionResult<IEnumerable<PostDto>> Get([FromQuery] Pager pager)
@@ -73,6 +75,12 @@ public sealed class PostsController(ApplicationDbContext context)
         if (!post.IsValid())
         {
             return BadRequest();
+        }
+
+        post.Title = _htmlSanitizer.Sanitize(post.Title);
+        if (post.Content is not null)
+        {
+            post.Content = _htmlSanitizer.Sanitize(post.Content);
         }
 
         var result = await _dbContext.Posts.AddAsync(post.ToEntity());
