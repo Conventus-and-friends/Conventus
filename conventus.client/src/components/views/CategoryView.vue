@@ -38,7 +38,7 @@ const { t } = useI18n()
 
 <template>
     <!-- Information -->
-    <div class="margin-infobtn top-margin-2">
+    <div class="margin-infobtn top-margin">
         <h2>{{ category?.name }}</h2>
         <Button label="i" @click="visible = true" />
     </div>
