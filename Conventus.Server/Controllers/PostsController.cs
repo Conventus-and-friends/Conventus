@@ -35,18 +35,8 @@ public sealed class PostsController(ApplicationDbContext context)
         return Ok(post.ToDto());
     }
 
-    [HttpGet("page-count")]
-    public int GetPageCount([FromQuery] Pager pager)
-    {
-        if (!pager.IsValid())
-        {
-            return 0;
-        }
-        return (int)Math.Ceiling(_dbContext.Posts.Count() / (double)pager.PageLength);
-    }
-
     [HttpGet("by-category/{categoryId}")]
-    public async Task<ActionResult<IEnumerable<PostDto>>> GetByCategory(long categoryId, [FromQuery] Pager pager)
+    public async Task<ActionResult<IEnumerable<PostDto>>> Get(long categoryId, [FromQuery] Pager pager)
     {
         if (!pager.IsValid())
         {
@@ -59,6 +49,32 @@ public sealed class PostsController(ApplicationDbContext context)
             return NotFound();
         }
         return Ok(category.Posts.Select(x => x.ToDto()).Skip((pager.Page - 1) * pager.PageLength).Take(pager.PageLength));
+    }
+
+    [HttpGet("page-count")]
+    public ActionResult<int> GetPageCount([FromQuery] Pager pager)
+    {
+        if (!pager.IsValid())
+        {
+            return BadRequest();
+        }
+        return Ok((int)Math.Ceiling(_dbContext.Posts.Count() / (double)pager.PageLength));
+    }
+
+    [HttpGet("by-category/{categoryId}/page-count")]
+    public async Task<ActionResult<int>> GetPageCount(long categoryId, [FromQuery] Pager pager)
+    {
+        if (!pager.IsValid())
+        {
+            return BadRequest();
+        }
+
+        var category = await _dbContext.Categories.FindAsync(categoryId);
+        if (category is null)
+        {
+            return NotFound();
+        }
+        return Ok((int)Math.Ceiling(category.Posts.Count / (double)pager.PageLength));
     }
 
     [HttpPost]
