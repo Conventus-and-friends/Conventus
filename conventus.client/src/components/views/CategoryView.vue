@@ -9,10 +9,12 @@ import Panel from 'primevue/panel';
 import Dialog from 'primevue/dialog';
 import Paginator from 'primevue/paginator';
 import Button from 'primevue/button';
+import Divider from "primevue/divider";
 import DataView from "primevue/dataview";
 import { getPostsCount, getPosts } from "@/services/postService";
 import { asyncComputed } from "@vueuse/core";
 import { isMobile, truncateText } from "@/helpers";
+import { RouterLink } from "vue-router";
 
 const i18n = useI18n();
 const locale = useRouteParams('locale')?.value as string ??  i18n.locale.value
@@ -91,12 +93,17 @@ function truncateContent(text: string): string {
                         <div v-for="(item, index) in slotProps.items" :key="index" class="col-12">
                             <div class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3">
                                 <Divider v-if="index > 0" />
-                                <div class="hoverbox">
-                                    <h3>{{ item.title }}</h3>
-                                    <p v-if="item.content" class="m-0">
-                                        {{ truncateContent(item.content) }}
-                                    </p>
-                                </div>
+                                <RouterLink style="text-decoration: none; color: inherit;" :to="{ name: '404', params: { locale:  locale} }">
+                                    <div class="hoverbox">
+                                        <h3>{{ item.title }}</h3>
+                                        <p v-if="item.content" class="m-0">
+                                            {{ truncateContent(item.content) }}
+                                        </p>
+                                        <p v-else>
+                                            {{ t('post.empty') }}
+                                        </p>
+                                    </div>
+                                </RouterLink>
                             </div>
                         </div>
                     </div>

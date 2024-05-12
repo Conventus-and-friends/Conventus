@@ -16,5 +16,8 @@
         "posts": "Beiträge",
         "actions": "Aktionen",
         "topic": "Thema"
+    },
+    "post": {
+        "empty": "Dieser Post enthält keine weitere Beschreibung."
     }
 }

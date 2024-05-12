@@ -16,5 +16,8 @@
         "posts": "Posts",
         "actions": "Actions",
         "topic": "Topic"
+    },
+    "post": {
+        "empty": "This post contains no further description."
     }
 }
