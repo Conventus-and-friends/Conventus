@@ -15,9 +15,19 @@
     "category": {
         "posts": "Beiträge",
         "actions": "Aktionen",
-        "topic": "Thema"
+        "topic": "Thema",
+        "start-discuss": "Neue Diskussion"
     },
     "post": {
         "empty": "Dieser Post enthält keine weitere Beschreibung."
+    },
+    "util": {
+        "loading": "Laden...",
+        "error": "Fehler",
+        "success": "Erfolgreich",
+        "post": "Posten",
+        "cancel": "Abbrechen",
+        "enter-content": "Inhalt eingeben...",
+        "title": "Titel: "
     }
 }

@@ -15,9 +15,19 @@
     "category": {
         "posts": "Posts",
         "actions": "Actions",
-        "topic": "Topic"
+        "topic": "Topic",
+        "start-discuss": "Start discussion"
     },
     "post": {
         "empty": "This post contains no further description."
+    },
+    "util": {
+        "loading": "Loading...",
+        "error": "Error",
+        "success": "Successfully",
+        "post": "Post",
+        "cancel": "Cancel",
+        "enter-content": "Enter content...",
+        "title": "Title: "
     }
 }
