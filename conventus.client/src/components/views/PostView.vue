@@ -3,18 +3,65 @@ import Card from 'primevue/card';
 import Panel from 'primevue/panel';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n()
+import type { Category } from '@/models/category';
+import type { Post } from '@/models/post';
+import { getPost } from '@/services/postService';
+import { useRouteParams } from '@vueuse/router';
+import { onMounted, ref } from 'vue';
+import { getCategory } from '@/services/categoryService';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const i18n = useI18n();
+const locale = useRouteParams('locale')?.value as string ??  i18n.locale.value
+
+const categoryIdRaw = useRouteParams("category");
+const categoryId = ref<number | null>(null);
+const category = ref<Category>();
+
+const postIdRaw = useRouteParams("post");
+const postId = ref<string | null>(null);
+const post = ref<Post>();
+
+onMounted(async () => {
+    if (typeof(categoryIdRaw.value) === "string") {
+        const id = parseInt(categoryIdRaw.value)
+        const value = await getCategory(id);
+        if (value) {
+            category.value = value
+            categoryId.value = id
+        } else {
+            router.push({ name: "404", params: { locale:  locale} })
+        }
+    } else {
+        console.warn("invalid category id")
+    }
+
+    if (typeof(postIdRaw.value) === "string") {
+        const value = await getPost(postIdRaw.value);
+        if (value) {
+            post.value = value
+            postId.value = postIdRaw.value
+        } else {
+            router.push({ name: "404", params: { locale:  locale} })
+        }
+    } else {
+        console.warn("invalid post id")
+    }
+})
+
+const { t } = i18n
 </script>
 
 <template>
     <div class="flex-container-overflow top-margin-2">
-        <Card class="flex-item last-item">
-            <template #title>Simple Card</template>
+        <Card v-if="post" class="flex-item last-item">
+            <template #title>{{ post.title }}</template>
             <template #content>
-                <p class="m-0">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
-                    quas!
-                </p>
+                <div v-if="post.content" class="m-0">
+                    {{ post.content }}
+                </div>
             </template>
         </Card>
 
