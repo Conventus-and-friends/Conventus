@@ -1,3 +1,4 @@
+using Conventus.Server.Models;
 using Conventus.Server.Models.DTO;
 using Conventus.Server.Models.Mappers;
 using Microsoft.AspNetCore.Mvc;
@@ -13,12 +14,14 @@ public sealed class PostsController(ApplicationDbContext context)
     private readonly ApplicationDbContext _dbContext = context;
 
     [HttpGet]
-    public IEnumerable<PostDto> Get()
+    public ActionResult<IEnumerable<PostDto>> Get([FromQuery] Pager pager)
     {
-        foreach (var post in _dbContext.Posts)
+        if (!pager.IsValid())
         {
-            yield return post.ToDto();
+            return BadRequest();
         }
+
+        return Ok(_dbContext.Posts.Select(x => x.ToDto()).Skip((pager.Page - 1) * pager.PageLength).Take(pager.PageLength));
     }
 
     [HttpGet("by-id/{id}")]
@@ -33,14 +36,19 @@ public sealed class PostsController(ApplicationDbContext context)
     }
 
     [HttpGet("by-category/{categoryId}")]
-    public async Task<ActionResult<IEnumerable<PostDto>>> GetByCategory(long categoryId)
+    public async Task<ActionResult<IEnumerable<PostDto>>> GetByCategory(long categoryId, [FromQuery] Pager pager)
     {
+        if (!pager.IsValid())
+        {
+            return BadRequest();
+        }
+
         var category = await _dbContext.Categories.FindAsync(categoryId);
         if (category is null)
         {
             return NotFound();
         }
-        return Ok(category.Posts.Select(x => x.ToDto()));
+        return Ok(category.Posts.Select(x => x.ToDto()).Skip((pager.Page - 1) * pager.PageLength).Take(pager.PageLength));
     }
 
     [HttpPost]
