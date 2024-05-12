@@ -28,7 +28,7 @@ const visible = ref(false);
 const postCount = ref(0);
 
 // paginator values
-const currentPage = ref(0);
+const currentPage = ref(1);
 const itemsPerPage = ref(10);
 
 onMounted(async () => {
@@ -91,19 +91,18 @@ function truncateContent(text: string): string {
                         <div v-for="(item, index) in slotProps.items" :key="index" class="col-12">
                             <div class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3">
                                 <Divider v-if="index > 0" />
-                                <div>
-                                    <Panel :header="item.title">
-                                        <p v-if="item.content" class="m-0">
-                                            {{ truncateContent(item.content) }}
-                                        </p>
-                                    </Panel>
+                                <div class="hoverbox">
+                                    <h3>{{ item.title }}</h3>
+                                    <p v-if="item.content" class="m-0">
+                                        {{ truncateContent(item.content) }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </template>
             </DataView>
-            <Paginator v-model:first="currentPage" v-model:rows="itemsPerPage" :totalRecords="postCount" :rowsPerPageOptions="[10, 20, 30, 40, 50]"></Paginator>
+            <Paginator v-model:first="currentPage" v-model:rows="itemsPerPage" :totalRecords="postCount" :rowsPerPageOptions="[10, 20, 30, 40, 50]" class="top-margin-2"></Paginator>
         </Panel>
 
         <Panel :header="t('category.actions')" class="flex-item">

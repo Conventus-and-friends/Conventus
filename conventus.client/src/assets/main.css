@@ -76,3 +76,11 @@
     border-radius: 50%;
     padding: 0;
 }
+
+.hoverbox {
+    transition: opacity 0.4s;
+}
+
+.hoverbox:hover {
+    opacity: 0.65;
+}
