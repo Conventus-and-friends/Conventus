@@ -99,7 +99,7 @@ const sortingOptions = ref([
 
     <!-- Create new post dialog -->
     <Dialog v-model:visible="postCreatorVisible" maximizable modal :header="t('category.new-post')" :style="{ width: '55rem' }">
-        <NewPost @cancelled="postCreatorVisible = false" @posted="postCreatorVisible = false"></NewPost>
+        <NewPost v-if="category" :category="category" @cancelled="postCreatorVisible = false" @posted="postCreatorVisible = false"></NewPost>
     </Dialog>
 
     <!-- Post panel -->

@@ -28,4 +28,11 @@ app.use(i18n)
 // Homeview and router
 const router = setupRouter(i18n)
 app.use(router)
+
+// tooltips
+import FloatingVue from 'floating-vue'
+import 'floating-vue/dist/style.css'
+
+app.use(FloatingVue)
+
 app.mount('#app')
