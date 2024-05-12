@@ -16,7 +16,7 @@
         "posts": "Beiträge",
         "actions": "Aktionen",
         "topic": "Thema",
-        "start-discuss": "Neue Diskussion"
+        "new-post": "Neuer Post"
     },
     "util": {
         "loading": "Laden...",

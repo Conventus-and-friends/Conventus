@@ -12,8 +12,7 @@ import Button from 'primevue/button';
 import Divider from "primevue/divider";
 import DataView from "primevue/dataview";
 import Dropdown from 'primevue/dropdown';
-import Editor from 'primevue/editor';
-import InputText from "primevue/inputtext";
+import NewPost from "@/components/NewPost.vue";
 import { getPostsCount, getPosts } from "@/services/postService";
 import { asyncComputed } from "@vueuse/core";
 import { isMobile, truncateText } from "@/helpers";
@@ -29,11 +28,9 @@ const categoryIdRaw = useRouteParams("category");
 const categoryId = ref<number | null>(null);
 
 const category = ref<Category>();
-const visible = ref(false);
-const visibleCreator = ref(false);
+const informationVisible = ref(false);
+const postCreatorVisible = ref(false);
 const postCount = ref(0);
-const value = ref('');
-const title = ref('');
 
 // paginator values
 const currentPage = ref(1);
@@ -90,32 +87,19 @@ const sortingOptions = ref([
     <!-- Information -->
     <div class="margin-infobtn top-margin">
         <h2>{{ category?.name }}</h2>
-        <Button label="i" @click="visible = true" />
+        <Button label="i" @click="informationVisible = true" />
     </div>
 
     <!-- Info Popup -->
-    <Dialog v-model:visible="visible" maximizable modal :header="category?.name" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+    <Dialog v-model:visible="informationVisible" modal :header="category?.name" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
         <p class="m-0">
             {{ category?.description }}
         </p>
     </Dialog>
 
     <!-- Create new post dialog -->
-    <Dialog v-model:visible="visibleCreator" modal :header="t('category.start-discuss')" :style="{ width: '55rem' }">
-        <InputText v-model="title" :placeholder="t('util.title')" />
-        <Editor v-model="value" editorStyle="height: 400px" class="top-margin">
-            <template v-slot:toolbar>
-                <span class="ql-formats">
-                    <button v-tooltip.bottom="'Bold'" class="ql-bold"></button>
-                    <button v-tooltip.bottom="'Italic'" class="ql-italic"></button>
-                    <button v-tooltip.bottom="'Underline'" class="ql-underline"></button>
-                </span>
-            </template>
-        </Editor>
-        <div class="flex justify-content-end gap-2">
-            <Button type="button" :label="t('util.cancel')" severity="secondary" @click="visibleCreator = false" class="top-margin last-item"></Button>
-            <Button type="button" :label="t('util.post')" @click="visibleCreator = false" class="top-margin"></Button>
-        </div>
+    <Dialog v-model:visible="postCreatorVisible" maximizable modal :header="t('category.new-post')" :style="{ width: '55rem' }">
+        <NewPost @cancelled="postCreatorVisible = false" @posted="postCreatorVisible = false"></NewPost>
     </Dialog>
 
     <!-- Post panel -->
@@ -144,7 +128,7 @@ const sortingOptions = ref([
         </Panel>
 
         <Panel :header="t('category.actions')" class="flex-item">
-            <Button :label="t('category.start-discuss')" @click="visibleCreator = true" />
+            <Button :label="t('category.new-post')" @click="postCreatorVisible = true" />
             <div class="top-margin">
                 <Dropdown v-model="selectedSorting" :options="sortingOptions" optionLabel="name" placeholder="Sort" class="w-full md:w-14rem" />
             </div>

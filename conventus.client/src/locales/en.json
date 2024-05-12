@@ -16,7 +16,7 @@
         "posts": "Posts",
         "actions": "Actions",
         "topic": "Topic",
-        "start-discuss": "Start discussion"
+        "new-post": "Create post"
     },
     "util": {
         "loading": "Loading...",
