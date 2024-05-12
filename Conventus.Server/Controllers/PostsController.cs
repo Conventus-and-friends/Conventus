@@ -53,13 +53,13 @@ public sealed class PostsController(ApplicationDbContext context)
     }
 
     [HttpGet("page-count")]
-    public ActionResult<int> GetPageCount([FromQuery] Pager pager)
+    public async Task<ActionResult<int>> GetPageCount([FromQuery] Pager pager)
     {
         if (!pager.IsValid())
         {
             return BadRequest();
         }
-        return Ok((int)Math.Ceiling(_dbContext.Posts.Count() / (double)pager.PageLength));
+        return Ok((int)Math.Ceiling(await _dbContext.Posts.CountAsync() / (double)pager.PageLength));
     }
 
     [HttpGet("by-category/{categoryId}/page-count")]
@@ -70,12 +70,11 @@ public sealed class PostsController(ApplicationDbContext context)
             return BadRequest();
         }
 
-        var category = await _dbContext.Categories.FindAsync(categoryId);
-        if (category is null)
-        {
-            return NotFound();
-        }
-        return Ok((int)Math.Ceiling(category.Posts.Count / (double)pager.PageLength));
+        var posts = _dbContext.Posts
+            .Where(x => x.CategoryId == categoryId)
+            .Skip((pager.Page - 1) * pager.PageLength).Take(pager.PageLength);
+
+        return Ok((int)Math.Ceiling(await posts.CountAsync() / (double)pager.PageLength));
     }
 
     [HttpPost]
