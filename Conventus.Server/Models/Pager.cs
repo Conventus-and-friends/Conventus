@@ -1,3 +1,5 @@
+using System.Diagnostics.Contracts;
+
 namespace Conventus.Server.Models;
 
 public sealed class Pager : IModelValidating
@@ -12,6 +14,7 @@ public sealed class Pager : IModelValidating
         set => _length = (value > MAX_PAGE_SIZE) ? MAX_PAGE_SIZE : value;
     }
 
+    [Pure]
     public bool IsValid()
     {
         return Page > 0 && Length > 0;
