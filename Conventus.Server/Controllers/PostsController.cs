@@ -38,7 +38,7 @@ public sealed class PostsController(ApplicationDbContext context)
     }
 
     [HttpGet("by-category/{categoryId}")]
-    public async Task<ActionResult<IEnumerable<PostDto>>> Get(long categoryId, [FromQuery] Pager pager)
+    public ActionResult<IEnumerable<PostDto>> Get(long categoryId, [FromQuery] Pager pager)
     {
         if (!pager.IsValid())
         {
