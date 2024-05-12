@@ -9,13 +9,10 @@ import Panel from 'primevue/panel';
 import Dialog from 'primevue/dialog';
 import Paginator from 'primevue/paginator';
 import Button from 'primevue/button';
-import { getPostsPageCount, getPosts } from "@/services/postService";
+import { getPostsCount, getPosts } from "@/services/postService";
 
 const i18n = useI18n();
 const locale = useRouteParams('locale')?.value as string ??  i18n.locale.value
-
-// consts for api requests of categories and posts
-const lengthPage = 10;
 
 // router stuff
 const router = useRouter();
@@ -26,13 +23,17 @@ const category = ref<Category>();
 const visible = ref(false);
 const postCount = ref(0);
 
+// paginator values
+const currentPage = ref(0);
+const itemsPerPage = ref(10);
+
 onMounted(async () => {
     if (typeof(categoryId.value) === "string") {
         const id = parseInt(categoryId.value)
         const value = await getCategory(id);
         if (value) {
             category.value = value
-            postCount.value = await getPostsPageCount(id, lengthPage)
+            postCount.value = await getPostsCount(id)
         } else {
             router.push({ name: "404", params: { locale:  locale} })
         }
@@ -64,7 +65,7 @@ const { t } = useI18n()
             <p class="m-0">
                 Here are all posts
             </p>
-            <Paginator :rows=lengthPage :totalRecords="120" :rowsPerPageOptions="[10, 20, 30]"></Paginator>
+            <Paginator v-model:first="currentPage" v-model:rows="itemsPerPage" :totalRecords="postCount" :rowsPerPageOptions="[10, 20, 30, 40, 50]"></Paginator>
         </Panel>
 
         <Panel :header="t('category.actions')" class="flex-item">
