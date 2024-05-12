@@ -18,6 +18,6 @@ public sealed class CategoryDto : IModelValidating
     [Pure]
     public bool IsValid()
     {
-        return Name.Length <= NAME_MAX_LENGTH && Description?.Length <= DESCRIPTION_MAX_LENGTH;
+        return Name.Length <= NAME_MAX_LENGTH && (Description?.Length ?? 0) <= DESCRIPTION_MAX_LENGTH;
     }
 }

@@ -22,6 +22,6 @@ public sealed class PostDto : IModelValidating
     [Pure]
     public bool IsValid()
     {
-        return Title.Length <= TITLE_MAX_LENGTH && Content?.Length <= CONTENT_MAX_LENGTH && CategoryId != 0;
+        return Title.Length <= TITLE_MAX_LENGTH && (Content?.Length ?? 0) <= CONTENT_MAX_LENGTH && CategoryId != 0;
     }
 }
