@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Conventus.Server.Models.Entities;
 
-public sealed class Category
+public class Category
 {
     internal const int NAME_MAX_LENGTH = 30;
     internal const int DESCRIPTION_MAX_LENGTH = 200;
@@ -15,5 +15,5 @@ public sealed class Category
     [MaxLength(DESCRIPTION_MAX_LENGTH)]
     public string? Description { get; set; }
 
-    public ICollection<Post> Posts { get; } = [];
+    public virtual ICollection<Post> Posts { get; } = [];
 }

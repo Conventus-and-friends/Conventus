@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Conventus.Server.Models.Entities;
 
-public sealed class Post
+public class Post
 {
     internal const int TITLE_MAX_LENGTH = 50;
     internal const int CONTENT_MAX_LENGTH = int.MaxValue;
@@ -18,5 +18,5 @@ public sealed class Post
 
     [Required]
     public long CategoryId { get; set; }
-    public Category Category { get; set; } = null!;
+    public virtual Category Category { get; set; } = null!;
 }
