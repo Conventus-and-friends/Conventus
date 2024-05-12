@@ -13,7 +13,7 @@ const { t } = useI18n()
 </script>
 
 <template>
-    <div>
+    <div class="top-margin-2">
         <h2>{{ t('startpage.start') }}</h2>
     </div>
 

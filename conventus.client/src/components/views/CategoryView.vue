@@ -6,6 +6,8 @@ import { useRouter } from "vue-router";
 import { useRouteParams } from "@vueuse/router";
 import { useI18n } from "vue-i18n";
 import Panel from 'primevue/panel';
+import Dialog from 'primevue/dialog';
+import Button from 'primevue/button';
 
 const i18n = useI18n();
 const locale = useRouteParams('locale')?.value as string ??  i18n.locale.value
@@ -15,6 +17,7 @@ const router = useRouter();
 const categoryId = useRouteParams("category");
 
 const category = ref<Category>()
+const visible = ref(false);
 
 onMounted(async () => {
     if (typeof(categoryId.value) === "string") {
@@ -34,22 +37,27 @@ const { t } = useI18n()
 </script>
 
 <template>
-    <!-- Information (toggable) panel -->
-    <Panel :header="category?.name" toggleable class="top-margin-2">
+    <!-- Information -->
+    <div class="margin-infobtn top-margin-2">
+        <h2>{{ category?.name }}</h2>
+        <Button label="i" @click="visible = true" />
+    </div>
+
+    <Dialog v-model:visible="visible" maximizable modal :header="category?.name" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
         <p class="m-0">
             {{ category?.description }}
         </p>
-    </Panel>
+    </Dialog>
 
     <!-- Post panel -->
     <div class="flex-container-overflow">
-        <Panel :header="t('category.posts')" class="top-margin flex-item last-item">
+        <Panel :header="t('category.posts')" class="flex-item last-item">
             <p class="m-0">
                 Here are all posts
             </p>
         </Panel>
 
-        <Panel :header="t('category.actions')" class="top-margin flex-item">
+        <Panel :header="t('category.actions')" class="flex-item">
             <p class="m-0">
                 - action 1
             </p>

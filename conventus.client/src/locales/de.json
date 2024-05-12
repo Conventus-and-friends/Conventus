@@ -14,6 +14,7 @@
     },
     "category": {
         "posts": "Beiträge",
-        "actions": "Aktionen"
+        "actions": "Aktionen",
+        "topic": "Thema"
     }
 }
