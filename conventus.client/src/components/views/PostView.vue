@@ -11,6 +11,8 @@ import { onMounted, ref } from 'vue';
 import { getCategory } from '@/services/categoryService';
 import { useRouter } from 'vue-router';
 
+import { sanitize } from 'dompurify';
+
 const router = useRouter();
 
 const i18n = useI18n();
@@ -59,8 +61,7 @@ const { t } = i18n
         <Card v-if="post" class="flex-item last-item">
             <template #title>{{ post.title }}</template>
             <template #content>
-                <div v-if="post.content" class="m-0">
-                    {{ post.content }}
+                <div v-if="post.content" v-html="sanitize(post.content)" class="m-0">
                 </div>
             </template>
         </Card>
