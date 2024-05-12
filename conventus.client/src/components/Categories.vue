@@ -39,7 +39,7 @@ function truncateDescription(text: string): string {
                               <RouterLink style="text-decoration: none; color: inherit;" :to="{ name: 'category', params: { locale: useRouteParams('locale')?.value ??  i18n.locale.value, category: item.id } }" >
                                 <h4>{{ item.name }}</h4>
                               </RouterLink>
-                              <p>{{ truncateDescription(item.description) }}</p>
+                              <p v-if="item.description">{{ truncateDescription(item.description) }}</p>
                             </div>
                         </div>
                     </div>
