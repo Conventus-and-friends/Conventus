@@ -15,5 +15,5 @@ public sealed class Category
     [MaxLength(DESCRIPTION_MAX_LENGTH)]
     public string? Description { get; set; }
 
-    public ICollection<Post> Posts { get; set; } = [];
+    public ICollection<Post> Posts { get; } = [];
 }

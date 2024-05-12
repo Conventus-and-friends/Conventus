@@ -34,7 +34,7 @@ namespace Conventus.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("Conventus.Server.Models.Post", b =>
@@ -59,7 +59,7 @@ namespace Conventus.Server.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("Conventus.Server.Models.Post", b =>
