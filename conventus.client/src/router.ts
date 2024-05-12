@@ -12,7 +12,8 @@ export function setupRouter(i18n: I18n) {
         { path: '/:locale/', component: HomeView, name: 'home' },
         { path: '/:locale/:category/', component: CategoryView, name: 'category' },
         { path: '/:locale/error/404/', component: E404View, name: '404' },
-        { path: '/:pathMatch(.*)*', redirect: () => `/${locale}` }
+        { path: '/', redirect: () => `/${locale}` },
+        { path: '/:pathMatch(.*)*', redirect: () => `/${locale}/error/404` }
     ]
     const router = createRouter({
         history: import.meta.env.SSR ? createMemoryHistory() : createWebHistory(),
