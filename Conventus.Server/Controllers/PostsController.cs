@@ -22,7 +22,7 @@ public sealed class PostsController(ApplicationDbContext context)
         }
 
         return Ok(_dbContext.Posts
-            .Skip((pager.Page - 1) * pager.PageLength).Take(pager.PageLength)
+            .Skip((pager.Page - 1) * pager.Length).Take(pager.Length)
             .Select(x => x.ToDto()));
     }
 
@@ -47,7 +47,7 @@ public sealed class PostsController(ApplicationDbContext context)
 
         var posts = _dbContext.Posts
             .Where(x => x.CategoryId == categoryId)
-            .Skip((pager.Page - 1) * pager.PageLength).Take(pager.PageLength);
+            .Skip((pager.Page - 1) * pager.Length).Take(pager.Length);
 
         return Ok(posts.Select(x => x.ToDto()));
     }
@@ -59,7 +59,7 @@ public sealed class PostsController(ApplicationDbContext context)
         {
             return BadRequest();
         }
-        return Ok((int)Math.Ceiling(await _dbContext.Posts.CountAsync() / (double)pager.PageLength));
+        return Ok((int)Math.Ceiling(await _dbContext.Posts.CountAsync() / (double)pager.Length));
     }
 
     [HttpGet("by-category/{categoryId}/page-count")]
@@ -73,7 +73,7 @@ public sealed class PostsController(ApplicationDbContext context)
         var posts = _dbContext.Posts
             .Where(x => x.CategoryId == categoryId);
 
-        return Ok((int)Math.Ceiling(await posts.CountAsync() / (double)pager.PageLength));
+        return Ok((int)Math.Ceiling(await posts.CountAsync() / (double)pager.Length));
     }
 
     [HttpPost]

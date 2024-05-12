@@ -5,15 +5,15 @@ public sealed class Pager : IModelValidating
     internal const int MAX_PAGE_SIZE = 30;
     public int Page { get; set; } = 1;
 
-    private int _pageLength = 20;
-    public int PageLength
+    private int _length = 20;
+    public int Length
     {
-        get => _pageLength;
-        set => _pageLength = (value > MAX_PAGE_SIZE) ? MAX_PAGE_SIZE : value;
+        get => _length;
+        set => _length = (value > MAX_PAGE_SIZE) ? MAX_PAGE_SIZE : value;
     }
 
     public bool IsValid()
     {
-        return Page > 0 && PageLength > 0;
+        return Page > 0 && Length > 0;
     }
 }
