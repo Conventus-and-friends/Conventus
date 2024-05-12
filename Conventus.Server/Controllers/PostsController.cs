@@ -21,7 +21,9 @@ public sealed class PostsController(ApplicationDbContext context)
             return BadRequest();
         }
 
-        return Ok(_dbContext.Posts.Select(x => x.ToDto()).Skip((pager.Page - 1) * pager.PageLength).Take(pager.PageLength));
+        return Ok(_dbContext.Posts
+            .Skip((pager.Page - 1) * pager.PageLength).Take(pager.PageLength)
+            .Select(x => x.ToDto()));
     }
 
     [HttpGet("by-id/{id}")]
@@ -43,12 +45,11 @@ public sealed class PostsController(ApplicationDbContext context)
             return BadRequest();
         }
 
-        var category = await _dbContext.Categories.FindAsync(categoryId);
-        if (category is null)
-        {
-            return NotFound();
-        }
-        return Ok(category.Posts.Select(x => x.ToDto()).Skip((pager.Page - 1) * pager.PageLength).Take(pager.PageLength));
+        var posts = _dbContext.Posts
+            .Where(x => x.CategoryId == categoryId)
+            .Skip((pager.Page - 1) * pager.PageLength).Take(pager.PageLength);
+
+        return Ok(posts.Select(x => x.ToDto()));
     }
 
     [HttpGet("page-count")]
