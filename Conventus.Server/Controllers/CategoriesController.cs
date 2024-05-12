@@ -1,4 +1,4 @@
-using Conventus.Server.Models;
+using Conventus.Server.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Conventus.Server.Controllers;

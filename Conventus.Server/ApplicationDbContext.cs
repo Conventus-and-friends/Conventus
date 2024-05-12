@@ -1,5 +1,5 @@
 using Conventus.Server.Extensions;
-using Conventus.Server.Models;
+using Conventus.Server.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Conventus.Server;

@@ -1,13 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Contracts;
+using static Conventus.Server.Models.Entities.Post;
 
-namespace Conventus.Server.Models;
+namespace Conventus.Server.Models.DTO;
 
-public sealed class Post : IModelValidating
+public sealed class PostDto : IModelValidating
 {
-    private const int TITLE_MAX_LENGTH = 50;
-    private const int CONTENT_MAX_LENGTH = int.MaxValue;
-
     public Guid Id { get; set; }
 
     [Required]
@@ -19,7 +17,6 @@ public sealed class Post : IModelValidating
 
     [Required]
     public long CategoryId { get; set; }
-    public Category Category { get; set; } = null!;
 
     [Pure]
     public bool IsValid()

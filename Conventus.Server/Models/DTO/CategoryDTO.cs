@@ -1,13 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Contracts;
+using static Conventus.Server.Models.Entities.Category;
 
-namespace Conventus.Server.Models;
 
-public sealed class Category : IModelValidating
+namespace Conventus.Server.Models.DTO;
+
+public sealed class CategoryDTO : IModelValidating
 {
-    private const int NAME_MAX_LENGTH = 30;
-    private const int DESCRIPTION_MAX_LENGTH = 200;
-
     public long Id { get; set; }
 
     [Required]
@@ -15,8 +14,6 @@ public sealed class Category : IModelValidating
     public string Name { get; set; } = string.Empty;
     [MaxLength(DESCRIPTION_MAX_LENGTH)]
     public string? Description { get; set; }
-
-    public ICollection<Post> Posts { get; set; } = [];
 
     [Pure]
     public bool IsValid()
