@@ -5,7 +5,7 @@ using static Conventus.Server.Models.Entities.Category;
 
 namespace Conventus.Server.Models.DTO;
 
-public sealed class CategoryDTO : IModelValidating
+public sealed class CategoryDto : IModelValidating
 {
     public long Id { get; set; }
 
