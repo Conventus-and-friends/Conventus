@@ -24,7 +24,7 @@ const boldText = computed(() =>  t('util.bold'))
 const italicText = computed(() =>  t('util.italic'))
 
 // methods
-async function submitPost() {
+function submitPost(): Promise<Post | null> {
     const category = props.category
     const post: Post = {
         title: title.value,
@@ -32,7 +32,7 @@ async function submitPost() {
         category: category.id ?? 0,
         id: undefined
     }
-    const result = await newPost(post);
+    return newPost(post);
 }
 </script>
 
@@ -50,7 +50,7 @@ async function submitPost() {
         </Editor>
         <div class="flex justify-content-end gap-2">
             <Button type="button" :label="t('util.cancel')" severity="secondary" @click="$emit('cancelled')" class="top-margin last-item"></Button>
-            <Button type="button" :label="t('util.post')" @click="$emit('posted'); submitPost();" class="top-margin"></Button>
+            <Button type="button" :label="t('util.post')" @click="submitPost().then(post => $emit('posted', post))" class="top-margin"></Button>
         </div>
     </div>
 </template>, computed

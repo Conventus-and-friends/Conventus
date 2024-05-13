@@ -18,6 +18,7 @@ import { asyncComputed } from "@vueuse/core";
 import { isMobile, truncateText } from "@/helpers";
 import { RouterLink } from "vue-router";
 import DOMPurify from "dompurify";
+import type { Post } from "@/models/post";
 
 const i18n = useI18n();
 const locale = useRouteParams('locale')?.value as string ??  i18n.locale.value
@@ -89,6 +90,11 @@ const sortingOptions = ref([
     { name: 'Oldest' },
     { name: 'Uncommented' }
 ]);
+
+function newPost(post: Post | null) {
+    postCreatorVisible.value = false;
+    router.push({ name: "post", params: { locale: locale, category: category?.value?.id ,post: post?.id } })
+}
 </script>
 
 <template>
@@ -107,7 +113,7 @@ const sortingOptions = ref([
 
     <!-- Create new post dialog -->
     <Dialog v-model:visible="postCreatorVisible" maximizable modal :header="t('category.new-post')" :style="{ width: '55rem' }">
-        <NewPost v-if="category" :category="category" @cancelled="postCreatorVisible = false" @posted="postCreatorVisible = false"></NewPost>
+        <NewPost v-if="category" :category="category" @cancelled="postCreatorVisible = false" @posted="newPost"></NewPost>
     </Dialog>
 
     <!-- Post panel -->
