@@ -35,28 +35,24 @@ function submitPost(): Promise<Post | null> {
     return newPost(post);
 }
 
+const titleLengthText = ref<Element>();
+
 function lengthInfo() {
-    const length = title.value.trim().length
-    const titleLengthText = document.getElementById('titleLengthText');
-    if (titleLengthText) {
-        if (length !== undefined && length > 50) {
-            document.getElementById('postButton')?.setAttribute('disabled', 'disabled');
-            titleLengthText.setAttribute('style', 'margin-top: 5px; color: red; font-size: small;');
-        } else {
-            document.getElementById('postButton')?.removeAttribute('disabled');
-            titleLengthText.removeAttribute('style');
-            titleLengthText.setAttribute('style', 'margin-top: 5px; font-size: small;');
-            titleLengthText.textContent = `${length}/50`;
-        }
+    const length = title.value.length
+    if (titleLengthText.value) {
+        submitDisabled.value = length > 50 || length <= 0;
+        titleLengthText.value.textContent = `${length}/50`;
     }
 }
+
+const submitDisabled = ref(true);
 </script>
 
 <template>
     <div>
         <div style="display: flex; flex-direction: column;">
-            <InputText @input="lengthInfo()" v-model="title" :placeholder="t('util.title')" />
-            <p id="titleLengthText" style="margin-top: 5px; font-size: small;">0/50</p>
+            <InputText @input="lengthInfo()" @change="lengthInfo()" v-model="title" :placeholder="t('util.title')" />
+            <p ref="titleLengthText" style="margin-top: 5px; font-size: small;" :style="(submitDisabled ? 'color: red;' : '')">0/50</p>
         </div>
         <Editor v-model="content" editorStyle="height: 400px" class="top-margin">
             <template v-slot:toolbar>
@@ -69,7 +65,7 @@ function lengthInfo() {
         </Editor>
         <div class="flex justify-content-end gap-2">
             <Button type="button" :label="t('util.cancel')" severity="secondary" @click="$emit('cancelled')" class="top-margin last-item"></Button>
-            <Button type="button" :label="t('util.post')" @click="submitPost().then(post => $emit('posted', post))" class="top-margin" id="postButton"></Button>
+            <Button type="button" :label="t('util.post')" @click="submitPost().then(post => $emit('posted', post))" class="top-margin" :disabled="submitDisabled"></Button>
         </div>
     </div>
 </template>, computed
