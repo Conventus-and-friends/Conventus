@@ -41,3 +41,21 @@ export function getPost(id: string): Promise<Post | null> {
         .then(response => response.ok ? response.json() : null)
         .then(data =>  data as Post ?? null)
 }
+
+/**
+ * Sends a new post to the API for creation.
+ *
+ * @param {Post} post - The post object to be created.
+ * @return {Promise<Post | null>} A promise that resolves to the created post object, or null if unsuccessful.
+ */
+export function newPost(post: Post): Promise<Post | null> {
+    return fetch("/api/posts", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(post)
+    })
+        .then(response => response.ok ? response.json() : null)
+        .then(json => json as Post ?? null)
+}

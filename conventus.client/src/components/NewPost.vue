@@ -7,6 +7,8 @@ import Editor from 'primevue/editor';
 import InputText from 'primevue/inputtext';
 
 import type { Category } from '@/models/category';
+import { newPost } from '@/services/postService';
+import type { Post } from '@/models/post';
 
 const { t } = useI18n();
 
@@ -20,7 +22,20 @@ const title = ref('');
 const underlineText = computed(() =>  t('util.underline'))
 const boldText = computed(() =>  t('util.bold'))
 const italicText = computed(() =>  t('util.italic'))
+
+// methods
+async function submitPost() {
+    const category = props.category
+    const post: Post = {
+        title: title.value,
+        content: content.value.trim().length > 0 ? content.value : undefined,
+        category: category.id ?? 0,
+        id: undefined
+    }
+    const result = await newPost(post);
+}
 </script>
+
 <template>
     <div>
         <InputText v-model="title" :placeholder="t('util.title')" />
@@ -35,7 +50,7 @@ const italicText = computed(() =>  t('util.italic'))
         </Editor>
         <div class="flex justify-content-end gap-2">
             <Button type="button" :label="t('util.cancel')" severity="secondary" @click="$emit('cancelled')" class="top-margin last-item"></Button>
-            <Button type="button" :label="t('util.post')" @click="$emit('posted')" class="top-margin"></Button>
+            <Button type="button" :label="t('util.post')" @click="$emit('posted'); submitPost();" class="top-margin"></Button>
         </div>
     </div>
 </template>, computed
