@@ -17,6 +17,7 @@ import { getPostsCount, getPosts } from "@/services/postService";
 import { asyncComputed } from "@vueuse/core";
 import { isMobile, truncateText } from "@/helpers";
 import { RouterLink } from "vue-router";
+import DOMPurify from "dompurify";
 
 const i18n = useI18n();
 const locale = useRouteParams('locale')?.value as string ??  i18n.locale.value
@@ -66,11 +67,18 @@ const posts = asyncComputed(
 const { t } = useI18n()
 
 // functions
-function truncateContent(text: string): string {
+function formatContent(text: string): string {
+    const noHtml = DOMPurify.sanitize(text,
+        {
+            ALLOWED_TAGS: [],
+            ALLOWED_ATTR: [],
+            KEEP_CONTENT: true
+        }
+    );
     if (isMobile()) {
-      return truncateText(text, 100);
+      return truncateText(noHtml, 100);
     }
-    return truncateText(text, 250);
+    return truncateText(noHtml, 250);
 }
 
 // dropdown values
@@ -115,7 +123,7 @@ const sortingOptions = ref([
                                     <div class="hoverbox">
                                         <h3>{{ item.title }}</h3>
                                         <p v-if="item.content" class="m-0">
-                                            {{ truncateContent(item.content) }}
+                                            {{ formatContent(item.content) }}
                                         </p>
                                     </div>
                                 </RouterLink>
