@@ -37,18 +37,27 @@ function submitPost(): Promise<Post | null> {
 
 function lengthInfo() {
     const length = title.value.trim().length
-    if (length !== undefined && length > 50) {
-        document.getElementById('postButton')?.setAttribute('disabled', 'disabled');
-    }
-    else {
-        document.getElementById('postButton')?.removeAttribute('disabled');
+    const titleLengthText = document.getElementById('titleLengthText');
+    if (titleLengthText) {
+        if (length !== undefined && length > 50) {
+            document.getElementById('postButton')?.setAttribute('disabled', 'disabled');
+            titleLengthText.setAttribute('style', 'color: red; font-size: small;');
+        } else {
+            document.getElementById('postButton')?.removeAttribute('disabled');
+            titleLengthText.removeAttribute('style');
+            titleLengthText.setAttribute('style', 'font-size: small;');
+            titleLengthText.textContent = `${length}/50`;
+        }
     }
 }
 </script>
 
 <template>
     <div>
-        <InputText @change="lengthInfo()" v-model="title" :placeholder="t('util.title')" />
+        <div style="display: flex; flex-direction: column;">
+            <InputText @input="lengthInfo()" v-model="title" :placeholder="t('util.title')" />
+            <p id="titleLengthText" style="margin-top: 5px; font-size: small;">0/50</p>
+        </div>
         <Editor v-model="content" editorStyle="height: 400px" class="top-margin">
             <template v-slot:toolbar>
                 <span class="ql-formats">
