@@ -111,7 +111,7 @@ const sortingOptions = ref([
                         <div v-for="(item, index) in slotProps.items" :key="index" class="col-12">
                             <div class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3">
                                 <Divider v-if="index > 0" />
-                                <RouterLink style="text-decoration: none; color: inherit;" :to="{ name: '404', params: { locale:  locale} }">
+                                <RouterLink v-if="category" style="text-decoration: none; color: inherit;" :to="{ name: 'post', params: { locale:  locale, category: category.id, id: item.id} }">
                                     <div class="hoverbox">
                                         <h3>{{ item.title }}</h3>
                                         <p v-if="item.content" class="m-0">
