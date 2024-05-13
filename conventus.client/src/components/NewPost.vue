@@ -51,7 +51,7 @@ const submitDisabled = ref(true);
 <template>
     <div>
         <div style="display: flex; flex-direction: column;">
-            <InputText @input="lengthInfo()" @change="lengthInfo()" v-model="title" :placeholder="t('util.title')" />
+            <InputText @input="lengthInfo()" v-model="title" :placeholder="t('util.title')" />
             <p ref="titleLengthText" style="margin-top: 5px; font-size: small;" :style="(submitDisabled ? 'color: red;' : '')">0/50</p>
         </div>
         <Editor v-model="content" editorStyle="height: 400px" class="top-margin">
