@@ -35,7 +35,7 @@ const postCreatorVisible = ref(false);
 const postCount = ref(0);
 
 // paginator values
-const currentPage = ref(1);
+const currentPage = ref(0);
 const itemsPerPage = ref(10);
 
 onMounted(async () => {
@@ -57,7 +57,7 @@ onMounted(async () => {
 const posts = asyncComputed(
     async () => {
         if (categoryId.value) {
-            return await getPosts(categoryId.value, currentPage.value, itemsPerPage.value)
+            return await getPosts(categoryId.value, (currentPage.value / itemsPerPage.value) + 1, itemsPerPage.value)
         }
         return null;
     },
