@@ -41,11 +41,11 @@ function lengthInfo() {
     if (titleLengthText) {
         if (length !== undefined && length > 50) {
             document.getElementById('postButton')?.setAttribute('disabled', 'disabled');
-            titleLengthText.setAttribute('style', 'color: red; font-size: small;');
+            titleLengthText.setAttribute('style', 'margin-top: 5px; color: red; font-size: small;');
         } else {
             document.getElementById('postButton')?.removeAttribute('disabled');
             titleLengthText.removeAttribute('style');
-            titleLengthText.setAttribute('style', 'font-size: small;');
+            titleLengthText.setAttribute('style', 'margin-top: 5px; font-size: small;');
             titleLengthText.textContent = `${length}/50`;
         }
     }
