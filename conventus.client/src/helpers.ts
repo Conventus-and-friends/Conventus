@@ -13,3 +13,16 @@ export function truncateText(text: string, length: number): string {
     }
     return text.substring(0, length) + '...'
 }
+
+const htmlEntitiesRegex = new RegExp("&(nbsp|amp|quot|lt|gt);", "g")
+const htmlEntitiesLookup = {
+    "&nbsp;": ' ',
+    "&amp;": '&',
+    "&quot;": '"',
+    "&lt;": '<',
+    "&gt;": '>'
+}
+
+export function removeHtmlEntities(text: string): string {
+    return text.replace(htmlEntitiesRegex, (match) => htmlEntitiesLookup[match as keyof typeof htmlEntitiesLookup])
+}
