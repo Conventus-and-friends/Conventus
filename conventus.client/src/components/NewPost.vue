@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { ref, defineProps, computed } from 'vue';
+import { ref, computed } from 'vue';
 
 import Button from 'primevue/button';
 import Editor from 'primevue/editor';
