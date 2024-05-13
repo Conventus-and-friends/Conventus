@@ -34,11 +34,21 @@ function submitPost(): Promise<Post | null> {
     }
     return newPost(post);
 }
+
+function lengthInfo() {
+    const length = title.value.trim().length
+    if (length !== undefined && length > 50) {
+        document.getElementById('postButton')?.setAttribute('disabled', 'disabled');
+    }
+    else {
+        document.getElementById('postButton')?.removeAttribute('disabled');
+    }
+}
 </script>
 
 <template>
     <div>
-        <InputText v-model="title" :placeholder="t('util.title')" />
+        <InputText @change="lengthInfo()" v-model="title" :placeholder="t('util.title')" />
         <Editor v-model="content" editorStyle="height: 400px" class="top-margin">
             <template v-slot:toolbar>
                 <span class="ql-formats">
@@ -50,7 +60,7 @@ function submitPost(): Promise<Post | null> {
         </Editor>
         <div class="flex justify-content-end gap-2">
             <Button type="button" :label="t('util.cancel')" severity="secondary" @click="$emit('cancelled')" class="top-margin last-item"></Button>
-            <Button type="button" :label="t('util.post')" @click="submitPost().then(post => $emit('posted', post))" class="top-margin"></Button>
+            <Button type="button" :label="t('util.post')" @click="submitPost().then(post => $emit('posted', post))" class="top-margin" id="postButton"></Button>
         </div>
     </div>
 </template>, computed
