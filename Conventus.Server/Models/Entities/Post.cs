@@ -19,4 +19,11 @@ public class Post
     [Required]
     public long CategoryId { get; set; }
     public virtual Category Category { get; set; } = null!;
+
+    [Required]
+    public DateOnly DateCreated { get; set; }
+    [Required]
+    public TimeOnly TimeCreated { get; set; }
+
+    public (DateOnly date, TimeOnly time) Created => (DateCreated, TimeCreated);
 }

@@ -19,6 +19,8 @@ public sealed class PostDto : IModelValidating
     [Required]
     [JsonPropertyName("category")] public long CategoryId { get; set; }
 
+    [JsonPropertyName("created")] public DateTime Created { get; set; }
+
     [Pure]
     public bool IsValid()
     {
