@@ -9,11 +9,15 @@ namespace Conventus.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public sealed class PostsController(ApplicationDbContext context, HtmlSanitizer sanitizer)
+public sealed class PostsController(
+    ApplicationDbContext context,
+    HtmlSanitizer sanitizer,
+    ILogger<PostsController> logger)
     : ControllerBase
 {
     private readonly ApplicationDbContext _dbContext = context;
     private readonly HtmlSanitizer _htmlSanitizer = sanitizer;
+    private readonly ILogger<PostsController> _logger = logger;
 
     [HttpGet]
     public ActionResult<IEnumerable<PostDto>> Get([FromQuery] Pager pager)
@@ -97,6 +101,8 @@ public sealed class PostsController(ApplicationDbContext context, HtmlSanitizer 
         }
 
         post.Id = result.Entity.Id;
+
+        _logger.LogDebug("New post created with id: {Id}", post.Id);
 
         return Ok(post);
     }

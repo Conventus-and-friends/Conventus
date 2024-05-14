@@ -6,10 +6,13 @@ namespace Conventus.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public sealed class CategoriesController(ApplicationDbContext context)
+public sealed class CategoriesController(
+    ApplicationDbContext context,
+    ILogger<CategoriesController> logger)
     : ControllerBase
 {
     private readonly ApplicationDbContext _dbContext = context;
+    private readonly ILogger<CategoriesController> _logger = logger;
 
     [HttpGet]
     public IEnumerable<CategoryDto> Get()
@@ -43,6 +46,8 @@ public sealed class CategoriesController(ApplicationDbContext context)
         await _dbContext.SaveChangesAsync();
 
         category.Id = result.Entity.Id;
+
+        _logger.LogInformation("New category created with name: {Name}", category.Name);
 
         return Ok(category);
     }
