@@ -25,5 +25,5 @@ public class Post
     [Required]
     public TimeOnly TimeCreated { get; set; }
 
-    public (DateOnly date, TimeOnly time) Created => (DateCreated, TimeCreated);
+    public DateTime Created => DateCreated.ToDateTime(TimeCreated);
 }
