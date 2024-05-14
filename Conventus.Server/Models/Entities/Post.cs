@@ -25,6 +25,8 @@ public class Post
     public long CategoryId { get; set; }
     public virtual Category Category { get; set; } = null!;
 
+    public virtual ICollection<Comment> Comments { get; } = [];
+
     [Required]
     [Comment("The day the post was created on")]
     public DateOnly DateCreated { get; set; }

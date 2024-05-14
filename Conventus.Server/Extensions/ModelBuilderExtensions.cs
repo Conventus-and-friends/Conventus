@@ -17,4 +17,17 @@ public static class ModelBuilderExtensions
             .HasForeignKey(x => x.CategoryId)
             .IsRequired();
     }
+
+    /// <summary>
+    /// Add parent relation between <see cref="Comment"/> and <see cref="Post"/>
+    /// </summary>
+    /// <param name="modelBuilder"></param>
+    public static void MapCommentPostRelations(this ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Post>()
+            .HasMany(x => x.Comments)
+            .WithOne(x => x.Post)
+            .HasForeignKey(x => x.PostId)
+            .IsRequired();
+    }
 }

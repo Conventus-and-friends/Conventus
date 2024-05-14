@@ -8,6 +8,7 @@ public sealed class ApplicationDbContext : DbContext
 {
     public DbSet<Category> Categories { get; set; }
     public DbSet<Post> Posts { get; set; }
+    public DbSet<Comment> Comments { get; set; }
 
     public string DbPath { get; }
 
@@ -36,6 +37,7 @@ public sealed class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.MapPostCategoryRelations();
+        modelBuilder.MapCommentPostRelations();
         base.OnModelCreating(modelBuilder);
     }
 }
