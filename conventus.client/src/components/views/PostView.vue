@@ -10,6 +10,7 @@ import { useRouteParams } from '@vueuse/router';
 import { onMounted, ref } from 'vue';
 import { getCategory } from '@/services/categoryService';
 import { useRouter } from 'vue-router';
+import { dateAsUtcDate, recreateDate } from '@/helpers';
 
 import DOMPurify from "dompurify";
 
@@ -66,6 +67,7 @@ const { t } = i18n
     <div class="flex-container-overflow top-margin-2">
         <Card v-if="post" class="flex-item last-item">
             <template #title>{{ DOMPurify.sanitize(post.title) }}</template>
+            <template #subtitle v-if="post.created">{{ dateAsUtcDate(recreateDate(post.created)).toLocaleString() }}</template>
             <template #content>
                 <div v-if="post.content" v-html="DOMPurify.sanitize(post.content)" class="m-0">
                 </div>
