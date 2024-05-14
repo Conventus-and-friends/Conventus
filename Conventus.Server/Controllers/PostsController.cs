@@ -83,6 +83,8 @@ public sealed class PostsController(ApplicationDbContext context, HtmlSanitizer 
             post.Content = _htmlSanitizer.Sanitize(post.Content);
         }
 
+        post.Created = DateTime.UtcNow;
+
         var result = await _dbContext.Posts.AddAsync(post.ToEntity());
 
         try
