@@ -26,6 +26,8 @@ const postIdRaw = useRouteParams("post");
 const postId = ref<string | null>(null);
 const post = ref<Post>();
 
+const router404Args = { name: "404", params: { locale:  locale} }
+
 onMounted(async () => {
     if (typeof(categoryIdRaw.value) === "string") {
         const id = parseInt(categoryIdRaw.value)
@@ -34,7 +36,7 @@ onMounted(async () => {
             category.value = value
             categoryId.value = id
         } else {
-            router.push({ name: "404", params: { locale:  locale} })
+            router.push(router404Args)
         }
     } else {
         console.warn("invalid category id")
@@ -46,10 +48,14 @@ onMounted(async () => {
             post.value = value
             postId.value = postIdRaw.value
         } else {
-            router.push({ name: "404", params: { locale:  locale} })
+            router.push(router404Args)
         }
     } else {
         console.warn("invalid post id")
+    }
+
+    if (post.value?.category !== categoryId.value) {
+        router.push(router404Args)
     }
 })
 
