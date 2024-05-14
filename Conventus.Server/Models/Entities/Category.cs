@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace Conventus.Server.Models.Entities;
@@ -11,8 +12,10 @@ public class Category
 
     [Required]
     [MaxLength(NAME_MAX_LENGTH)]
+    [Comment("The name of the category")]
     public string Name { get; set; } = string.Empty;
     [MaxLength(DESCRIPTION_MAX_LENGTH)]
+    [Comment("The description of the category")]
     public string? Description { get; set; }
 
     public virtual ICollection<Post> Posts { get; } = [];
