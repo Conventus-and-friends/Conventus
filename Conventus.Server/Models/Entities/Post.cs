@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Conventus.Server.Models.Entities;
 
@@ -25,5 +26,6 @@ public class Post
     [Required]
     public TimeOnly TimeCreated { get; set; }
 
+    [NotMapped]
     public DateTime Created => DateCreated.ToDateTime(TimeCreated);
 }
