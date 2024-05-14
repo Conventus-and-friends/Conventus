@@ -68,4 +68,4 @@ const submitDisabled = ref(true);
             <Button type="button" :label="t('util.post')" @click="submitPost().then(post => $emit('posted', post))" class="top-margin" :disabled="submitDisabled"></Button>
         </div>
     </div>
-</template>, computed
+</template>
