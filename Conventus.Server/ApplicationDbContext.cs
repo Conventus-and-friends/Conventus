@@ -21,7 +21,6 @@ public sealed class ApplicationDbContext : DbContext
         // set up default values to system folder
         // TODO: read from config
         var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        // Console.WriteLine("Database is stored under following path: " + path);
         DbPath = Path.Join(path, "conventus.db");
     }
 
