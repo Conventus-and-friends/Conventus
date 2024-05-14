@@ -27,6 +27,10 @@ export function removeHtmlEntities(text: string): string {
     return text.replace(htmlEntitiesRegex, (match) => htmlEntitiesLookup[match as keyof typeof htmlEntitiesLookup])
 }
 
+export function recreateDate(date: Date): Date {
+    return new Date(date);
+}
+
 export function dateAsUtcDate(date: Date): Date {
     return new Date(Date.UTC(date.getFullYear(), 
                                 date.getMonth(), 
