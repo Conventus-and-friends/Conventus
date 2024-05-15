@@ -1,3 +1,4 @@
+import { recreateDate } from "@/helpers";
 import type { Post } from "@/models/post";
 
 /**
@@ -40,6 +41,12 @@ export function getPost(id: string): Promise<Post | null> {
     return fetch(`/api/posts/by-id/${id}`)
         .then(response => response.ok ? response.json() : null)
         .then(data =>  data as Post ?? null)
+        .then((post: Post | null) => {
+            if (post?.created) {
+                post.created = recreateDate(post.created);
+            }
+            return post;
+        })
 }
 
 /**
