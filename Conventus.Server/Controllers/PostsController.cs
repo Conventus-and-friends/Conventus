@@ -1,3 +1,4 @@
+using Conventus.Server.Extensions;
 using Conventus.Server.Models;
 using Conventus.Server.Models.DTO;
 using Conventus.Server.Models.Mappers;
@@ -44,16 +45,14 @@ public sealed class PostsController(
     }
 
     [HttpGet("by-category/{categoryId}")]
-    public ActionResult<IEnumerable<PostDto>> Get(long categoryId, [FromQuery] Pager pager)
+    public ActionResult<IAsyncEnumerable<PostDto>> Get(long categoryId, [FromQuery] Pager pager)
     {
         if (!pager.IsValid())
         {
             return BadRequest();
         }
 
-        var posts = _dbContext.Posts
-            .Where(x => x.CategoryId == categoryId)
-            .Skip((pager.Page - 1) * pager.Length).Take(pager.Length);
+        var posts = _dbContext.GetPostsAsync(categoryId, pager);
 
         return Ok(posts.Select(x => x.ToDto()));
     }
@@ -61,16 +60,13 @@ public sealed class PostsController(
     [HttpGet("count")]
     public Task<int> GetCount()
     {
-        return _dbContext.Posts.CountAsync();
+        return _dbContext.GetPostsCountAsync();
     }
 
     [HttpGet("by-category/{categoryId}/count")]
     public Task<int> GetCount(long categoryId)
     {
-        var posts = _dbContext.Posts
-            .Where(x => x.CategoryId == categoryId);
-
-        return posts.CountAsync();
+        return _dbContext.GetPostsCountAsync(categoryId);
     }
 
     [HttpPost]

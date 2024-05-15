@@ -1,4 +1,5 @@
 
+using Conventus.Server.Extensions;
 using Conventus.Server.Models;
 using Conventus.Server.Models.DTO;
 using Conventus.Server.Models.Mappers;
@@ -45,16 +46,14 @@ public sealed class CommentsController(
     }
 
     [HttpGet("by-post/{postId}")]
-    public ActionResult<IEnumerable<CommentDto>> Get(Guid postId, [FromQuery] Pager pager)
+    public ActionResult<IAsyncEnumerable<CommentDto>> Get(Guid postId, [FromQuery] Pager pager)
     {
         if (!pager.IsValid())
         {
             return BadRequest();
         }
 
-        var comments = _dbContext.Comments
-            .Where(x => x.PostId == postId)
-            .Skip((pager.Page - 1) * pager.Length).Take(pager.Length);
+        var comments = _dbContext.GetCommentsAsync(postId, pager);
 
         return Ok(comments.Select(x => x.ToDto()));
     }
@@ -62,16 +61,13 @@ public sealed class CommentsController(
     [HttpGet("count")]
     public Task<int> GetCount()
     {
-        return _dbContext.Comments.CountAsync();
+        return _dbContext.GetCommentsCountAsync();
     }
 
     [HttpGet("by-post/{postId}/count")]
     public Task<int> GetCount(Guid postId)
     {
-        var comments = _dbContext.Comments
-            .Where(x => x.PostId == postId);
-
-        return comments.CountAsync();
+        return _dbContext.GetCommentsCountAsync(postId);
     }
 
     [HttpPost]
