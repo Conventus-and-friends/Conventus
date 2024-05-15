@@ -12,12 +12,10 @@ namespace Conventus.Server.Controllers;
 [ApiController]
 public sealed class CommentsController(
     ApplicationDbContext context,
-    HtmlSanitizer sanitizer,
     ILogger<CommentsController> logger)
     : ControllerBase
 {
     private readonly ApplicationDbContext _dbContext = context;
-    private readonly HtmlSanitizer _htmlSanitizer = sanitizer;
     private readonly ILogger<CommentsController> _logger = logger;
 
     [HttpGet]
@@ -81,8 +79,6 @@ public sealed class CommentsController(
         {
             return BadRequest();
         }
-
-        comment.Content = _htmlSanitizer.Sanitize(comment.Content);
 
         comment.Created = DateTime.UtcNow;
 
