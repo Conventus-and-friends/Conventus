@@ -45,15 +45,16 @@ const comments = asyncComputed(
         <h3>{{ t('post.comments') }}</h3>
         <DataView v-if="comments" :value="comments" dataKey="id">
             <template #list="slotProps">
-                    <div class="grid grid-nogutter">
-                        <div v-for="(item, index) in slotProps.items" :key="index" class="col-12">
-                            <Divider v-if="index > 0" />
-                            <Card>
+                <div class="grid grid-nogutter">
+                    <div v-for="(item, index) in slotProps.items" :key="index" class="col-12">
+                        <div class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3">
+                            <Card class="top-margin">
                                 <template #subtitle>Nutzername - vor 10 Minuten</template>
                                 <template #content>{{ DOMPurify.sanitize(item.content) }}</template>
                             </Card>
                         </div>
                     </div>
+                </div>
             </template>
         </DataView>
         <Paginator v-model:first="currentPage" v-model:rows="itemsPerPage" :totalRecords="commentCount" :rowsPerPageOptions="[10, 20, 30, 40, 50]" class="top-margin"></Paginator>
