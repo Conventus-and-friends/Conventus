@@ -59,18 +59,18 @@ public sealed class PostsController(
     }
 
     [HttpGet("count")]
-    public async Task<int> GetCount()
+    public Task<int> GetCount()
     {
-        return await _dbContext.Posts.CountAsync();
+        return _dbContext.Posts.CountAsync();
     }
 
     [HttpGet("by-category/{categoryId}/count")]
-    public async Task<int> GetCount(long categoryId)
+    public Task<int> GetCount(long categoryId)
     {
         var posts = _dbContext.Posts
             .Where(x => x.CategoryId == categoryId);
 
-        return await posts.CountAsync();
+        return posts.CountAsync();
     }
 
     [HttpPost]

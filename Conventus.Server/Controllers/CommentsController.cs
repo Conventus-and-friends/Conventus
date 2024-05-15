@@ -60,18 +60,18 @@ public sealed class CommentsController(
     }
 
     [HttpGet("count")]
-    public async Task<int> GetCount()
+    public Task<int> GetCount()
     {
-        return await _dbContext.Comments.CountAsync();
+        return _dbContext.Comments.CountAsync();
     }
 
     [HttpGet("by-post/{postId}/count")]
-    public async Task<int> GetCount(Guid postId)
+    public Task<int> GetCount(Guid postId)
     {
         var comments = _dbContext.Comments
             .Where(x => x.PostId == postId);
 
-        return await comments.CountAsync();
+        return comments.CountAsync();
     }
 
     [HttpPost]
