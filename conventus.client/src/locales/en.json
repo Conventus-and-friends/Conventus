@@ -28,6 +28,7 @@
         "title": "Title",
         "underline": "Underline",
         "bold": "Bold",
-        "italic": "Italic"
+        "italic": "Italic",
+        "answers": "Antworten"
     }
 }

@@ -2,6 +2,7 @@
 import Card from 'primevue/card';
 import Panel from 'primevue/panel';
 import { useI18n } from 'vue-i18n';
+import Comments from '@/components/Comments.vue';
 
 import type { Category } from '@/models/category';
 import type { Post } from '@/models/post';
@@ -65,14 +66,17 @@ const { t } = i18n
 
 <template>
     <div class="flex-container-overflow top-margin-2">
-        <Card v-if="post" class="flex-item last-item">
-            <template #title>{{ DOMPurify.sanitize(post.title) }}</template>
-            <template #subtitle v-if="post.created">{{ dateAsUtcDate(post.created).toLocaleString() }}</template>
-            <template #content>
-                <div v-if="post.content" v-html="DOMPurify.sanitize(post.content)" class="m-0">
-                </div>
-            </template>
-        </Card>
+        <div class="flex-item last-item" v-if="post">
+            <Card>
+                <template #title>{{ DOMPurify.sanitize(post.title) }}</template>
+                <template #subtitle v-if="post.created">{{ dateAsUtcDate(post.created).toLocaleString() }}</template>
+                <template #content>
+                    <div v-if="post.content" v-html="DOMPurify.sanitize(post.content)" class="m-0"></div>
+                </template>
+            </Card>
+            <Comments/>
+        </div>
+
 
         <Panel header="Header" class="flex-item">
             <p class="m-0">

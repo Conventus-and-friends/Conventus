@@ -28,6 +28,7 @@
         "title": "Titel",
         "underline": "Unterstrichen",
         "bold": "Fett",
-        "italic": "Kursiv"
+        "italic": "Kursiv",
+        "answers": "Antworten"
     }
 }
