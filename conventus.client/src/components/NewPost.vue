@@ -30,7 +30,8 @@ function submitPost(): Promise<Post | null> {
         title: title.value,
         content: content.value.trim().length > 0 ? content.value : undefined,
         category: category.id ?? 0,
-        id: undefined
+        id: undefined,
+        created: undefined
     }
     return newPost(post);
 }

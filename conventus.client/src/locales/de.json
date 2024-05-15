@@ -28,7 +28,9 @@
         "title": "Titel",
         "underline": "Unterstrichen",
         "bold": "Fett",
-        "italic": "Kursiv",
-        "answers": "Antworten"
+        "italic": "Kursiv"
+    },
+    "post": {
+        "comments": "Kommentare"
     }
 }

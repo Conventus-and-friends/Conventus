@@ -30,5 +30,8 @@
         "bold": "Bold",
         "italic": "Italic",
         "answers": "Antworten"
+    },
+    "post": {
+        "comments": "Comments"
     }
 }

@@ -74,7 +74,7 @@ const { t } = i18n
                     <div v-if="post.content" v-html="DOMPurify.sanitize(post.content)" class="m-0"></div>
                 </template>
             </Card>
-            <Comments/>
+            <Comments :post="post"/>
         </div>
 
 
