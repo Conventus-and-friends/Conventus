@@ -23,6 +23,7 @@
         "error": "Fehler",
         "success": "Erfolgreich",
         "post": "Posten",
+        "comment": "Kommentieren",
         "cancel": "Abbrechen",
         "enter-content": "Inhalt eingeben...",
         "title": "Titel",
@@ -31,6 +32,7 @@
         "italic": "Kursiv"
     },
     "post": {
-        "comments": "Kommentare"
+        "comments": "Kommentare",
+        "new-comment": "Neuer Kommentar"
     }
 }

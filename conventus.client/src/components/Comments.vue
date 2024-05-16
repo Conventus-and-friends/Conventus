@@ -2,11 +2,14 @@
 import { useI18n } from 'vue-i18n';
 import Card from 'primevue/card';
 import type { Post } from '@/models/post';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { getComments, getCommentsCount } from '@/services/commentService';
 import { asyncComputed } from '@vueuse/core';
 import DataView from 'primevue/dataview';
 import Paginator from 'primevue/paginator';
+import Panel from 'primevue/panel';
+import Editor from 'primevue/editor';
+import Button from 'primevue/button';
 import DOMPurify from 'dompurify';
 
 const props = defineProps({
@@ -38,10 +41,34 @@ const comments = asyncComputed(
     },
     null
 )
+
+const content = ref('');
+const submitDisabled = ref(true);
+
+const underlineText = computed(() =>  t('util.underline'))
+const boldText = computed(() =>  t('util.bold'))
+const italicText = computed(() =>  t('util.italic'))
 </script>
 
 <template>
     <div class="i3-4">
+        <Panel toggleable collapsed class="top-margin" :header="t('post.new-comment')">
+            <Editor v-model="content" editorStyle="height: 200px" class="top-margin">
+                <template v-slot:toolbar>
+                    <span class="ql-formats">
+                        <Button v-tooltip.top="boldText" class="ql-bold"></Button>
+                        <Button v-tooltip.top="italicText" class="ql-italic"></Button>
+                        <Button v-tooltip.top="underlineText" class="ql-underline"></Button>
+                    </span>
+                </template>
+            </Editor>
+            <div>
+                <div class="top-margin align-right">
+                    <Button type="button" :label="t('util.cancel')" severity="secondary" @click="" text size="small" style="margin-right: 0.3rem;"></Button>
+                    <Button type="button" :label="t('util.comment')" @click="" :disabled="submitDisabled" rounded size="small"></Button>
+                </div>
+            </div>
+        </Panel>
         <h3>{{ t('post.comments') }}</h3>
         <DataView v-if="comments" :value="comments" dataKey="id">
             <template #list="slotProps">

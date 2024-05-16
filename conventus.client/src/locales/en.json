@@ -23,6 +23,7 @@
         "error": "Error",
         "success": "Successfully",
         "post": "Post",
+        "comment": "Add comment",
         "cancel": "Cancel",
         "enter-content": "Enter content...",
         "title": "Title",
@@ -32,6 +33,7 @@
         "answers": "Antworten"
     },
     "post": {
-        "comments": "Comments"
+        "comments": "Comments",
+        "new-comment": "new comment"
     }
 }
