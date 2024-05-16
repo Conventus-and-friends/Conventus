@@ -7,7 +7,8 @@ import { getComments, getCommentsCount } from '@/services/commentService';
 import { asyncComputed } from '@vueuse/core';
 import DataView from 'primevue/dataview';
 import Paginator from 'primevue/paginator';
-import Panel from 'primevue/panel';
+import Accordion from 'primevue/accordion';
+import AccordionTab from 'primevue/accordiontab';
 import Editor from 'primevue/editor';
 import Button from 'primevue/button';
 import DOMPurify from 'dompurify';
@@ -48,27 +49,44 @@ const submitDisabled = ref(true);
 const underlineText = computed(() =>  t('util.underline'))
 const boldText = computed(() =>  t('util.bold'))
 const italicText = computed(() =>  t('util.italic'))
+
+function checkLength() {
+    submitDisabled.value = content.value.trim().length <= 0
+}
+
+const activeIndex = ref<number>(1)
+
+function abort() {
+    activeIndex.value = activeIndex.value + 1 // why does this work? I hate this.
+    content.value = ''
+}
+
+function submitComment() {
+
+}
 </script>
 
 <template>
     <div class="i3-4">
-        <Panel toggleable collapsed class="top-margin" :header="t('post.new-comment')">
-            <Editor v-model="content" editorStyle="height: 200px" class="top-margin">
-                <template v-slot:toolbar>
-                    <span class="ql-formats">
-                        <Button v-tooltip.top="boldText" class="ql-bold"></Button>
-                        <Button v-tooltip.top="italicText" class="ql-italic"></Button>
-                        <Button v-tooltip.top="underlineText" class="ql-underline"></Button>
-                    </span>
-                </template>
-            </Editor>
-            <div>
-                <div class="top-margin align-right">
-                    <Button type="button" :label="t('util.cancel')" severity="secondary" @click="" text size="small" style="margin-right: 0.3rem;"></Button>
-                    <Button type="button" :label="t('util.comment')" @click="" :disabled="submitDisabled" rounded size="small"></Button>
+        <Accordion class="top-margin" v-bind:active-index="activeIndex">
+            <AccordionTab :header="t('post.new-comment')">
+                <Editor v-on:text-change="checkLength()" v-model="content" editorStyle="height: 200px" class="top-margin">
+                    <template v-slot:toolbar>
+                        <span class="ql-formats">
+                            <Button v-tooltip.top="boldText" class="ql-bold"></Button>
+                            <Button v-tooltip.top="italicText" class="ql-italic"></Button>
+                            <Button v-tooltip.top="underlineText" class="ql-underline"></Button>
+                        </span>
+                    </template>
+                </Editor>
+                <div>
+                    <div class="top-margin align-right">
+                        <Button type="button" :label="t('util.cancel')" severity="secondary" @click="abort()" text size="small" style="margin-right: 0.3rem;"></Button>
+                        <Button type="button" :label="t('util.comment')" @click="submitComment()" :disabled="submitDisabled" rounded size="small"></Button>
+                    </div>
                 </div>
-            </div>
-        </Panel>
+            </AccordionTab>
+        </Accordion>
         <h3>{{ t('post.comments') }}</h3>
         <DataView v-if="comments" :value="comments" dataKey="id">
             <template #list="slotProps">
