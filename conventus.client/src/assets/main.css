@@ -88,3 +88,7 @@
 .i3-4 {
     margin-top: 30px;
 }
+
+.p-dataview-content {
+    background-color: unset;
+}
