@@ -61,7 +61,7 @@ onMounted(async () => {
     }
 })
 
-const { t } = i18n
+const { d } = i18n
 </script>
 
 <template>
@@ -69,7 +69,7 @@ const { t } = i18n
         <div class="flex-item last-item" v-if="post">
             <Card>
                 <template #title>{{ DOMPurify.sanitize(post.title) }}</template>
-                <template #subtitle v-if="post.created">{{ dateAsUtcDate(post.created).toLocaleString() }}</template>
+                <template #subtitle v-if="post.created">{{ d(dateAsUtcDate(post.created), "long") }}</template>
                 <template #content>
                     <div v-if="post.content" v-html="DOMPurify.sanitize(post.content)" class="m-0"></div>
                 </template>
