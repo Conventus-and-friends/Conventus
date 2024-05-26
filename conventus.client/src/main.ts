@@ -14,11 +14,15 @@ import App from '@/App.vue'
 // primevue and i18n imports
 import PrimeVue from 'primevue/config'
 import Ripple from 'primevue/ripple'
+import ToastService from 'primevue/toastservice'
 import { setupI18n } from '@/i18n'
 import { setupRouter } from '@/router'
 
 // create vue application
 const app = createApp(App)
+
+// Add PrimeVue
+app.use(ToastService)
 app.directive('ripple', Ripple)
 app.use(PrimeVue, { ripple: true })
 

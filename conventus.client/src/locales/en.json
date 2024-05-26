@@ -29,11 +29,15 @@
         "title": "Title",
         "underline": "Underline",
         "bold": "Bold",
-        "italic": "Italic",
-        "answers": "Antworten"
+        "italic": "Italic"
     },
     "post": {
+        
+    },
+    "comment": {
         "comments": "Comments",
-        "new-comment": "new comment"
+        "new-comment": "new comment",
+        "comment": "Comment",
+        "comment-added": "Comment added successfully"
     }
 }

@@ -13,7 +13,9 @@ import AccordionTab from 'primevue/accordiontab';
 import Editor from 'primevue/editor';
 import Button from 'primevue/button';
 import DOMPurify from 'dompurify';
-import { recreateDate } from '@/helpers';
+import { useToast } from 'primevue/usetoast';
+
+const toasts = useToast()
 
 const props = defineProps({
     post: { type: Object as () => Post, required: true }
@@ -79,6 +81,9 @@ function submitComment() {
             getCommentsCount(props.post.id ?? "").then((count) => commentCount.value = count)
             currentPage.value = 0
             getCommentsFromService().then((c) => comments.value = c)
+
+            toasts.add({ severity: 'success', summary: t("comment.comment-added") })
+            abort() // close the comment editor
         }
     })
 }
@@ -86,9 +91,9 @@ function submitComment() {
 
 <template>
     <div class="i3-4">
-        <h3>{{ t('post.comments') }}</h3>
+        <h3>{{ t('comment.comments') }}</h3>
         <Accordion class="top-margin" v-bind:active-index="activeIndex">
-            <AccordionTab :header="t('post.new-comment')">
+            <AccordionTab :header="t('comment.new-comment')">
                 <Editor v-on:text-change="checkLength()" v-model="content" editorStyle="height: 200px" class="top-margin">
                     <template v-slot:toolbar>
                         <span class="ql-formats">
@@ -101,7 +106,7 @@ function submitComment() {
                 <div>
                     <div class="top-margin align-right">
                         <Button type="button" :label="t('util.cancel')" severity="secondary" @click="abort()" text rounded size="small" style="margin-right: 0.3rem;"></Button>
-                        <Button type="button" :label="t('util.comment')" @click="submitComment()" :disabled="submitDisabled" rounded size="small"></Button>
+                        <Button type="button" :label="t('comment.comment')" @click="submitComment()" :disabled="submitDisabled" rounded size="small"></Button>
                     </div>
                 </div>
             </AccordionTab>
