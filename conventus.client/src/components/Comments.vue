@@ -5,7 +5,7 @@ import type { Post } from '@/models/post';
 import { computed, onMounted, ref } from 'vue';
 import { getComments, getCommentsCount, newComment } from '@/services/commentService';
 import { asyncComputed } from '@vueuse/core';
-imp
+import type { Comment } from '@/models/comment';
 import DataView from 'primevue/dataview';
 import Paginator from 'primevue/paginator';
 import Accordion from 'primevue/accordion';
@@ -13,6 +13,7 @@ import AccordionTab from 'primevue/accordiontab';
 import Editor from 'primevue/editor';
 import Button from 'primevue/button';
 import DOMPurify from 'dompurify';
+import { recreateDate } from '@/helpers';
 
 const props = defineProps({
     post: { type: Object as () => Post, required: true }
@@ -37,7 +38,7 @@ onMounted(async () => {
 const comments = asyncComputed(
     async () => {
         if (props.post) {
-            return await getComments(props.post.id ?? "", (currentPage.value / itemsPerPage.value) + 1, itemsPerPage.value);
+            return await getComments(props.post.id ?? "", (currentPage.value / itemsPerPage.value) + 1, itemsPerPage.value)
         }
         return null;
     },
@@ -63,12 +64,17 @@ function abort() {
 }
 
 function submitComment() {
-    const comment: Comment = {
+    const comment: Comment | null = {
         id: undefined,
         content: content.value.trim(),
         post: props.post.id ?? "",
         created: undefined
     }
+    newComment(comment).then(() => {
+        if (props.post) {
+            getCommentsCount(props.post.id ?? "").then((count) => commentCount.value = count)
+        }
+    })
 }
 </script>
 
@@ -88,7 +94,7 @@ function submitComment() {
                 </Editor>
                 <div>
                     <div class="top-margin align-right">
-                        <Button type="button" :label="t('util.cancel')" severity="secondary" @click="abort()" text size="small" style="margin-right: 0.3rem;"></Button>
+                        <Button type="button" :label="t('util.cancel')" severity="secondary" @click="abort()" text rounded size="small" style="margin-right: 0.3rem;"></Button>
                         <Button type="button" :label="t('util.comment')" @click="submitComment()" :disabled="submitDisabled" rounded size="small"></Button>
                     </div>
                 </div>
@@ -101,7 +107,7 @@ function submitComment() {
                         <div class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3">
                             <Card class="top-margin">
                                 <template #subtitle>Nutzername - vor 10 Minuten</template>
-                                <template #content>{{ DOMPurify.sanitize(item.content) }}</template>
+                                <template #content><div v-html="DOMPurify.sanitize(item.content)"></div></template>
                             </Card>
                         </div>
                     </div>

@@ -29,7 +29,7 @@ public static class ApplicationDbContextExtensions
 
     private static readonly Func<ApplicationDbContext, Guid, int, int, IAsyncEnumerable<Comment>> _getCommentsByPostIdWithPaging =
         EF.CompileAsyncQuery((ApplicationDbContext context, Guid id, int skip, int take) =>
-            context.Comments.Where(x => x.PostId == id).Skip(skip).Take(take));
+            context.Comments.Where(x => x.PostId == id).OrderByDescending(x => x.DateCreated).ThenByDescending(x => x.TimeCreated).Skip(skip).Take(take));
 
     public static Task<int> GetCommentsCountAsync(this ApplicationDbContext dbContext, Guid postId)
         => _getCommentsCountByPostId(dbContext, postId);
