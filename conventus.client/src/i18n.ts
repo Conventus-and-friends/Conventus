@@ -37,14 +37,15 @@ export function setLocale(i18n: I18n, locale: Locale): void {
 
 export function setupI18n(options: I18nOptions | null = null): I18n {
   if (!options) {
-    const browserLanguage = window.navigator.language;
-    const userLanguage = browserLanguage.includes('-') ? browserLanguage.split('-')[0] : browserLanguage;
-    if (SUPPORT_LOCALES.includes(browserLanguage)) {
-      options = {
-        locale: browserLanguage,
-        legacy: false
+    const browserLanguages = window.navigator.languages;
+    let userLanguage: string | null = null
+    for (const browserLanguage of browserLanguages) {
+      if (SUPPORT_LOCALES.includes(browserLanguage)) {
+        userLanguage = browserLanguage
+        break
       }
-    } else if (SUPPORT_LOCALES.includes(userLanguage)) {
+    }
+    if (userLanguage) {
       options = {
         locale: userLanguage,
         legacy: false
