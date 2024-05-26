@@ -6,6 +6,8 @@ namespace Conventus.Server;
 
 public sealed class ApplicationDbContext : DbContext
 {
+    private readonly ILoggerFactory _loggerFactory;
+
     public DbSet<Category> Categories { get; set; }
     public DbSet<Post> Posts { get; set; }
     public DbSet<Comment> Comments { get; set; }
@@ -17,8 +19,10 @@ public sealed class ApplicationDbContext : DbContext
         DbPath = dbPath;
     }
 
-    public ApplicationDbContext()
+    public ApplicationDbContext(ILoggerFactory loggerFactory)
     {
+        _loggerFactory = loggerFactory;
+
         // set up default values to system folder
         // TODO: read from config
         var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -27,6 +31,8 @@ public sealed class ApplicationDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        optionsBuilder.UseLoggerFactory(_loggerFactory);
+
         // TODO: more db options
         optionsBuilder
             .UseLazyLoadingProxies()
