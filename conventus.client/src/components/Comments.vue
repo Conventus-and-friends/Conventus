@@ -3,8 +3,9 @@ import { useI18n } from 'vue-i18n';
 import Card from 'primevue/card';
 import type { Post } from '@/models/post';
 import { computed, onMounted, ref } from 'vue';
-import { getComments, getCommentsCount } from '@/services/commentService';
+import { getComments, getCommentsCount, newComment } from '@/services/commentService';
 import { asyncComputed } from '@vueuse/core';
+imp
 import DataView from 'primevue/dataview';
 import Paginator from 'primevue/paginator';
 import Accordion from 'primevue/accordion';
@@ -62,12 +63,18 @@ function abort() {
 }
 
 function submitComment() {
-
+    const comment: Comment = {
+        id: undefined,
+        content: content.value.trim(),
+        post: props.post.id ?? "",
+        created: undefined
+    }
 }
 </script>
 
 <template>
     <div class="i3-4">
+        <h3>{{ t('post.comments') }}</h3>
         <Accordion class="top-margin" v-bind:active-index="activeIndex">
             <AccordionTab :header="t('post.new-comment')">
                 <Editor v-on:text-change="checkLength()" v-model="content" editorStyle="height: 200px" class="top-margin">
@@ -87,7 +94,6 @@ function submitComment() {
                 </div>
             </AccordionTab>
         </Accordion>
-        <h3>{{ t('post.comments') }}</h3>
         <DataView v-if="comments" :value="comments" dataKey="id">
             <template #list="slotProps">
                 <div class="grid grid-nogutter">
