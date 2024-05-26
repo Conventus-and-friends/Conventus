@@ -35,10 +35,14 @@ onMounted(async () => {
     }
 })
 
+async function getCommentsFromService(): Promise<Comment[] | null> {
+    return await getComments(props.post.id ?? "", (currentPage.value / itemsPerPage.value) + 1, itemsPerPage.value)
+}
+
 const comments = asyncComputed(
     async () => {
         if (props.post) {
-            return await getComments(props.post.id ?? "", (currentPage.value / itemsPerPage.value) + 1, itemsPerPage.value)
+            return await getCommentsFromService()
         }
         return null;
     },
@@ -73,6 +77,8 @@ function submitComment() {
     newComment(comment).then(() => {
         if (props.post) {
             getCommentsCount(props.post.id ?? "").then((count) => commentCount.value = count)
+            currentPage.value = 0
+            getCommentsFromService().then((c) => comments.value = c)
         }
     })
 }
