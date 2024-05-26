@@ -12,7 +12,7 @@ public static class ApplicationDbContextExtensions
 
     private static readonly Func<ApplicationDbContext, long, int, int, IAsyncEnumerable<Post>> _getPostsByCategoryIdWithPaging =
         EF.CompileAsyncQuery((ApplicationDbContext context, long id, int skip, int take) =>
-            context.Posts.Where(x => x.CategoryId == id).Skip(skip).Take(take));
+            context.Posts.Where(x => x.CategoryId == id).OrderByDescending(x => x.DateCreated).ThenByDescending(x => x.TimeCreated).Skip(skip).Take(take));
 
     public static Task<int> GetPostsCountAsync(this ApplicationDbContext dbContext, long categoryId)
         => _getPostsCountByCategoryId(dbContext, categoryId);

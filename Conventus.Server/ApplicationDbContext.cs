@@ -14,15 +14,9 @@ public sealed class ApplicationDbContext : DbContext
 
     public string DbPath { get; }
 
-    public ApplicationDbContext(string dbPath)
-    {
-        DbPath = dbPath;
-    }
-
     public ApplicationDbContext(ILoggerFactory loggerFactory)
     {
         _loggerFactory = loggerFactory;
-
         // set up default values to system folder
         // TODO: read from config
         var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
