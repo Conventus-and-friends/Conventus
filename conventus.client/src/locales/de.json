@@ -38,5 +38,27 @@
         "new-comment": "Neuer Kommentar",
         "comment": "Kommentieren",
         "comment-added": "Kommentar hinzugefügt"
+    },
+    "time": {
+        "timeAgo": {
+            "just-now": "gerade eben",
+            "ago": "vor {0}",
+            "in": "in {0}",
+            "last-month": "letzter Monat",
+            "next-month": "nächster Monat",
+            "month": "Monat | Monate",
+            "last-year": "letztes jahr",
+            "next-year": "nächstes Jahr",
+            "year": "Jahr | Jahre",
+            "yesterday": "gestern",
+            "tomorrow": "morgen",
+            "day": "Tag | Tage",
+            "last-week": "letzte Woche",
+            "next-week": "nächste Woche",
+            "week": "Woche | Wochen",
+            "hour": "Stunde | Stunden",
+            "minute": "Minute | Minuten",
+            "second": "Sekunde | Sekunden"
+          }
     }
 }

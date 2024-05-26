@@ -39,3 +39,11 @@ export function dateAsUtcDate(date: Date): Date {
                                 date.getMinutes(), 
                                 date.getSeconds()));
 }
+
+export function utcAsLocalDate(date: Date): Date {
+    if (!date.getTimezoneOffset) {
+        date = recreateDate(date);
+    }
+    const offset = date.getTimezoneOffset();
+    return new Date(date.getTime() - (offset * 60 * 1000));
+}
