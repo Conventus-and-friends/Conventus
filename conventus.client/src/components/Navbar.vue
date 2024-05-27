@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, type Ref } from "vue";
 import Menubar from 'primevue/menubar';
 import Badge from "primevue/badge";
 import InputText from "primevue/inputtext";
 import { useI18n } from "vue-i18n";
 import { computed } from "vue";
-import { useRouteParams } from "@vueuse/router";
 
 import { isMobile } from "@/helpers";
 
 const i18n = useI18n()
 const { t } = i18n
-const locale = useRouteParams('locale')?.value ??  i18n.locale.value
+const locale = computed(() => i18n.locale.value)
 
 const homeText = computed(() =>  t('navbar.home'))
 const aboutText = computed(() =>  t('navbar.about'))
@@ -32,7 +31,7 @@ const items = ref([
     <div class="card">
         <Menubar :model="items">
             <template #start>
-                <RouterLink :to="{ name: 'home', params: { locale: locale} }">
+                <RouterLink :to="{ name: 'home', params: { locale: locale } }">
                     <img v-if="!isMobile()" height="40" src="/src/assets/Conventus-Text.svg" class="h-2rem navbar-first-item">
                     <img v-else height="40" src="/src/assets/Conventus.svg" class="h-2rem navbar-first-item">
                 </RouterLink>
