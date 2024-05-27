@@ -1,4 +1,5 @@
 import HomeView from '@/components/views/HomeView.vue'
+import AboutView from '@/components/views/AboutView.vue'
 import CategoryView from '@/components/views/CategoryView.vue'
 import E404View from '@/components/views/errors/E404View.vue'
 import PostView from '@/components/views/PostView.vue'
@@ -11,6 +12,7 @@ export function setupRouter(i18n: I18n) {
     const locale = getLocale(i18n)
     const views = [
         { path: '/:locale/', component: HomeView, name: 'home' },
+        { path: '/:locale/about/', component: AboutView, name: 'about' },
         { path: '/:locale/:category/', component: CategoryView, name: 'category' },
         { path: '/:locale/:category/:post/', component: PostView, name: 'post' },
         { path: '/:locale/error/404/', component: E404View, name: '404' },

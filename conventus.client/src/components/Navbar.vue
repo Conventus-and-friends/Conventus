@@ -22,7 +22,8 @@ const items = ref([
         route: { name: 'home', params: { locale: locale} }
     },
     {
-        label: aboutText
+        label: aboutText,
+        route: { name: 'about', params: { locale: locale} }
     }
 ]);
 </script>
