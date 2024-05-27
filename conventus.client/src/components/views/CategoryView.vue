@@ -142,6 +142,7 @@ function newPost(post: Post | null) {
             <Paginator v-model:first="currentPage" v-model:rows="itemsPerPage" :totalRecords="postCount" :rowsPerPageOptions="[10, 20, 30, 40, 50]" class="top-margin-2"></Paginator>
         </Panel>
 
+        <!-- Actions panel -->
         <Panel :header="t('category.actions')" class="flex-item">
             <Button :label="t('category.new-post')" @click="postCreatorVisible = true" />
             <div class="top-margin">
