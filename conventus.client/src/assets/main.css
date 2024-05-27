@@ -98,3 +98,12 @@
     justify-content: flex-end;
     align-items: center;
 }
+
+.p-no-margins > p {
+    margin: 0;
+    padding: 0;
+}
+
+.p-no-margins {
+    padding: 0;
+}

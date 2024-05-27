@@ -120,7 +120,7 @@ function submitComment() {
                         <div class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3">
                             <Card class="top-margin">
                                 <template #subtitle>Username - {{ useLocaleTimeAgo(utcAsLocalDate(item.created)).value }}</template>
-                                <template #content><div v-html="DOMPurify.sanitize(item.content)"></div></template>
+                                <template #content><div class="p-no-margins" v-html="DOMPurify.sanitize(item.content)"></div></template>
                             </Card>
                         </div>
                     </div>
