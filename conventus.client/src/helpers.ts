@@ -1,5 +1,4 @@
 import { useWindowSize } from '@vueuse/core'
-import { useRouteParams } from "@vueuse/router";
 
 const { width, height } = useWindowSize()
 
