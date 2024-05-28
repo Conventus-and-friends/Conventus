@@ -57,7 +57,10 @@ onMounted(async () => {
 const posts = asyncComputed(
     async () => {
         if (categoryId.value) {
-            return await getPosts(categoryId.value, (currentPage.value / itemsPerPage.value) + 1, itemsPerPage.value)
+            const posts = await getPosts(categoryId.value, (currentPage.value / itemsPerPage.value) + 1, itemsPerPage.value)
+            if (Array.isArray(posts) && posts.length > 0) {
+                return posts
+            }
         }
         return null;
     },
