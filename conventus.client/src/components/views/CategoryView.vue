@@ -147,9 +147,13 @@ function newPost(post: Post | null) {
 
         <!-- Actions panel -->
         <Panel :header="t('category.actions')" class="flex-item">
-            <Button :label="t('category.new-post')" @click="postCreatorVisible = true" />
-            <div class="top-margin">
-                <Dropdown v-model="selectedSorting" :options="sortingOptions" optionLabel="name" placeholder="Sort" class="w-full md:w-14rem" />
+            <div class="splitscreen">
+                <div>
+                    <Button :label="t('category.new-post')" @click="postCreatorVisible = true" />
+                </div>
+                <div class="padding-left">
+                    <Dropdown v-model="selectedSorting" :options="sortingOptions" optionLabel="name" placeholder="Sort" class="w-full md:w-14rem" />
+                </div>
             </div>
         </Panel>
     </div>

@@ -97,6 +97,13 @@
     padding: 0;
 }
 
+.splitscreen {
+    display: flex;
+}
+
+.padding-left {
+    padding-left: 1rem;
+}
 
 /* Mobile settings */
 @media (max-width: 760px) {
