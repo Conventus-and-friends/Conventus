@@ -57,6 +57,17 @@ public sealed class PostsController(
         return Ok(posts.Select(x => x.ToDto()));
     }
 
+    [HttpGet("by-relevance")]
+    public ActionResult<IAsyncEnumerable<PostDto>> Get([FromQuery] int limit = 5)
+    {
+        if (limit is <= 0 or > 50)
+        {
+            return BadRequest("Limit must be between 1 and 50");
+        }
+
+        return Ok(_dbContext.GetRelevantPostsAsync(limit).Select(x => x.ToDto()));
+    }
+
     [HttpGet("count")]
     public Task<int> GetCount()
     {

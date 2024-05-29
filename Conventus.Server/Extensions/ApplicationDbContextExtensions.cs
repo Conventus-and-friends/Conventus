@@ -39,4 +39,13 @@ public static class ApplicationDbContextExtensions
 
     public static IAsyncEnumerable<Comment> GetCommentsAsync(this ApplicationDbContext dbContext, Guid postId, Pager pager)
         => _getCommentsByPostIdWithPaging(dbContext, postId, (pager.Page - 1) * pager.Length, pager.Length);
+
+    // TODO: actual relevance
+    private static readonly Func<ApplicationDbContext, int, IAsyncEnumerable<Post>> _getRelevantPosts =
+        EF.CompileAsyncQuery((ApplicationDbContext context, int take) =>
+            context.Posts.Include(x => x.Comments).Where(x => x.Comments.Count > 0)
+            .OrderByDescending(x => x.DateCreated).ThenByDescending(x => x.TimeCreated).Take(take));
+
+    public static IAsyncEnumerable<Post> GetRelevantPostsAsync(this ApplicationDbContext dbContext, int take)
+        => _getRelevantPosts(dbContext, take);
 }
