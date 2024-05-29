@@ -11,11 +11,13 @@ import { useI18n } from "vue-i18n";
 
 const i18n = useI18n();
 
-const categories = ref<Category[]>();
+const categories = ref<Category[] | null>(null);
 
 onMounted(async () => {
     const values = await getCategories();
-    categories.value = values.sort((a, b) => a.name.localeCompare(b.name));
+    if (Array.isArray(values) && values.length > 0) {
+      categories.value = values.sort((a, b) => a.name.localeCompare(b.name));
+    }
 });
 
 function truncateDescription(text: string): string {
@@ -29,7 +31,7 @@ function truncateDescription(text: string): string {
 
 <template>
   <div class="card">
-    <DataView :value="categories" data-key="id">
+    <DataView v-if="categories" :value="categories" data-key="id">
             <template #list="slotProps">
                 <div class="grid grid-nogutter">
                     <div v-for="(item, index) in slotProps.items" :key="index" class="col-12">

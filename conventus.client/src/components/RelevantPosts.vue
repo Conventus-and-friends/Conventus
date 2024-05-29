@@ -11,11 +11,13 @@ import { useI18n } from "vue-i18n";
 
 const i18n = useI18n();
 
-const posts = ref<Post[]>();
+const posts = ref<Post[] | null>();
 
 onMounted(async () => {
     const values = await getRelevantPosts(6);
-    posts.value = values;
+    if (Array.isArray(values) && values.length > 0) {
+      posts.value = values;
+    }
 });
 
 function formatContent(text: string): string {
@@ -30,7 +32,7 @@ function formatContent(text: string): string {
 
 <template>
   <div class="card">
-    <DataView :value="posts" data-key="id">
+    <DataView v-if="posts" :value="posts" data-key="id">
             <template #list="slotProps">
                 <div class="grid grid-nogutter">
                     <div v-for="(item, index) in slotProps.items" :key="index" class="col-12">
