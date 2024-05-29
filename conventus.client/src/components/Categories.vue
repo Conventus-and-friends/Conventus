@@ -35,11 +35,11 @@ function truncateDescription(text: string): string {
                     <div v-for="(item, index) in slotProps.items" :key="index" class="col-12">
                         <div class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3">
                             <Divider v-if="index > 0" />
-                            <div>
+                            <div class="hoverbox">
                               <RouterLink style="text-decoration: none; color: inherit;" :to="{ name: 'category', params: { locale: useRouteParams('locale')?.value ??  i18n.locale.value, category: item.id } }" >
                                 <h4>{{ item.name }}</h4>
+                                <p v-if="item.description">{{ truncateDescription(item.description) }}</p>
                               </RouterLink>
-                              <p v-if="item.description">{{ truncateDescription(item.description) }}</p>
                             </div>
                         </div>
                     </div>

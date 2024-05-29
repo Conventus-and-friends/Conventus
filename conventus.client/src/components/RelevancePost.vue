@@ -36,11 +36,11 @@ function formatContent(text: string): string {
                     <div v-for="(item, index) in slotProps.items" :key="index" class="col-12">
                         <div class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3">
                             <Divider v-if="index > 0" />
-                            <div>
+                            <div class="hoverbox">
                               <RouterLink style="text-decoration: none; color: inherit;" :to="{ name: 'post', params: { locale: useRouteParams('locale')?.value ??  i18n.locale.value, category: item.category, post: item.id } }" >
                                 <h4>{{ item.title }}</h4>
+                                <p v-if="item.content">{{ formatContent(item.content) }}</p>
                               </RouterLink>
-                              <p v-if="item.content">{{ formatContent(item.content) }}</p>
                             </div>
                         </div>
                     </div>
