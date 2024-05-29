@@ -20,9 +20,11 @@ import { isMobile, removeHtmlEntities, truncateText } from "@/helpers";
 import { RouterLink } from "vue-router";
 import DOMPurify from "dompurify";
 import type { Post } from "@/models/post";
+import { useToast } from "primevue/usetoast";
 
 const i18n = useI18n();
 const locale = useRouteParams('locale')?.value as string ??  i18n.locale.value
+const toasts = useToast()
 
 // router stuff
 const router = useRouter();
@@ -101,6 +103,7 @@ const sortingOptions = ref([
 
 function newPost(post: Post | null) {
     postCreatorVisible.value = false;
+    toasts.add({ severity: 'success', summary: t("post.post-created"), detail: t("post.post-created-description"), life: 3500 })
     router.push({ name: "post", params: { locale: locale, category: category?.value?.id ,post: post?.id } })
 }
 </script>

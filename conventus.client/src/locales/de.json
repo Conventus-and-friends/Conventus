@@ -31,7 +31,8 @@
         "italic": "Kursiv"
     },
     "post": {
-        
+        "post-created": "Post erstellt",
+        "post-created-description": "Dein neuer Post wurde erstellt."
     },
     "comment": {
         "comments": "Kommentare",

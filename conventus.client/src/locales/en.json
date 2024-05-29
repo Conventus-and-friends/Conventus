@@ -32,7 +32,8 @@
         "italic": "Italic"
     },
     "post": {
-        
+        "post-created": "Post created",
+        "post-created-description": "Your post was created successfully."
     },
     "comment": {
         "comments": "Comments",
