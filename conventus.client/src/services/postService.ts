@@ -71,7 +71,7 @@ export function newPost(post: Post): Promise<Post | null> {
  * Retrieves all relevant posts from the API.
  *
  * @param {number} limit - The maximum number of posts to retrieve.
- * @return {Promise<Post[]>} A promise that resolves to an array of relevance post objects.
+ * @return {Promise<Post[]>} A promise that resolves to an array of posts containing relevant posts.
  */
 export function getRelevantPosts(limit: number): Promise<Post[]> {
     return fetch(`/api/posts/by-relevance?limit=${limit}`)
