@@ -87,7 +87,7 @@ function submitComment() {
             currentPage.value = 0
             getCommentsFromService().then((c) => comments.value = c)
 
-            toasts.add({ severity: 'success', summary: t("comment.comment-added"), life: 3500 })
+            toasts.add({ severity: 'success', summary: t("comment.comment-added"), detail: t("comment.comment-added-description"), life: 3500 })
             abort() // close the comment editor
         }
     })

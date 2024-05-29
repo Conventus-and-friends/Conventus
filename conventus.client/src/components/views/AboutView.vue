@@ -6,7 +6,7 @@ const { t } = i18n
 </script>
 
 <template>
-    <div>
+    <div class="top-margin-2">
         <h2>{{ t('navbar.about') }}</h2>
     </div>
 </template>

@@ -37,7 +37,8 @@
         "comments": "Kommentare",
         "new-comment": "Neuer Kommentar",
         "comment": "Kommentieren",
-        "comment-added": "Kommentar hinzugefügt"
+        "comment-added": "Kommentar hinzugefügt",
+        "comment-added-description": "Dein Kommentar wurde erfolgreich hinzugefügt."
     },
     "time": {
         "timeAgo": {

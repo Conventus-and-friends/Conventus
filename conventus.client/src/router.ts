@@ -3,7 +3,7 @@ import AboutView from '@/components/views/AboutView.vue'
 import CategoryView from '@/components/views/CategoryView.vue'
 import E404View from '@/components/views/errors/E404View.vue'
 import PostView from '@/components/views/PostView.vue'
-import { createRouter, createMemoryHistory, createWebHistory } from 'vue-router'
+import { createRouter, createMemoryHistory, createWebHistory, routeLocationKey } from 'vue-router'
 import { getLocale, loadLocaleMessages, setI18nLanguage, SUPPORT_LOCALES } from './i18n'
 import type { I18n } from 'vue-i18n'
 import type { RouteLocationNormalized } from 'vue-router'
@@ -27,7 +27,7 @@ export function setupRouter(i18n: I18n) {
     // navigation guards
     router.beforeEach(async (to: RouteLocationNormalized) => {
         const paramsLocale = to.params.locale as string
-
+        
         // use locale if paramsLocale is not in SUPPORT_LOCALES
         if (!SUPPORT_LOCALES.includes(paramsLocale)) {
           return `/${locale}`

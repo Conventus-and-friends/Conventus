@@ -38,7 +38,8 @@
         "comments": "Comments",
         "new-comment": "new comment",
         "comment": "Comment",
-        "comment-added": "Comment added successfully"
+        "comment-added": "Comment added successfully",
+        "comment-added-description": "Your comment was added successfully."
     },
     "time": {
         "timeAgo": {
