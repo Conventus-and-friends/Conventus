@@ -5,6 +5,7 @@ import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useRouteParams } from "@vueuse/router";
 import { useI18n } from "vue-i18n";
+import { useTitle } from "@vueuse/core";
 import Panel from 'primevue/panel';
 import Dialog from 'primevue/dialog';
 import Paginator from 'primevue/paginator';
@@ -46,6 +47,9 @@ onMounted(async () => {
             category.value = value
             postCount.value = await getPostsCount(id)
             categoryId.value = id
+
+            // set title
+            useTitle("Conventus - " + value.name)
         } else {
             router.push({ name: "404", params: { locale:  locale} })
         }

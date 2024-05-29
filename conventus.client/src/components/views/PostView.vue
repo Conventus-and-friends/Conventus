@@ -7,6 +7,7 @@ import Comments from '@/components/Comments.vue';
 import type { Category } from '@/models/category';
 import type { Post } from '@/models/post';
 import { getPost } from '@/services/postService';
+import { useTitle } from "@vueuse/core";
 import { useRouteParams } from '@vueuse/router';
 import { onMounted, ref } from 'vue';
 import { getCategory } from '@/services/categoryService';
@@ -30,6 +31,8 @@ const post = ref<Post>();
 
 const router404Args = { name: "404", params: { locale:  locale} }
 
+const title = useTitle();
+
 onMounted(async () => {
     if (typeof(categoryIdRaw.value) === "string") {
         const id = parseInt(categoryIdRaw.value)
@@ -37,6 +40,7 @@ onMounted(async () => {
         if (value) {
             category.value = value
             categoryId.value = id
+            title.value = "Conventus - " + value.name
         } else {
             router.push(router404Args)
         }
@@ -49,6 +53,7 @@ onMounted(async () => {
         if (value) {
             post.value = value
             postId.value = postIdRaw.value
+            title.value = title.value + " - " + value.title
         } else {
             router.push(router404Args)
         }

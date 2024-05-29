@@ -27,7 +27,9 @@ export function setupRouter(i18n: I18n) {
     // navigation guards
     router.beforeEach(async (to: RouteLocationNormalized) => {
         const paramsLocale = to.params.locale as string
-        
+
+        document.title = "Conventus";
+
         // use locale if paramsLocale is not in SUPPORT_LOCALES
         if (!SUPPORT_LOCALES.includes(paramsLocale)) {
           return `/${locale}`
