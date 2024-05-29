@@ -44,7 +44,7 @@ public static class ApplicationDbContextExtensions
     private static readonly Func<ApplicationDbContext, int, IAsyncEnumerable<Post>> _getRelevantPosts =
         EF.CompileAsyncQuery((ApplicationDbContext context, int take) =>
             context.Posts.Include(x => x.Comments).Where(x => x.Comments.Count > 0)
-            .OrderByDescending(x => x.DateCreated).ThenByDescending(x => x.TimeCreated).Take(take));
+            .OrderByDescending(x => x.DateCreated).ThenByDescending(x => x.Comments.Count).Take(take));
 
     public static IAsyncEnumerable<Post> GetRelevantPostsAsync(this ApplicationDbContext dbContext, int take)
         => _getRelevantPosts(dbContext, take);
