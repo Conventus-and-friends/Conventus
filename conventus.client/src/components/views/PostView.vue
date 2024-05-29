@@ -76,7 +76,7 @@ const { d } = i18n
                 <template #title>{{ DOMPurify.sanitize(post.title) }}</template>
                 <template #subtitle v-if="post.created">{{ d(dateAsUtcDate(post.created), "long") }}</template>
                 <template #content>
-                    <div v-if="post.content" v-html="DOMPurify.sanitize(post.content)" class="m-0"></div>
+                    <div v-if="post.content" v-html="DOMPurify.sanitize(post.content)" class="m-0 break-word"></div>
                 </template>
             </Card>
             <Comments :post="post"/>
