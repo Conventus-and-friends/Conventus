@@ -31,13 +31,15 @@
         "italic": "Kursiv"
     },
     "post": {
-        
+        "post-created": "Post erstellt",
+        "post-created-description": "Dein neuer Post wurde erstellt."
     },
     "comment": {
         "comments": "Kommentare",
         "new-comment": "Neuer Kommentar",
         "comment": "Kommentieren",
-        "comment-added": "Kommentar hinzugefügt"
+        "comment-added": "Kommentar hinzugefügt",
+        "comment-added-description": "Dein Kommentar wurde erfolgreich hinzugefügt."
     },
     "time": {
         "timeAgo": {

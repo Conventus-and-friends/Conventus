@@ -5,6 +5,7 @@ import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useRouteParams } from "@vueuse/router";
 import { useI18n } from "vue-i18n";
+import { useTitle } from "@vueuse/core";
 import Panel from 'primevue/panel';
 import Dialog from 'primevue/dialog';
 import Paginator from 'primevue/paginator';
@@ -18,9 +19,11 @@ import { asyncComputed } from "@vueuse/core";
 import { isMobile, removeHtmlFromText, truncateText } from "@/helpers";
 import { RouterLink } from "vue-router";
 import type { Post } from "@/models/post";
+import { useToast } from "primevue/usetoast";
 
 const i18n = useI18n();
 const locale = useRouteParams('locale')?.value as string ??  i18n.locale.value
+const toasts = useToast()
 
 // router stuff
 const router = useRouter();
@@ -45,6 +48,9 @@ onMounted(async () => {
             category.value = value
             postCount.value = await getPostsCount(id)
             categoryId.value = id
+
+            // set title
+            useTitle("Conventus - " + value.name)
         } else {
             router.push({ name: "404", params: { locale:  locale} })
         }
@@ -89,6 +95,7 @@ const sortingOptions = ref([
 
 function newPost(post: Post | null) {
     postCreatorVisible.value = false;
+    toasts.add({ severity: 'success', summary: t("post.post-created"), detail: t("post.post-created-description"), life: 3500 })
     router.push({ name: "post", params: { locale: locale, category: category?.value?.id ,post: post?.id } })
 }
 </script>
@@ -124,7 +131,7 @@ function newPost(post: Post | null) {
                                 <RouterLink v-if="category" style="text-decoration: none; color: inherit;" :to="{ name: 'post', params: { locale:  locale, category: category.id, post: item.id} }">
                                     <div class="hoverbox">
                                         <h3>{{ item.title }}</h3>
-                                        <p v-if="item.content" class="m-0">
+                                        <p v-if="item.content" class="m-0 break-word">
                                             {{ formatContent(item.content) }}
                                         </p>
                                     </div>
@@ -139,9 +146,13 @@ function newPost(post: Post | null) {
 
         <!-- Actions panel -->
         <Panel :header="t('category.actions')" class="flex-item">
-            <Button :label="t('category.new-post')" @click="postCreatorVisible = true" />
-            <div class="top-margin">
-                <Dropdown v-model="selectedSorting" :options="sortingOptions" optionLabel="name" placeholder="Sort" class="w-full md:w-14rem" />
+            <div class="splitscreen">
+                <div>
+                    <Button :label="t('category.new-post')" @click="postCreatorVisible = true" />
+                </div>
+                <div class="padding-left">
+                    <Dropdown v-model="selectedSorting" :options="sortingOptions" optionLabel="name" placeholder="Sort" class="w-full md:w-14rem" />
+                </div>
             </div>
         </Panel>
     </div>
