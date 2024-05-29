@@ -15,9 +15,8 @@ import Dropdown from 'primevue/dropdown';
 import NewPost from "@/components/NewPost.vue";
 import { getPostsCount, getPosts } from "@/services/postService";
 import { asyncComputed } from "@vueuse/core";
-import { isMobile, removeHtmlEntities, truncateText } from "@/helpers";
+import { isMobile, removeHtmlFromText, truncateText } from "@/helpers";
 import { RouterLink } from "vue-router";
-import DOMPurify from "dompurify";
 import type { Post } from "@/models/post";
 
 const i18n = useI18n();
@@ -72,18 +71,11 @@ const { t } = useI18n()
 
 // functions
 function formatContent(text: string): string {
-    const noTags = DOMPurify.sanitize(text,
-        {
-            ALLOWED_TAGS: [],
-            ALLOWED_ATTR: [],
-            KEEP_CONTENT: true
-        }
-    )
-    const noHtml = removeHtmlEntities(noTags)
+    const noHtml = removeHtmlFromText(text)
     if (isMobile()) {
-      return truncateText(noHtml, 100);
+      return truncateText(noHtml, 100)
     }
-    return truncateText(noHtml, 250);
+    return truncateText(noHtml, 250)
 }
 
 // dropdown values

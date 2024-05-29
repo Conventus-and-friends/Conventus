@@ -1,4 +1,5 @@
 import { useWindowSize } from '@vueuse/core'
+import DOMPurify from 'dompurify'
 
 const { width, height } = useWindowSize()
 
@@ -24,6 +25,17 @@ const htmlEntitiesLookup = {
 
 export function removeHtmlEntities(text: string): string {
     return text.replace(htmlEntitiesRegex, (match) => htmlEntitiesLookup[match as keyof typeof htmlEntitiesLookup])
+}
+
+const noHtmlDomPurifySettings = {
+    ALLOWED_TAGS: [],
+    ALLOWED_ATTR: [],
+    KEEP_CONTENT: true
+}
+
+export function removeHtmlFromText(text: string): string {
+    const noTags = DOMPurify.sanitize(text, noHtmlDomPurifySettings)
+    return removeHtmlEntities(noTags)
 }
 
 export function recreateDate(date: Date): Date {
