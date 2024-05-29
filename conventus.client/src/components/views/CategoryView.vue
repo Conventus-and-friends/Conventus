@@ -139,7 +139,7 @@ function newPost(post: Post | null) {
                                 <RouterLink v-if="category" style="text-decoration: none; color: inherit;" :to="{ name: 'post', params: { locale:  locale, category: category.id, post: item.id} }">
                                     <div class="hoverbox">
                                         <h3>{{ item.title }}</h3>
-                                        <p v-if="item.content" class="m-0">
+                                        <p v-if="item.content" class="m-0 break-word">
                                             {{ formatContent(item.content) }}
                                         </p>
                                     </div>
