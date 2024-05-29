@@ -7,7 +7,7 @@ import Panel from 'primevue/panel';
 
 // local imports
 import Categories from "@/components/Categories.vue";
-import RelevancePost from "@/components/RelevancePost.vue";
+import RelevantPosts from "@/components/RelevantPosts.vue";
 
 // set constants
 const { t } = useI18n()
@@ -24,7 +24,7 @@ const { t } = useI18n()
         </Panel>
 
         <Panel class="flex-item-normal" :header="t('startpage.relevant')">
-            <RelevancePost/>
+            <RelevantPosts/>
         </Panel>
     </div>
 </template>

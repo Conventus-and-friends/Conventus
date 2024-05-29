@@ -2,8 +2,8 @@
 import { ref, onMounted } from "vue";
 import DataView from "primevue/dataview";
 import Divider from 'primevue/divider';
-import type { Relevance } from "@/models/relevancepost";
-import { getRelevancePost } from "@/services/relevancepostService";
+import type { Post } from "@/models/post";
+import { getRelevantPosts } from "@/services/postService";
 import { isMobile, removeHtmlFromText, truncateText } from "@/helpers";
 import { RouterLink } from "vue-router";
 import { useRouteParams } from "@vueuse/router";
@@ -11,11 +11,11 @@ import { useI18n } from "vue-i18n";
 
 const i18n = useI18n();
 
-const relevences = ref<Relevance[]>();
+const posts = ref<Post[]>();
 
 onMounted(async () => {
-    const values = await getRelevancePost(6);
-    relevences.value = values;
+    const values = await getRelevantPosts(6);
+    posts.value = values;
 });
 
 function formatContent(text: string): string {
@@ -30,7 +30,7 @@ function formatContent(text: string): string {
 
 <template>
   <div class="card">
-    <DataView :value="relevences" data-key="id">
+    <DataView :value="posts" data-key="id">
             <template #list="slotProps">
                 <div class="grid grid-nogutter">
                     <div v-for="(item, index) in slotProps.items" :key="index" class="col-12">
