@@ -32,8 +32,8 @@ const items = ref([
         <Menubar :model="items">
             <template #start>
                 <RouterLink :to="{ name: 'home', params: { locale: locale } }">
-                    <img v-if="!isMobile()" height="40" src="/src/assets/Conventus-Text.svg" class="h-2rem navbar-first-item">
-                    <img v-else height="40" src="/src/assets/Conventus.svg" class="h-2rem navbar-first-item">
+                    <img v-if="!isMobile()" height="40" src="@/assets/Conventus-Text.svg" class="h-2rem navbar-first-item">
+                    <img v-else height="40" src="@/assets/Conventus.svg" class="h-2rem navbar-first-item">
                 </RouterLink>
             </template>
             <template #item="{ item, props, hasSubmenu, root }">
