@@ -3,7 +3,7 @@ import Card from 'primevue/card';
 import Panel from 'primevue/panel';
 import { useI18n } from 'vue-i18n';
 import Comments from '@/components/Comments.vue';
-
+import SimilarPosts from '@/components/SimilarPosts.vue';
 import type { Category } from '@/models/category';
 import type { Post } from '@/models/post';
 import { getPost } from '@/services/postService';
@@ -66,7 +66,7 @@ onMounted(async () => {
     }
 })
 
-const { d } = i18n
+const { d, t } = i18n
 </script>
 
 <template>
@@ -83,11 +83,8 @@ const { d } = i18n
         </div>
 
 
-        <Panel header="Header" class="flex-item hidden-on-mobile">
-            <p class="m-0">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
+        <Panel :header="t('post.similar-posts')" class="flex-item hidden-on-mobile">
+            <SimilarPosts v-if="post" :post="post"/>
         </Panel>
     </div>
 </template>

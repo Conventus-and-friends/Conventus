@@ -32,7 +32,8 @@
     },
     "post": {
         "post-created": "Post erstellt",
-        "post-created-description": "Dein neuer Post wurde erstellt."
+        "post-created-description": "Dein neuer Post wurde erstellt.",
+        "similar-posts": "Ähnliche Posts"
     },
     "comment": {
         "comments": "Kommentare",

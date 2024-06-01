@@ -33,7 +33,8 @@
     },
     "post": {
         "post-created": "Post created",
-        "post-created-description": "Your post was created successfully."
+        "post-created-description": "Your post was created successfully.",
+        "similar-posts": "Similar posts"
     },
     "comment": {
         "comments": "Comments",

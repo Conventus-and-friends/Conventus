@@ -87,7 +87,7 @@ export function getRelevantPosts(limit: number): Promise<Post[]> {
  * @return {Promise<Post[] | null>} A promise that resolves to an array of similar post objects or null if not found.
  */
 export function getSimilarPosts(id: string, limit: number): Promise<Post[] | null> {
-    return fetch(`/api/posts/by-similar/${id}?limit=${limit}`)
+    return fetch(`/api/posts/by-similarity/${id}?limit=${limit}`)
         .then(response => response.ok ? response.json() : null)
         .then(json => json as Post[] ?? null)
 }
