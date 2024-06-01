@@ -21,7 +21,7 @@ public sealed class PostsController(
     private readonly ILogger<PostsController> _logger = logger;
 
     [HttpGet]
-    public ActionResult<IEnumerable<PostDto>> Get([FromQuery] Pager pager)
+    public ActionResult<IEnumerable<PostDto>> GetMany([FromQuery] Pager pager)
     {
         if (!pager.IsValid())
         {
@@ -34,7 +34,7 @@ public sealed class PostsController(
     }
 
     [HttpGet("by-id/{id}")]
-    public async Task<ActionResult<PostDto>> Get(Guid id)
+    public async Task<ActionResult<PostDto>> GetById(Guid id)
     {
         var post = await _dbContext.Posts.FindAsync(id);
         if (post is null)
@@ -45,7 +45,7 @@ public sealed class PostsController(
     }
 
     [HttpGet("by-category/{categoryId}")]
-    public ActionResult<IAsyncEnumerable<PostDto>> Get(long categoryId, [FromQuery] Pager pager)
+    public ActionResult<IAsyncEnumerable<PostDto>> GetByCategory(long categoryId, [FromQuery] Pager pager)
     {
         if (!pager.IsValid())
         {
@@ -58,7 +58,7 @@ public sealed class PostsController(
     }
 
     [HttpGet("by-relevance")]
-    public ActionResult<IAsyncEnumerable<PostDto>> Get([FromQuery] int limit = 5)
+    public ActionResult<IAsyncEnumerable<PostDto>> GetByRelevance([FromQuery] int limit = 5)
     {
         if (limit is <= 0 or > 50)
         {
@@ -68,6 +68,23 @@ public sealed class PostsController(
         return Ok(_dbContext.GetRelevantPostsAsync(limit).Select(x => x.ToDto()));
     }
 
+    [HttpGet("by-similarity/{postId}")]
+    public async Task<ActionResult<IAsyncEnumerable<PostDto>>> GetBySimilarity(Guid postId, [FromQuery] int limit = 5)
+    {
+        if (limit is <= 0 or > 50)
+        {
+            return BadRequest("Limit must be between 1 and 50");
+        }
+        var post = await _dbContext.Posts.FindAsync(postId);
+
+        if (post is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(_dbContext.GetSimilarPostsAsync(post.CategoryId, post.Id, limit).Select(x => x.ToDto()));
+    }
+
     [HttpGet("count")]
     public Task<int> GetCount()
     {
@@ -75,7 +92,7 @@ public sealed class PostsController(
     }
 
     [HttpGet("by-category/{categoryId}/count")]
-    public Task<int> GetCount(long categoryId)
+    public Task<int> GetCountByCategory(long categoryId)
     {
         return _dbContext.GetPostsCountAsync(categoryId);
     }

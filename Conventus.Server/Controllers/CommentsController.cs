@@ -22,7 +22,7 @@ public sealed class CommentsController(
     private readonly ILogger<CommentsController> _logger = logger;
 
     [HttpGet]
-    public ActionResult<IEnumerable<CommentDto>> Get([FromQuery] Pager pager)
+    public ActionResult<IEnumerable<CommentDto>> GetMany([FromQuery] Pager pager)
     {
         if (!pager.IsValid())
         {
@@ -35,7 +35,7 @@ public sealed class CommentsController(
     }
 
     [HttpGet("by-id/{id}")]
-    public async Task<ActionResult<CommentDto>> Get(Guid id)
+    public async Task<ActionResult<CommentDto>> GetById(Guid id)
     {
         var comment = await _dbContext.Comments.FindAsync(id);
         if (comment is null)
@@ -46,7 +46,7 @@ public sealed class CommentsController(
     }
 
     [HttpGet("by-post/{postId}")]
-    public ActionResult<IAsyncEnumerable<CommentDto>> Get(Guid postId, [FromQuery] Pager pager)
+    public ActionResult<IAsyncEnumerable<CommentDto>> GetByPost(Guid postId, [FromQuery] Pager pager)
     {
         if (!pager.IsValid())
         {
@@ -65,7 +65,7 @@ public sealed class CommentsController(
     }
 
     [HttpGet("by-post/{postId}/count")]
-    public Task<int> GetCount(Guid postId)
+    public Task<int> GetCountByPost(Guid postId)
     {
         return _dbContext.GetCommentsCountAsync(postId);
     }

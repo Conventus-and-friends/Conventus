@@ -48,4 +48,13 @@ public static class ApplicationDbContextExtensions
 
     public static IAsyncEnumerable<Post> GetRelevantPostsAsync(this ApplicationDbContext dbContext, int take)
         => _getRelevantPosts(dbContext, take);
+
+    // TODO: actual relevance
+    private static readonly Func<ApplicationDbContext, long, Guid, int, IAsyncEnumerable<Post>> _getSimilarPosts =
+        EF.CompileAsyncQuery((ApplicationDbContext context, long categoryId, Guid postId, int take) =>
+            context.Posts.Where(x => x.CategoryId == categoryId && x.Id != postId)
+            .OrderByDescending(x => x.DateCreated).ThenByDescending(x => x.TimeCreated).Take(take));
+
+    public static IAsyncEnumerable<Post> GetSimilarPostsAsync(this ApplicationDbContext dbContext, long categoryId, Guid postId, int take)
+        => _getSimilarPosts(dbContext, categoryId, postId, take);
 }
