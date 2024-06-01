@@ -91,3 +91,12 @@ export function getSimilarPosts(id: string, limit: number): Promise<Post[] | nul
         .then(response => response.ok ? response.json() : null)
         .then(json => json as Post[] ?? null)
 }
+
+export function searchPosts(term: string, limit: number): Promise<Post[]> {
+    return fetch('/api/posts/search?' + new URLSearchParams({
+        query: term,
+        limit: limit.toString()
+    }))
+        .then(response => response.json())
+        .then(json => json as Post[])
+}
