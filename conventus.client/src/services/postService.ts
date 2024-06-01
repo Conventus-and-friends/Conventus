@@ -78,3 +78,16 @@ export function getRelevantPosts(limit: number): Promise<Post[]> {
         .then(response => response.json())
         .then(json => json as Post[])
 }
+
+/**
+ * Retrieves all similar posts from the API.
+ *
+ * @param {string} id - The ID of the post to retrieve similar posts for.
+ * @param {number} limit - The maximum number of posts to retrieve.
+ * @return {Promise<Post[] | null>} A promise that resolves to an array of similar post objects or null if not found.
+ */
+export function getSimilarPosts(id: string, limit: number): Promise<Post[] | null> {
+    return fetch(`/api/posts/by-similar/${id}?limit=${limit}`)
+        .then(response => response.ok ? response.json() : null)
+        .then(json => json as Post[] ?? null)
+}
