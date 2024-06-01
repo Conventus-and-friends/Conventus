@@ -19,7 +19,7 @@ const props = defineProps({
 
 onMounted(async () => {
     if (!props.post.id) return
-    const values = await getSimilarPosts(props.post.id, 6)
+    const values = await getSimilarPosts(props.post.id, 10);
     if (Array.isArray(values) && values.length > 0) {
         posts.value = values
     }
@@ -28,9 +28,9 @@ onMounted(async () => {
 function formatContent(text: string): string {
     const noHtml = removeHtmlFromText(text)
     if (isMobile()) {
-      return truncateText(noHtml, 75)
+      return truncateText(noHtml, 40)
     }
-    return truncateText(noHtml, 150)
+    return truncateText(noHtml, 100)
 }
 </script>
 
@@ -45,7 +45,7 @@ function formatContent(text: string): string {
                             <div class="hoverbox">
                               <RouterLink style="text-decoration: none; color: inherit;" :to="{ name: 'post', params: { locale: useRouteParams('locale')?.value ??  i18n.locale.value, category: item.category, post: item.id } }" >
                                 <h4>{{ item.title }}</h4>
-                                <p v-if="item.content">{{ formatContent(item.content) }}</p>
+                                <p v-if="item.content" class="break-word">{{ formatContent(item.content) }}</p>
                               </RouterLink>
                             </div>
                         </div>
