@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import type { Post } from "@/models/post";
 import { getSimilarPosts } from "@/services/postService";
 import { isMobile, removeHtmlFromText, truncateText } from "@/helpers";
@@ -8,22 +8,26 @@ import Divider from "primevue/divider";
 import { RouterLink } from "vue-router";
 import { useRouteParams } from "@vueuse/router";
 import { useI18n } from "vue-i18n";
+import { asyncComputed } from "@vueuse/core";
 
 const i18n = useI18n();
 
-const posts = ref<Post[] | null>();
 
 const props = defineProps({
     post: { type: Object as () => Post, required: true }
 });
 
-onMounted(async () => {
-    if (!props.post.id) return
-    const values = await getSimilarPosts(props.post.id, 10);
-    if (Array.isArray(values) && values.length > 0) {
-        posts.value = values
-    }
-})
+const posts = asyncComputed(
+    async () => {
+        if (!props.post.id) return null
+        const values = await getSimilarPosts(props.post.id, 10);
+        if (Array.isArray(values) && values.length > 0) {
+            return values
+        }
+        return null
+    },
+    null
+)
 
 function formatContent(text: string): string {
     const noHtml = removeHtmlFromText(text)

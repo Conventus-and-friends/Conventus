@@ -31,7 +31,6 @@ const router = useRouter();
 const categoryIdRaw = useRouteParams("category");
 const categoryId = ref<number | null>(null);
 
-const category = ref<Category>();
 const informationVisible = ref(false);
 const postCreatorVisible = ref(false);
 const postCount = ref(0);
@@ -40,24 +39,28 @@ const postCount = ref(0);
 const currentPage = ref(0);
 const itemsPerPage = ref(10);
 
-onMounted(async () => {
-    if (typeof(categoryIdRaw.value) === "string") {
-        const id = parseInt(categoryIdRaw.value)
-        const value = await getCategory(id);
-        if (value) {
-            category.value = value
-            postCount.value = await getPostsCount(id)
-            categoryId.value = id
+const category = asyncComputed(
+    async () => {
+        if (typeof(categoryIdRaw.value) === "string") {
+            const id = parseInt(categoryIdRaw.value)
+            const value = await getCategory(id);
+            if (value) {
+                postCount.value = await getPostsCount(id)
+                categoryId.value = id
 
-            // set title
-            useTitle("Conventus - " + value.name)
+                // set title
+                useTitle("Conventus - " + value.name)
+                return value;
+            } else {
+                router.push({ name: "404", params: { locale:  locale} })
+            }
         } else {
-            router.push({ name: "404", params: { locale:  locale} })
+            console.warn("invalid category id")
         }
-    } else {
-        console.warn("invalid category id")
-    }
-})
+        return null
+    },
+    null
+)
 
 const posts = asyncComputed(
     async () => {

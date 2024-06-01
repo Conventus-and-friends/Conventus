@@ -8,9 +8,9 @@ import SimilarPosts from '@/components/SimilarPosts.vue';
 import type { Category } from '@/models/category';
 import type { Post } from '@/models/post';
 import { getPost } from '@/services/postService';
-import { useTitle } from "@vueuse/core";
+import { asyncComputed, useTitle } from "@vueuse/core";
 import { useRouteParams } from '@vueuse/router';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { getCategory } from '@/services/categoryService';
 import { useRouter } from 'vue-router';
 import { dateAsUtcDate } from '@/helpers';
@@ -22,50 +22,50 @@ const router = useRouter();
 const i18n = useI18n();
 const locale = useRouteParams('locale')?.value as string ??  i18n.locale.value
 
-const categoryIdRaw = useRouteParams("category");
-const categoryId = ref<number | null>(null);
-const category = ref<Category>();
-
-const postIdRaw = useRouteParams("post");
-const postId = ref<string | null>(null);
-const post = ref<Post>();
-
+const title = useTitle();
 const router404Args = { name: "404", params: { locale:  locale} }
 
-const title = useTitle();
-
-onMounted(async () => {
+const categoryIdRaw = useRouteParams("category");
+const categoryId = computed(() => {
     if (typeof(categoryIdRaw.value) === "string") {
-        const id = parseInt(categoryIdRaw.value)
-        const value = await getCategory(id);
-        if (value) {
-            category.value = value
-            categoryId.value = id
-            title.value = "Conventus - " + value.name
-        } else {
+        return parseInt(categoryIdRaw.value)
+    }
+    return null
+});
+const category = asyncComputed(
+    async () => {
+        if (categoryId.value) {
+            const value = await getCategory(categoryId.value);
+            if (value) {
+                title.value = "Conventus - " + value.name
+                return value
+            }
             router.push(router404Args)
         }
-    } else {
         console.warn("invalid category id")
-    }
+        return null
+    },
+    null
+)
 
-    if (typeof(postIdRaw.value) === "string") {
-        const value = await getPost(postIdRaw.value);
-        if (value) {
-            post.value = value
-            postId.value = postIdRaw.value
-            title.value = title.value + " - " + value.title
-        } else {
+const postId = useRouteParams("post");
+const post = asyncComputed(
+    async () => {
+        if (typeof(postId.value) === "string") {
+            const value = await getPost(postId.value);
+            if (value) {
+                title.value = title.value + " - " + value.title
+                if (value.category === categoryId.value) {
+                    return value
+                }
+            }
             router.push(router404Args)
         }
-    } else {
         console.warn("invalid post id")
-    }
-
-    if (post.value?.category !== categoryId.value) {
-        router.push(router404Args)
-    }
-})
+        return null
+    },
+    null
+)
 
 const { d, t } = i18n
 </script>
