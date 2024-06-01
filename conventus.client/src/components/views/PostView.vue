@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Card from 'primevue/card';
 import Panel from 'primevue/panel';
+import ScrollPanel from 'primevue/scrollpanel';
 import { useI18n } from 'vue-i18n';
 import Comments from '@/components/Comments.vue';
 import SimilarPosts from '@/components/SimilarPosts.vue';
@@ -84,7 +85,9 @@ const { d, t } = i18n
 
 
         <Panel :header="t('post.similar-posts')" class="flex-item hidden-on-mobile">
-            <SimilarPosts v-if="post" :post="post"/>
+            <ScrollPanel style="width: 100%; height: 25rem;">
+                <SimilarPosts v-if="post" :post="post"/>
+            </ScrollPanel>
         </Panel>
     </div>
 </template>
