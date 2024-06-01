@@ -85,6 +85,18 @@ public sealed class PostsController(
         return Ok(_dbContext.GetSimilarPostsAsync(post.CategoryId, post.Id, limit).Select(x => x.ToDto()));
     }
 
+    // TODO: implement actual search logic instead of database query
+    [HttpGet("search")]
+    public ActionResult<IAsyncEnumerable<PostDto>> Search([FromQuery] string query, [FromQuery] int limit = 5)
+    {
+        if (limit is <= 0 or > 50)
+        {
+            return BadRequest("Limit must be between 1 and 50");
+        }
+
+        return Ok(_dbContext.GetSearchResultsAsync(query, limit).Select(x => x.ToDto()));
+    }
+
     [HttpGet("count")]
     public Task<int> GetCount()
     {

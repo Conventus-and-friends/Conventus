@@ -57,4 +57,13 @@ public static class ApplicationDbContextExtensions
 
     public static IAsyncEnumerable<Post> GetSimilarPostsAsync(this ApplicationDbContext dbContext, long categoryId, Guid postId, int take)
         => _getSimilarPosts(dbContext, categoryId, postId, take);
+
+    // TODO: this has nothing to do with actual search
+    private static readonly Func<ApplicationDbContext, string, int, IAsyncEnumerable<Post>> _getSearchResults =
+        EF.CompileAsyncQuery((ApplicationDbContext context, string queryPattern, int take) =>
+            context.Posts.Where(x => EF.Functions.Like(x.Title, queryPattern) || EF.Functions.Like(x.Content, queryPattern))
+            .OrderByDescending(x => x.DateCreated).ThenByDescending(x => x.TimeCreated).Take(take));
+
+    public static IAsyncEnumerable<Post> GetSearchResultsAsync(this ApplicationDbContext dbContext, string query, int take)
+        => _getSearchResults(dbContext, $"%{query}%", take);
 }
