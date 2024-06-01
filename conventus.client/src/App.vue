@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Navbar from '@/components/Navbar.vue';
+import Footer from '@/components/Footer.vue';
 import Toast from 'primevue/toast';
 </script>
 
@@ -10,6 +11,9 @@ import Toast from 'primevue/toast';
     <main>
         <RouterView/>
     </main>
+    <footer>
+        <Footer/>
+    </footer>
 </template>
 
 <style scoped>
