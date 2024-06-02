@@ -6,6 +6,7 @@ import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import SearchResults from "@/components/SearchResults.vue";
 import OverlayPanel from 'primevue/overlaypanel';
+import Dialog from "primevue/dialog";
 import { useI18n } from "vue-i18n";
 import { computed } from "vue";
 
@@ -15,15 +16,24 @@ const i18n = useI18n()
 const { t } = i18n
 const locale = computed(() => i18n.locale.value)
 const searchOverlay = ref()
+const searchDialogVisible = ref(false)
 const searchQuery = ref<string>()
 
 function showSearchOverlay(event: any) {
-    searchOverlay.value.show(event)
+    if (!isMobile()) {
+        searchOverlay.value.show(event)
+        return;
+    }
+    searchDialogVisible.value = true
 }
 
 function closeSearchOverlay() {
-    searchOverlay.value.hide()
     searchQuery.value = ""
+    if (!isMobile()) {
+        searchOverlay.value.hide()
+        return;
+    }
+    searchDialogVisible.value = false
 }
 
 const homeText = computed(() =>  t('navbar.home'))
@@ -70,12 +80,17 @@ const items = ref([
             </template>
             <template #end>
                 <div class="flex align-items-center gap-2">
-                    <InputText v-if="!isMobile()" v-model="searchQuery" @input="showSearchOverlay" id="search" :placeholder="t('navbar.search')" type="text" class="w-8rem sm:w-auto" />
-                    <Button v-else icon="pi pi-search" text />
+                    <InputText v-if="!isMobile()" v-model="searchQuery" @input="showSearchOverlay" :placeholder="t('navbar.search')" type="text" class="w-8rem sm:w-auto" />
+                    <Button v-else icon="pi pi-search" text @click="showSearchOverlay"/>
 
                     <OverlayPanel v-if="!isMobile()" ref="searchOverlay" appendTo="body">
                         <SearchResults @close="closeSearchOverlay" v-model:searchText="searchQuery" />
                     </OverlayPanel>
+
+                    <Dialog v-model:visible="searchDialogVisible" :header="t('navbar.search')" :style="{ width: '90vw' }" position="top" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+                        <InputText v-model="searchQuery" @input="showSearchOverlay" :placeholder="t('navbar.search')" type="text" class="top-margin-min" />
+                        <SearchResults @close="closeSearchOverlay" v-model:searchText="searchQuery" />
+                    </Dialog>
                 </div>
             </template>
         </Menubar>

@@ -38,6 +38,10 @@
     flex: 1;
 }
 
+.top-margin-min {
+    margin-top: 0.3rem;
+}
+
 .top-margin {
     margin-top: 1rem;
 }
