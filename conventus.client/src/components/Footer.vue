@@ -9,7 +9,7 @@ const date = ref(new Date().getFullYear());
 </script>
 
 <template>
-    <Divider class="top-margin-5"/>
+    <Divider class="top-margin-5" style="padding-top: 1rem;"/>
     <div class="links-footer">
         <a href="https://github.com/Conventus-and-friends/Conventus" class="footer-link" target="_blank">GitHub</a>
     </div>

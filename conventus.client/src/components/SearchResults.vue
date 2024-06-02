@@ -40,8 +40,8 @@ function formatContent(text: string): string {
                 <template #list="slotProps">
                     <div class="grid grid-nogutter">
                         <div v-for="(item, index) in slotProps.items" :key="index" class="col-12">
-                            <div class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3">
-                                <Divider v-if="index > 0" />
+                            <div class="flex flex-column sm:flex-row sm:align-items-center">
+                                <Divider v-if="index > 0" style="padding-bottom: 1rem;" />
                                 <div class="hoverbox">
                                 <RouterLink @click.native="emit('close')" style="text-decoration: none; color: inherit;" :to="{ name: 'post', params: { locale: useRouteParams('locale')?.value ??  i18n.locale.value, category: item.category, post: item.id } }" >
                                     <h4 class="break-word">{{ truncateText(item.title, 30) }}</h4>
