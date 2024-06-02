@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { searchPosts } from '@/services/postService';
-import { asyncComputed } from '@vueuse/core';
+import { asyncComputed, useThrottleFn } from '@vueuse/core';
 import { removeHtmlFromText, truncateText } from '@/helpers';
 import { useRouteParams } from '@vueuse/router';
 import { useI18n } from 'vue-i18n';
@@ -13,10 +13,12 @@ const emit = defineEmits(['close']);
 const i18n = useI18n();
 const { t } = i18n
 
+const debouncedSearch = useThrottleFn((query: string) => searchPosts(query, 5), 550)
+
 const searchResults = asyncComputed(
     async () => {
         if (searchText.value) {
-            const values = await searchPosts(searchText.value, 5)
+            const values = await debouncedSearch(searchText.value)
             if (Array.isArray(values) && values.length > 0) {
                 return values
             }
