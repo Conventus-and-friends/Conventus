@@ -7,7 +7,8 @@
     "navbar": {
         "search": "Suchen",
         "home": "Start",
-        "about": "Über"
+        "about": "Über",
+        "no-results": "Keine Ergebnisse"
     },
     "errors": {
         "404": "Die angeforderte Seite konnte nicht gefunden werden."

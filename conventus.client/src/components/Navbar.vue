@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { ref, type Ref } from "vue";
+import { ref } from "vue";
 import Menubar from 'primevue/menubar';
 import Badge from "primevue/badge";
 import InputText from "primevue/inputtext";
+import Button from "primevue/button";
+import SearchResults from "@/components/SearchResults.vue";
+import OverlayPanel from 'primevue/overlaypanel';
 import { useI18n } from "vue-i18n";
 import { computed } from "vue";
 
@@ -11,6 +14,17 @@ import { isMobile } from "@/helpers";
 const i18n = useI18n()
 const { t } = i18n
 const locale = computed(() => i18n.locale.value)
+const searchOverlay = ref()
+const searchQuery = ref<string>()
+
+function showSearchOverlay(event: any) {
+    searchOverlay.value.show(event)
+}
+
+function closeSearchOverlay() {
+    searchOverlay.value.hide()
+    searchQuery.value = ""
+}
 
 const homeText = computed(() =>  t('navbar.home'))
 const aboutText = computed(() =>  t('navbar.about'))
@@ -56,7 +70,12 @@ const items = ref([
             </template>
             <template #end>
                 <div class="flex align-items-center gap-2">
-                    <InputText :placeholder="t('navbar.search')" type="text" class="w-8rem sm:w-auto" />
+                    <InputText v-if="!isMobile()" v-model="searchQuery" @input="showSearchOverlay" id="search" :placeholder="t('navbar.search')" type="text" class="w-8rem sm:w-auto" />
+                    <Button v-else icon="pi pi-search" text />
+
+                    <OverlayPanel v-if="!isMobile()" ref="searchOverlay" appendTo="body">
+                        <SearchResults @close="closeSearchOverlay" v-model:searchText="searchQuery" />
+                    </OverlayPanel>
                 </div>
             </template>
         </Menubar>
