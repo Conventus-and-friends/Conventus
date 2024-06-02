@@ -6,6 +6,7 @@ using Conventus.Server.Models.Mappers;
 using Ganss.Xss;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Conventus.Server.Controllers;
 
@@ -14,12 +15,16 @@ namespace Conventus.Server.Controllers;
 public sealed class CommentsController(
     ApplicationDbContext context,
     HtmlSanitizer sanitizer,
+    IDistributedCache cache,
     ILogger<CommentsController> logger)
     : ControllerBase
 {
     private readonly ApplicationDbContext _dbContext = context;
     private readonly HtmlSanitizer _htmlSanitizer = sanitizer;
+    private readonly IDistributedCache _cache = cache;
     private readonly ILogger<CommentsController> _logger = logger;
+
+    private readonly DistributedCacheEntryOptions _cacheOptions = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(5));
 
     [HttpGet]
     public ActionResult<IEnumerable<CommentDto>> GetMany([FromQuery] Pager pager)
@@ -37,12 +42,21 @@ public sealed class CommentsController(
     [HttpGet("by-id/{id}")]
     public async Task<ActionResult<CommentDto>> GetById(Guid id)
     {
-        var comment = await _dbContext.Comments.FindAsync(id);
+        var comment = await _cache.GetOrCreateAsync($"comments.comment_{id}", async () =>
+        {
+            var comment = await _dbContext.Comments.FindAsync(id);
+            if (comment is null)
+            {
+                return null;
+            }
+            return comment.ToDto();
+        }, _cacheOptions);
+
         if (comment is null)
         {
             return NotFound();
         }
-        return Ok(comment.ToDto());
+        return Ok(comment);
     }
 
     [HttpGet("by-post/{postId}")]

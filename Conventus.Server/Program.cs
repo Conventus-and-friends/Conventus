@@ -11,6 +11,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// add caching
+// TODO: add actual distrubuted caching
+builder.Services.AddDistributedMemoryCache();
+
 // set up database
 builder.Services.AddDbContext<ApplicationDbContext>();
 

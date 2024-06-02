@@ -1,6 +1,8 @@
+using Conventus.Server.Extensions;
 using Conventus.Server.Models.DTO;
 using Conventus.Server.Models.Mappers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Conventus.Server.Controllers;
 
@@ -8,16 +10,20 @@ namespace Conventus.Server.Controllers;
 [ApiController]
 public sealed class CategoriesController(
     ApplicationDbContext context,
+    IDistributedCache cache,
     ILogger<CategoriesController> logger)
     : ControllerBase
 {
     private readonly ApplicationDbContext _dbContext = context;
+    private readonly IDistributedCache _cache = cache;
     private readonly ILogger<CategoriesController> _logger = logger;
 
+    private readonly DistributedCacheEntryOptions _cacheOptions = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(5));
+
     [HttpGet]
-    public IEnumerable<CategoryDto> Get()
+    public async IAsyncEnumerable<CategoryDto> Get()
     {
-        foreach (var category in _dbContext.Categories)
+        await foreach (var category in _dbContext.Categories.AsAsyncEnumerable())
         {
             yield return category.ToDto();
         }
@@ -26,12 +32,21 @@ public sealed class CategoriesController(
     [HttpGet("by-id/{id}")]
     public async Task<ActionResult<CategoryDto>> GetById(long id)
     {
-        var category = await _dbContext.Categories.FindAsync(id);
+        var category = await _cache.GetOrCreateAsync($"categories.category_{id}", async () =>
+        {
+            var category = await _dbContext.Categories.FindAsync(id);
+            if (category is null)
+            {
+                return null;
+            }
+            return category.ToDto();
+        }, _cacheOptions);
+
         if (category is null)
         {
             return NotFound();
         }
-        return Ok(category.ToDto());
+        return Ok(category);
     }
 
     [HttpPost]

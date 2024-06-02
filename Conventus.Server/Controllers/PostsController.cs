@@ -1,10 +1,12 @@
 using Conventus.Server.Extensions;
 using Conventus.Server.Models;
 using Conventus.Server.Models.DTO;
+using Conventus.Server.Models.Entities;
 using Conventus.Server.Models.Mappers;
 using Ganss.Xss;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Conventus.Server.Controllers;
 
@@ -13,15 +15,19 @@ namespace Conventus.Server.Controllers;
 public sealed class PostsController(
     ApplicationDbContext context,
     HtmlSanitizer sanitizer,
+    IDistributedCache cache,
     ILogger<PostsController> logger)
     : ControllerBase
 {
     private readonly ApplicationDbContext _dbContext = context;
     private readonly HtmlSanitizer _htmlSanitizer = sanitizer;
+    private readonly IDistributedCache _cache = cache;
     private readonly ILogger<PostsController> _logger = logger;
 
+    private readonly DistributedCacheEntryOptions _cacheOptions = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(5));
+
     [HttpGet]
-    public ActionResult<IEnumerable<PostDto>> GetMany([FromQuery] Pager pager)
+    public ActionResult<IAsyncEnumerable<PostDto>> GetMany([FromQuery] Pager pager)
     {
         if (!pager.IsValid())
         {
@@ -30,18 +36,27 @@ public sealed class PostsController(
 
         return Ok(_dbContext.Posts
             .Skip((pager.Page - 1) * pager.Length).Take(pager.Length)
-            .Select(x => x.ToDto()));
+            .Select(x => x.ToDto()).AsAsyncEnumerable());
     }
 
     [HttpGet("by-id/{id}")]
     public async Task<ActionResult<PostDto>> GetById(Guid id)
     {
-        var post = await _dbContext.Posts.FindAsync(id);
+        var post = await _cache.GetOrCreateAsync($"posts.post_{id}", async () =>
+        {
+            var post = await _dbContext.Posts.FindAsync(id);
+            if (post is null)
+            {
+                return null;
+            }
+            return post.ToDto();
+        }, _cacheOptions);
+
         if (post is null)
         {
             return NotFound();
         }
-        return Ok(post.ToDto());
+        return Ok(post);
     }
 
     [HttpGet("by-category/{categoryId}")]
@@ -58,14 +73,17 @@ public sealed class PostsController(
     }
 
     [HttpGet("by-relevance")]
-    public ActionResult<IAsyncEnumerable<PostDto>> GetByRelevance([FromQuery] int limit = 5)
+    public async Task<ActionResult<IAsyncEnumerable<PostDto>>> GetByRelevance([FromQuery] int limit = 5)
     {
         if (limit is <= 0 or > 50)
         {
             return BadRequest("Limit must be between 1 and 50");
         }
 
-        return Ok(_dbContext.GetRelevantPostsAsync(limit).Select(x => x.ToDto()));
+        var posts = await _cache.GetOrCreateAsync($"posts.relevant_{limit}",
+            () => Task.FromResult(_dbContext.GetRelevantPostsAsync(limit).Select(x => x.ToDto())), _cacheOptions);
+
+        return Ok(posts);
     }
 
     [HttpGet("by-similarity/{postId}")]
@@ -82,7 +100,10 @@ public sealed class PostsController(
             return NotFound();
         }
 
-        return Ok(_dbContext.GetSimilarPostsAsync(post.CategoryId, post.Id, limit).Select(x => x.ToDto()));
+        var posts = await _cache.GetOrCreateAsync($"posts.similar_{postId}-{limit}",
+            () => Task.FromResult(_dbContext.GetSimilarPostsAsync(post.CategoryId, post.Id, limit).Select(x => x.ToDto())), _cacheOptions);
+
+        return Ok(posts);
     }
 
     // TODO: implement actual search logic instead of database query
