@@ -21,7 +21,6 @@ Conventus was written to create an alternative to all the others out there. It s
 
 #### Administration
 - [x] Backend logs
-- [x] Swagger API Testing and Documentation
 - [ ] Accounts
 - [ ] Admin configurations
 - [ ] Conventus customizability
