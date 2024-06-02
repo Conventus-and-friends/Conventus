@@ -6,6 +6,7 @@ if (!useDark().value) {
 } else {
     import('primevue/resources/themes/lara-dark-teal/theme.css')
 }
+import 'primeicons/primeicons.css'
 
 // vue imports
 import { createApp } from 'vue'
