@@ -92,6 +92,13 @@ export function getSimilarPosts(id: string, limit: number): Promise<Post[] | nul
         .then(json => json as Post[] ?? null)
 }
 
+/**
+ * Retrieves search results from the API.
+ * 
+ * @param {string} term - The search term
+ * @param {number} limit - The maximum number of posts to retrieve
+ * @returns {Promise<Post[]>} A promise that resolves to an array of search results
+ */
 export function searchPosts(term: string, limit: number): Promise<Post[]> {
     return fetch('/api/posts/search?' + new URLSearchParams({
         query: term,
