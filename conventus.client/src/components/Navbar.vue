@@ -87,7 +87,7 @@ const items = ref([
                         <SearchResults @close="closeSearchOverlay" v-model:searchText="searchQuery" />
                     </OverlayPanel>
 
-                    <Dialog v-model:visible="searchDialogVisible" :header="t('navbar.search')" :style="{ width: '90vw' }" position="top" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+                    <Dialog v-else v-model:visible="searchDialogVisible" :header="t('navbar.search')" :style="{ width: '90vw' }" position="top" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
                         <InputText v-model="searchQuery" @input="showSearchOverlay" :placeholder="t('navbar.search')" type="text" class="top-margin-min" />
                         <SearchResults @close="closeSearchOverlay" v-model:searchText="searchQuery" />
                     </Dialog>
