@@ -1,6 +1,9 @@
 using Conventus.Server;
+using Conventus.Server.Consumers;
 using Conventus.Server.Extensions;
+using Conventus.Server.Models.Contracts;
 using Ganss.Xss;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +20,21 @@ builder.Services.AddDistributedMemoryCache();
 
 // set up database
 builder.Services.AddDbContext<ApplicationDbContext>();
+
+// set up MassTransit
+builder.Services.AddMassTransit(c =>
+{
+    c.AddConsumer<CreatePostConsumer>();
+    c.AddConsumer<CreateCommentConsumer>();
+    c.AddConsumer<CreateCategoryConsumer>();
+
+    c.AddRequestClient<CreatePost>();
+    c.AddRequestClient<CreateComment>();
+    c.AddRequestClient<CreateCategory>();
+
+    c.UsingInMemory((context, cfg) =>
+        cfg.ConfigureEndpoints(context));
+});
 
 // add html sanitizer
 builder.Services.AddScoped<HtmlSanitizer>();

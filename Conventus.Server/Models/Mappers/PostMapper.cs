@@ -1,3 +1,4 @@
+using Conventus.Server.Models.Contracts;
 using Conventus.Server.Models.DTO;
 using Conventus.Server.Models.Entities;
 using Riok.Mapperly.Abstractions;
@@ -19,4 +20,8 @@ public static partial class PostMapper
     [MapProperty(nameof(PostDto.Created), nameof(Post.DateCreated))]
     [MapProperty(nameof(PostDto.Created), nameof(Post.TimeCreated))]
     public static partial Post ToEntity(this PostDto postDto);
+
+    [MapperIgnoreSource(nameof(PostDto.Id))]
+    [MapperIgnoreSource(nameof(PostDto.Created))]
+    public static partial CreatePost ToCreateContract(this PostDto postDto);
 }

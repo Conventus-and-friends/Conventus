@@ -1,9 +1,11 @@
 using Conventus.Server.Extensions;
 using Conventus.Server.Models;
+using Conventus.Server.Models.Contracts;
 using Conventus.Server.Models.DTO;
 using Conventus.Server.Models.Entities;
 using Conventus.Server.Models.Mappers;
 using Ganss.Xss;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
@@ -14,15 +16,13 @@ namespace Conventus.Server.Controllers;
 [ApiController]
 public sealed class PostsController(
     ApplicationDbContext context,
-    HtmlSanitizer sanitizer,
     IDistributedCache cache,
-    ILogger<PostsController> logger)
+    IRequestClient<CreatePost> createPostClient)
     : ControllerBase
 {
     private readonly ApplicationDbContext _dbContext = context;
-    private readonly HtmlSanitizer _htmlSanitizer = sanitizer;
     private readonly IDistributedCache _cache = cache;
-    private readonly ILogger<PostsController> _logger = logger;
+    private readonly IRequestClient<CreatePost> _createPostClient = createPostClient;
 
     private readonly DistributedCacheEntryOptions _cacheOptions = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(5));
 
@@ -138,28 +138,22 @@ public sealed class PostsController(
             return BadRequest();
         }
 
-        post.Title = _htmlSanitizer.Sanitize(post.Title);
-        if (post.Content is not null)
+        var response = await _createPostClient.GetResponse<PostCreated, PostCreationFailed>(post.ToCreateContract());
+
+        if (response.Is(out Response<PostCreationFailed>? failure))
         {
-            post.Content = _htmlSanitizer.Sanitize(post.Content);
+            if (failure.Message.Exception is DbUpdateException)
+            {
+                return BadRequest();
+            }
+
+            throw failure.Message.Exception;
         }
 
-        post.Created = DateTime.UtcNow;
+        var (Id, Created) = (PostCreated)response.Message;
 
-        var result = await _dbContext.Posts.AddAsync(post.ToEntity());
-
-        try
-        {
-            await _dbContext.SaveChangesAsync();
-        }
-        catch (DbUpdateException)
-        {
-            return BadRequest();
-        }
-
-        post.Id = result.Entity.Id;
-
-        _logger.LogDebug("New post created with id: {Id}", post.Id);
+        post.Id = Id;
+        post.Created = Created;
 
         return Ok(post);
     }

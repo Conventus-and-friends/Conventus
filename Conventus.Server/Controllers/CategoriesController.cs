@@ -1,7 +1,10 @@
 using Conventus.Server.Extensions;
+using Conventus.Server.Models.Contracts;
 using Conventus.Server.Models.DTO;
 using Conventus.Server.Models.Mappers;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 
 namespace Conventus.Server.Controllers;
@@ -10,13 +13,13 @@ namespace Conventus.Server.Controllers;
 [ApiController]
 public sealed class CategoriesController(
     ApplicationDbContext context,
-    IDistributedCache cache,
-    ILogger<CategoriesController> logger)
+    IRequestClient<CreateCategory> createCategoryClient,
+    IDistributedCache cache)
     : ControllerBase
 {
     private readonly ApplicationDbContext _dbContext = context;
+    private readonly IRequestClient<CreateCategory> _createCategoryClient = createCategoryClient;
     private readonly IDistributedCache _cache = cache;
-    private readonly ILogger<CategoriesController> _logger = logger;
 
     private readonly DistributedCacheEntryOptions _cacheOptions = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(5));
 
@@ -57,12 +60,18 @@ public sealed class CategoriesController(
             return BadRequest();
         }
 
-        var result = await _dbContext.Categories.AddAsync(category.ToEntity());
-        await _dbContext.SaveChangesAsync();
+        var response = await _createCategoryClient.GetResponse<CategoryCreated, CategoryCreationFailed>(category.ToCreateContract());
 
-        category.Id = result.Entity.Id;
+        if (response.Is(out Response<CategoryCreationFailed>? failure))
+        {
+            if (failure.Message.Exception is DbUpdateException)
+            {
+                return BadRequest();
+            }
+            throw failure.Message.Exception;
+        }
 
-        _logger.LogInformation("New category created with name: {Name}", category.Name);
+        category.Id = ((CategoryCreated)response.Message).Id;
 
         return Ok(category);
     }

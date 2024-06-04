@@ -1,3 +1,4 @@
+using Conventus.Server.Models.Contracts;
 using Conventus.Server.Models.DTO;
 using Conventus.Server.Models.Entities;
 using Riok.Mapperly.Abstractions;
@@ -17,4 +18,8 @@ public static partial class CommentMapper
     [MapProperty(nameof(CommentDto.Created), nameof(Comment.DateCreated))]
     [MapProperty(nameof(CommentDto.Created), nameof(Comment.TimeCreated))]
     public static partial Comment ToEntity(this CommentDto dto);
+
+    [MapperIgnoreSource(nameof(CommentDto.Id))]
+    [MapperIgnoreSource(nameof(CommentDto.Created))]
+    public static partial CreateComment ToCreateContract(this CommentDto dto);
 }

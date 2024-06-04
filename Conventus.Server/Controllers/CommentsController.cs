@@ -1,9 +1,11 @@
 
 using Conventus.Server.Extensions;
 using Conventus.Server.Models;
+using Conventus.Server.Models.Contracts;
 using Conventus.Server.Models.DTO;
 using Conventus.Server.Models.Mappers;
 using Ganss.Xss;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
@@ -14,15 +16,13 @@ namespace Conventus.Server.Controllers;
 [ApiController]
 public sealed class CommentsController(
     ApplicationDbContext context,
-    HtmlSanitizer sanitizer,
-    IDistributedCache cache,
-    ILogger<CommentsController> logger)
+    IRequestClient<CreateComment> createCommentClient,
+    IDistributedCache cache)
     : ControllerBase
 {
     private readonly ApplicationDbContext _dbContext = context;
-    private readonly HtmlSanitizer _htmlSanitizer = sanitizer;
+    private readonly IRequestClient<CreateComment> _createCommentClient = createCommentClient;
     private readonly IDistributedCache _cache = cache;
-    private readonly ILogger<CommentsController> _logger = logger;
 
     private readonly DistributedCacheEntryOptions _cacheOptions = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(5));
 
@@ -92,24 +92,21 @@ public sealed class CommentsController(
             return BadRequest();
         }
 
-        comment.Content = _htmlSanitizer.Sanitize(comment.Content);
+        var response = await _createCommentClient.GetResponse<CommentCreated, CommentCreationFailed>(comment.ToCreateContract());
 
-        comment.Created = DateTime.UtcNow;
-
-        var result = await _dbContext.Comments.AddAsync(comment.ToEntity());
-
-        try
+        if (response.Is(out Response<CommentCreationFailed>? failure))
         {
-            await _dbContext.SaveChangesAsync();
-        }
-        catch (DbUpdateException)
-        {
-            return BadRequest();
+            if (failure.Message.Exception is DbUpdateException)
+            {
+                return BadRequest();
+            }
+            throw failure.Message.Exception;
         }
 
-        comment.Id = result.Entity.Id;
+        var (Id, Created) = (CommentCreated)response.Message;
 
-        _logger.LogDebug("Added comment {Id} to post with id: {PostId}", comment.Id, comment.PostId);
+        comment.Id = Id;
+        comment.Created = Created;
 
         return Ok(comment);
     }
