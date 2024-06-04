@@ -31,6 +31,8 @@ public sealed class ApplicationDbContext : DbContext
         optionsBuilder
             .UseLazyLoadingProxies()
             .UseSqlite($"Data Source={DbPath}");
+
+        optionsBuilder.UseOpenIddict();
         base.OnConfiguring(optionsBuilder);
     }
 

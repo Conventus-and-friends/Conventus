@@ -2,6 +2,7 @@ using Conventus.Server;
 using Conventus.Server.Consumers;
 using Conventus.Server.Extensions;
 using Conventus.Server.Models.Contracts;
+using Conventus.Server.Workers;
 using Ganss.Xss;
 using MassTransit;
 
@@ -14,12 +15,19 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// set up database
+builder.Services.AddDbContext<ApplicationDbContext>();
+
 // add caching
 // TODO: add actual distrubuted caching
 builder.Services.AddDistributedMemoryCache();
 
-// set up database
-builder.Services.AddDbContext<ApplicationDbContext>();
+// set up authentication/authorization
+builder.Services.AddConventusOpenIddict();
+builder.Services.AddHostedService<ClientRegistrationWorker>();
+
+// add html sanitizer
+builder.Services.AddScoped<HtmlSanitizer>();
 
 // set up MassTransit
 builder.Services.AddMassTransit(c =>
@@ -36,9 +44,6 @@ builder.Services.AddMassTransit(c =>
         cfg.ConfigureEndpoints(context));
 });
 
-// add html sanitizer
-builder.Services.AddScoped<HtmlSanitizer>();
-
 var app = builder.Build();
 
 // ensure database is created and running
@@ -54,10 +59,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors();
+app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapDefaultControllerRoute();
 
 app.MapFallbackToFile("/index.html");
 
