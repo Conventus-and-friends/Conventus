@@ -25,3 +25,9 @@ Conventus was written to create an alternative to all the others out there. It s
 - [ ] Admin configurations
 - [ ] Conventus customizability
 - [ ] Statistics
+
+#### System
+- [x] Caching
+- [x] Using MassTransit for better scalability
+- [ ] Different Databases like Postgres etc.
+- [ ] Search engine(s)
