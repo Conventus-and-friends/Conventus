@@ -8,7 +8,7 @@ using OpenIddict.Server.AspNetCore;
 
 namespace Conventus.Server.Controllers;
 
-[Route("account/auth")]
+[Route("identity/[controller]")]
 public class AuthorizationController(IOpenIddictApplicationManager applicationManager)
     : Controller
 {

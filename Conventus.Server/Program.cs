@@ -5,6 +5,8 @@ using Conventus.Server.Models.Contracts;
 using Conventus.Server.Workers;
 using Ganss.Xss;
 using MassTransit;
+using Quartz;
+using Quartz.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,14 @@ builder.Services.AddDbContext<ApplicationDbContext>();
 // add caching
 // TODO: add actual distrubuted caching
 builder.Services.AddDistributedMemoryCache();
+
+// set up Quartz
+builder.Services.AddQuartz(q =>
+{
+    q.UseSimpleTypeLoader();
+    q.UseInMemoryStore();
+});
+builder.Services.AddQuartzServer(q => q.WaitForJobsToComplete = true);
 
 // set up authentication/authorization
 builder.Services.AddConventusOpenIddict();
