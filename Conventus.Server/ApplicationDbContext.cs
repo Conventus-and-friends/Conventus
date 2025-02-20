@@ -1,10 +1,11 @@
 using Conventus.Server.Extensions;
 using Conventus.Server.Models.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Conventus.Server;
 
-public sealed class ApplicationDbContext : DbContext
+public sealed class ApplicationDbContext : IdentityDbContext<AppUser>
 {
     private readonly ILoggerFactory _loggerFactory;
 
@@ -36,10 +37,10 @@ public sealed class ApplicationDbContext : DbContext
         base.OnConfiguring(optionsBuilder);
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        modelBuilder.MapPostCategoryRelations();
-        modelBuilder.MapCommentPostRelations();
-        base.OnModelCreating(modelBuilder);
+        builder.MapPostCategoryRelations();
+        builder.MapCommentPostRelations();
+        base.OnModelCreating(builder);
     }
 }

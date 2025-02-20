@@ -19,12 +19,18 @@ public static class ConventusOpenIddictServiceExtensions
             {
                 options.SetTokenEndpointUris("identity/authorization/token");
 
-                options.AllowClientCredentialsFlow();
+                options.AllowAuthorizationCodeFlow();
 
                 options.AddDevelopmentSigningCertificate()
                        .AddDevelopmentEncryptionCertificate();
 
                 options.UseAspNetCore().EnableTokenEndpointPassthrough();
+            })
+            .AddValidation(options =>
+            {
+                options.UseLocalServer();
+
+                options.UseAspNetCore();
             });
         return services;
     }

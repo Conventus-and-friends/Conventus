@@ -2,9 +2,11 @@ using Conventus.Server;
 using Conventus.Server.Consumers;
 using Conventus.Server.Extensions;
 using Conventus.Server.Models.Contracts;
+using Conventus.Server.Models.Entities;
 using Conventus.Server.Workers;
 using Ganss.Xss;
 using MassTransit;
+using Microsoft.AspNetCore.Identity;
 using Quartz;
 using Quartz.AspNetCore;
 
@@ -19,6 +21,12 @@ builder.Services.AddSwaggerGen();
 
 // set up database
 builder.Services.AddDbContext<ApplicationDbContext>();
+
+// set up identity
+builder.Services
+    .AddIdentity<AppUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 // add caching
 // TODO: add actual distrubuted caching
